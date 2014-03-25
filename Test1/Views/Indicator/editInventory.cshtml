@@ -1,0 +1,327 @@
+﻿@using IndInv.Helpers
+@using IndInv.Models
+@using System.Globalization
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script src="../../Scripts/jquery.handsontable.full.js"></script>
+<link rel="stylesheet" media="screen" href="../../Scripts/jquery.handsontable.full.css" />
+@model IList<IndInv.Models.ViewModels.InventoryViewModel>
+@using IndInv.Models
+@{
+    ViewBag.Title = "editInventory";
+}
+
+<h2>
+    editInventory</h2>
+<div id="dataTable">
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    $(document).on('input', '#mytxtBox', function () {
+        console.log($('#mytxtBox').val());
+    });
+
+    function qcolor(instance, td, row, col, prop, value, cellProperties) {
+        switch(prop){
+            case "FY_13_14_Q1": quarter = "Q1_Color"; break;
+            case "FY_13_14_Q2": quarter = "Q2_Color"; break;
+            case "FY_13_14_Q3": quarter = "Q3_Color"; break;
+            case "FY_13_14_Q4": quarter = "Q4_Color"; break;
+            case "FY_13_14_YTD": quarter = "YTD_Color"; break;
+        }
+        changedProp = $example1.handsontable("getDataAtRowProp",row, quarter)
+        Handsontable.renderers.TextRenderer.apply(this, arguments);
+        if (changedProp == "cssGreen"){
+            td.style.background = 'green';
+            td.style.color = 'white';
+        }
+        if (changedProp == "cssYellow"){
+            td.style.background = 'yellow';
+            td.style.color = 'black';
+        }
+        if (changedProp == "cssRed"){
+            td.style.background = 'red';
+            td.style.color = 'white';
+        }
+    }
+
+    Handsontable.renderers.registerRenderer('qcolor', qcolor);
+
+    var maxed = false
+        , resizeTimeout
+        , availableWidth
+        , availableHeight
+        , $window = $(window)
+        , $example1 = $('#dataTable');
+
+    var calculateSize = function () {
+        var offset = $example1.offset();
+        availableWidth = $window.width() - offset.left + $window.scrollLeft();
+        availableHeight = $window.height() - offset.top + $window.scrollTop();
+    };
+    $window.on('resize', calculateSize);
+
+    var values = @Html.Raw(Json.Encode(Model));
+
+    $example1 .handsontable({
+        data: values,
+        startRows: 1,
+        startCols: 1,
+        rowHeaders: true,
+        colHeaders: true,
+        strechH: 'all',
+        strechW: 'all',
+        scrollH: 'auto',
+        scrollV: 'auto',
+        colWidths: [50, 50, 500,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,1000,1000,1000], 
+        width: function () {
+            if (maxed && availableWidth === void 0) {
+                calculateSize();
+            }
+            return maxed  ?  availableWidth *0.98 : 300;
+        },
+        height: function () {
+            if (maxed && availableHeight === void 0) {
+                calculateSize();
+            }
+        return maxed  ?  availableHeight*0.98: 300;
+        },
+        manualColumnResize: true,
+        minSpareRows: 0,
+        contextMenu: true,
+        colHeaders: [
+            "ID",
+            "Area ID",
+            "Indicator",
+            "FY_10_11",
+            "FY_10_11_Sup",
+            "FY_11_12",
+            "FY_11_12_Sup",
+            "FY_12_13",
+            "FY_12_13_Sup",
+            "FY_13_14_Q1",
+            "FY_13_14_Q1_Sup",
+            "FY_13_14_Q2",
+            "FY_13_14_Q2_Sup",
+            "FY_13_14_Q3",
+            "FY_13_14_Q3_Sup",
+            "FY_13_14_Q4",
+            "FY_13_14_Q4_Sup",
+            "FY_13_14_YTD ",
+            "FY_13_14_YTD_Sup",
+            "Target",
+            "Target_Sup",
+            "Comparator",
+            "Comparator_Sup",
+            "Performance_Threshold",
+            "Performance_Threshold_Sup",
+            "color_ID",
+            "Custom_YTD",
+            "Custom_Q1",
+            "Custom_Q2",
+            "Custom_Q3",
+            "Custom_Q4",
+            "Definition_Calculation",
+            "Target_Rationale",
+            "Comparator_Source",
+            "Data_Source_MSH",
+            "Data_Source_Benchmark",
+            "OPEO_Lead"
+        ],
+        columns: [
+            {data:"Indicator_ID"},
+            {data:"Area_ID"},
+            {data:"Indicator"},
+            {data:"FY_10_11"},
+            {data:"FY_10_11_Sup"},
+            {data:"FY_11_12"},
+            {data:"FY_11_12_Sup"},
+            {data:"FY_12_13"},
+            {data:"FY_12_13_Sup"},
+            {data:"FY_13_14_Q1", renderer:"qcolor"},
+            {data:"FY_13_14_Q1_Sup"},
+            {data:"FY_13_14_Q2", renderer:"qcolor"},
+            {data:"FY_13_14_Q2_Sup"},
+            {data:"FY_13_14_Q3", renderer:"qcolor"},
+            {data:"FY_13_14_Q3_Sup"},
+            {data:"FY_13_14_Q4", renderer:"qcolor"},
+            {data:"FY_13_14_Q4_Sup"},
+            {data:"FY_13_14_YTD ", renderer:"qcolor"},
+            {data:"FY_13_14_YTD_Sup"},
+            {data:"Target"},
+            {data:"Target_Sup"},
+            {data:"Comparator"},
+            {data:"Comparator_Sup"},
+            {data:"Performance_Threshold"},
+            {data:"Performance_Threshold_Sup"},
+            {data:"color_ID"},
+            {data:"Custom_YTD"},
+            {data:"Custom_Q1"},
+            {data:"Custom_Q2"},
+            {data:"Custom_Q3"},
+            {data:"Custom_Q4"},
+            {data:"Definition_Calculation"},
+            {data:"Target_Rationale"},
+            {data:"Comparator_Source"},
+            {data:"Data_Source_MSH"},
+            {data:"Data_Source_Benchmark"},
+            {data:"OPEO_Lead"}
+        ],
+        afterChange: function (change, source) {
+            if (source === 'loadData') {
+                return;
+            } else {
+                for (var i = 0; i< change.length; ++i){
+                    updateIndicator(change, i);
+                }
+            }
+        }
+    });
+
+    maxed = !maxed;
+    $example1.handsontable('render');
+
+    function updateIndicator(change, i){
+        var changedRow = change[i][0]
+        var changedParameter = change[i][1];
+        var changedValue = change[i][3];
+        if (changedParameter != "Q1_Color" && changedParameter != "Q2_Color" && changedParameter != "Q3_Color" && changedParameter != "Q4_Color" && changedParameter != "YTD_Color"){
+            $.get('@Url.Action("/editInventory")', {Indicator_ID_Filter : $example1.handsontable('getDataAtCell',change[i][0],0)}, function (data) {
+              /*  if (data.length === 0 && changedParameter == "Indicator_ID"){
+                    data.push({
+                        Area_ID: 0,
+                        Indicator: null,
+                        FY_10_11: null,
+                        FY_10_11_Sup: null,
+                        FY_11_12: null,
+                        FY_11_12_Sup: null,
+                        FY_12_13: null,
+                        FY_12_13_Sup: null,
+                        FY_13_14_Q1: null,
+                        FY_13_14_Q1_Sup: null,
+                        FY_13_14_Q2: null,
+                        FY_13_14_Q2_Sup: null,
+                        FY_13_14_Q3: null,
+                        FY_13_14_Q3_Sup: null,
+                        FY_13_14_Q4: null,
+                        FY_13_14_Q4_Sup: null,
+                        FY_13_14_YTD: null,
+                        FY_13_14_YTD_Sup: null,
+                        Target: null,
+                        Target_Sup: null,
+                        Comparator: null,
+                        Comparator_Sup: null,
+                        Performance_Threshold: null,
+                        Performance_Threshold_Sup: null,
+                        color_ID: 1,
+                        Custom_YTD: null,
+                        Custom_Q1: null,
+                        Custom_Q2: null,
+                        Custom_Q3: null,
+                        Custom_Q4: null,
+                        Definition_Calculation: null,
+                        Target_Rationale: null,
+                        Comparator_Source: null,
+                        Data_Source_MSH: null,
+                        Data_Source_Benchmark: null,
+                        OPEO_Lead: null
+                    });
+                } else { 
+                
+                } */
+                var newValue = data;
+                var parameters = []
+                parameters.push({
+                    Indicator_ID: (changedParameter=="Indicator_ID" ?  parseInt(changedValue) : newValue[0].Indicator_ID),
+                    Area_ID: (changedParameter=="Area_ID" ? parseInt(changedValue): newValue[0].Area_ID),
+                    Indicator:(changedParameter=="Indicator" ? changedValue : newValue[0].Indicator),
+                    FY_10_11:(changedParameter=="FY_10_11" ? changedValue : newValue[0].FY_10_11),
+                    FY_10_11_Sup:(changedParameter=="FY_10_11_Sup" ? changedValue : newValue[0].FY_10_11_Sup),
+                    FY_11_12:(changedParameter=="FY_11_12" ? changedValue : newValue[0].FY_11_12),
+                    FY_11_12_Sup:(changedParameter=="FY_11_12_Sup" ? changedValue : newValue[0].FY_11_12_Sup),
+                    FY_12_13:(changedParameter=="FY_12_13" ? changedValue : newValue[0].FY_12_13),
+                    FY_12_13_Sup:(changedParameter=="FY_12_13_Sup" ? changedValue : newValue[0].FY_12_13_Sup),
+                    FY_13_14_Q1:(changedParameter=="FY_13_14_Q1" ? changedValue : newValue[0].FY_13_14_Q1),
+                    FY_13_14_Q1_Sup:(changedParameter=="FY_13_14_Q1_Sup" ? changedValue : newValue[0].FY_13_14_Q1_Sup),
+                    FY_13_14_Q2:(changedParameter=="FY_13_14_Q2" ? changedValue : newValue[0].FY_13_14_Q2),
+                    FY_13_14_Q2_Sup:(changedParameter=="FY_13_14_Q2_Sup" ? changedValue : newValue[0].FY_13_14_Q2_Sup),
+                    FY_13_14_Q3:(changedParameter=="FY_13_14_Q3" ? changedValue : newValue[0].FY_13_14_Q3),
+                    FY_13_14_Q3_Sup:(changedParameter=="FY_13_14_Q3_Sup" ? changedValue : newValue[0].FY_13_14_Q3_Sup),
+                    FY_13_14_Q4:(changedParameter=="FY_13_14_Q4" ? changedValue : newValue[0].FY_13_14_Q4),
+                    FY_13_14_Q4_Sup:(changedParameter=="FY_13_14_Q4_Sup" ? changedValue : newValue[0].FY_13_14_Q4_Sup),
+                    FY_13_14_YTD:(changedParameter=="FY_13_14_YTD" ? changedValue : newValue[0].FY_13_14_YTD),
+                    FY_13_14_YTD_Sup:(changedParameter=="FY_13_14_YTD_Sup" ? changedValue : newValue[0].FY_13_14_YTD_Sup),
+                    Target:(changedParameter=="Target" ? changedValue : newValue[0].Target),
+                    Target_Sup:(changedParameter=="Target_Sup" ? changedValue : newValue[0].Target_Sup),
+                    Comparator:(changedParameter=="Comparator" ? changedValue : newValue[0].Comparator),
+                    Comparator_Sup:(changedParameter=="Comparator_Sup" ? changedValue : newValue[0].Comparator_Sup),
+                    Performance_Threshold:(changedParameter=="Performance_Threshold " ? changedValue : newValue[0].Performance_Threshold),
+                    Performance_Threshold_Sup:(changedParameter=="Performance_Threshold_Sup" ? changedValue : newValue[0].Performance_Threshold_Sup),
+                    color_ID:(changedParameter=="color_ID" ? parseInt(changedValue): newValue[0].color_ID),
+                    Custom_YTD:(changedParameter=="Custom_YTD" ? changedValue : newValue[0].Custom_YTD),
+                    Custom_Q1:(changedParameter=="Custom_Q1" ? changedValue : newValue[0].Custom_Q1),
+                    Custom_Q2:(changedParameter=="Custom_Q2" ? changedValue : newValue[0].Custom_Q2),
+                    Custom_Q3:(changedParameter=="Custom_Q3" ? changedValue : newValue[0].Custom_Q3),
+                    Custom_Q4:(changedParameter=="Custom_Q4" ? changedValue : newValue[0].Custom_Q4),
+                    Definition_Calculation:(changedParameter=="Definition_Calculation" ? changedValue : newValue[0].Definition_Calculation),
+                    Target_Rationale:(changedParameter=="Target_Rationale" ? changedValue : newValue[0].Target_Rationale),
+                    Comparator_Source:(changedParameter=="Comparator_Source" ? changedValue : newValue[0].Comparator_Source), 
+                    Data_Source_MSH:(changedParameter=="Data_Source_MSH" ? changedValue : newValue[0].Data_Source_MSH),
+                    Data_Source_Benchmark:(changedParameter=="Data_Source_Benchmark" ? changedValue : newValue[0].Data_Source_Benchmark),
+                    OPEO_Lead:(changedParameter=="OPEO_Lead" ? changedValue : newValue[0].OPEO_Lead)
+                })
+                $.ajax({
+                    url: this.action,
+                    type: 'POST',
+                    data: JSON.stringify(parameters),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        $.get('@Url.Action("/editInventory")', {Indicator_ID_Filter : $example1.handsontable('getDataAtCell',change[i][0],0)}, function (data) {
+                            $example1.handsontable("setDataAtRowProp", changedRow, "Q1_Color", data[0].Q1_Color);
+                            $example1.handsontable("setDataAtRowProp", changedRow, "Q2_Color", data[0].Q2_Color);
+                            $example1.handsontable("setDataAtRowProp", changedRow, "Q3_Color", data[0].Q3_Color);
+                            $example1.handsontable("setDataAtRowProp", changedRow, "Q4_Color", data[0].Q4_Color);
+                            $example1.handsontable("setDataAtRowProp", changedRow, "YTD_Color", data[0].YTD_Color);
+                        });
+                    },
+                    error: function (request){
+                    }
+                });
+            });
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#searchgrid').on('keyup', function (event) {
+            var value = ('' + this.value).toLowerCase(), row, col, r_len, c_len, td;
+            var example = $example1
+            var datasrch = jQuery.makeArray(values);
+            var searcharray = [];
+            if (value) {
+                for (row = 0, r_len = datasrch.length; row < r_len; row++) {
+                    jQuery.each(datasrch[row], function (name, currValue) {
+                        if(('' + currValue).toLowerCase().indexOf(value) > -1){
+                            searcharray.push(datasrch[row]);
+                            return false;
+                        }
+                    });
+                }
+                example.handsontable('loadData', searcharray);
+            }
+            else {
+                example.handsontable('loadData', values);
+            }
+        });
+    });
+</script>
+
+ 
+Search: <input id="searchgrid" type="text" />
+<div id="example1">
+</div>
+ 

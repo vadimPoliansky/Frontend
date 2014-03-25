@@ -1,0 +1,175 @@
+﻿@using IndInv.Helpers
+@using IndInv.Models
+@using System.Globalization
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script src="../../Scripts/jquery.handsontable.full.js"></script>
+<link rel="stylesheet" media="screen" href="../../Scripts/jquery.handsontable.full.css" />
+@model IList<IndInv.Models.ViewModels.Indicator_Footnote_MapsViewModel>
+@using IndInv.Models
+@{
+    ViewBag.Title = "editFootnoteMaps";
+}
+<h2>
+    Edit Footnotes
+</h2>     
+
+<div id="dataTable">
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    $(document).on('input', '#mytxtBox', function () {
+        console.log($('#mytxtBox').val());
+    });
+
+    var maxed = false
+        , resizeTimeout
+        , availableWidth
+        , availableHeight
+        , $window = $(window)
+        , $example1 = $('#dataTable');
+
+    var calculateSize = function () {
+        var offset = $example1.offset();
+        availableWidth = $window.width() - offset.left + $window.scrollLeft();
+        availableHeight = $window.height() - offset.top + $window.scrollTop();
+    };
+    $window.on('resize', calculateSize);
+
+    var values = @Html.Raw(Json.Encode(Model));
+
+    $example1 .handsontable({
+        data: values,
+        startRows: 1,
+        startCols: 1,
+        rowHeaders: true,
+        colHeaders: true,
+        strechH: 'all',
+        strechW: 'all',
+        scrollH: 'auto',
+        scrollV: 'auto',
+        colWidths: [50, 600, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+        columns: [
+            {data:'Indicator_ID', readOnly:true},
+            {data:'Indicator', readOnly:true},
+            {data:'Footnote_ID_1'},
+            {data:'Footnote_ID_2'},
+            {data:'Footnote_ID_3'},
+            {data:'Footnote_ID_4'},
+            {data:'Footnote_ID_5'},
+            {data:'Footnote_ID_6'},
+            {data:'Footnote_ID_7'},
+            {data:'Footnote_ID_8'},
+            {data:'Footnote_ID_9'},
+            {data:'Footnote_ID_10'},
+        ],
+        width: function () {
+            if (maxed && availableWidth === void 0) {
+                calculateSize();
+            }
+            return maxed ? availableWidth *0.98 : 300;
+        },
+        height: function () {
+            if (maxed && availableHeight === void 0) {
+                calculateSize();
+            }
+        return maxed ? availableHeight*0.98: 300;
+        },
+        manualColumnResize: true,
+        afterChange: function (change, source) {
+            if (source === 'loadData') {
+                return;
+            } else {
+                for (var i = 0; i< change.length; ++i){
+                    var changedParameter = change[i][1];
+                    var changedRow = change[i][0]
+                    var changedValue = change[i][3]
+                    var mapID;
+                    var mapColumn;
+                    switch( changedParameter ) {
+                        case "Footnote_ID_1":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_1');
+                            mapColumn = 'Map_ID_1'
+                            break;
+                        case "Footnote_ID_2":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_2');
+                            mapColumn = 'Map_ID_2'
+                            break;
+                        case "Footnote_ID_3":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_3');
+                            mapColumn = 'Map_ID_3'
+                            break;
+                        case "Footnote_ID_4":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_4');
+                            mapColumn = 'Map_ID_4'
+                            break;
+                        case "Footnote_ID_5":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_5');
+                            mapColumn = 'Map_ID_5'
+                            break;
+                        case "Footnote_ID_6":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_6');
+                            mapColumn = 'Map_ID_6'
+                            break;
+                        case "Footnote_ID_7":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_7');
+                            mapColumn = 'Map_ID_7'
+                            break;
+                        case "Footnote_ID_8":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_8');
+                            mapColumn = 'Map_ID_8'
+                            break;
+                        case "Footnote_ID_9":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_9');
+                            mapColumn = 'Map_ID_9'
+                            break;
+                        case "Footnote_ID_10":
+                            mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_10');
+                            mapColumn = 'Map_ID_10'
+                            break;
+                    }
+                    var footnoteID = changedValue;
+                    var indicatorID = $example1.handsontable('getDataAtCell', changedRow,'Indicator_ID')
+                    if(changedParameter.toString().substring(0,3) != 'Map'){
+                        updateFootnoteMap(mapID, footnoteID, indicatorID, changedRow, mapColumn, changedParameter);
+                    }
+                }
+            }
+        }
+    });
+
+    maxed = !maxed;
+    $example1.handsontable('render');
+
+    function updateFootnoteMap(mapID, footnoteID, indicatorID, changedRow, mapColumn, changedParameter){
+        var parameters = []
+        parameters.push({
+            Map_ID: mapID,
+            Footnote_ID: footnoteID,
+            Indicator_ID: indicatorID,
+        })
+        $.ajax({
+            url: this.action,
+            type: 'POST',
+            data: JSON.stringify(parameters),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                if (result.State == 'NewID'){
+                    $example1.handsontable('setDataAtRowProp', changedRow, mapColumn, result.Map_ID);
+                }else if (result.State == 'InvalidChange'){
+                    alert('Invalid Footnote 1');
+                    $example1.handsontable('setDataAtRowProp', changedRow, changedParameter, result.Footnote_ID);
+                }else if (result.State == 'InvalidAdd'){
+                    alert('Invalid Footnote 2');
+                    $example1.handsontable('setDataAtRowProp', changedRow, changedParameter, null);
+                }
+            },
+            error: function (request){
+            }
+        });
+    }
+
+</script>

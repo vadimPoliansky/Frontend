@@ -1,0 +1,87 @@
+﻿@using IndInv.Helpers
+@using IndInv.Models
+@using System.Globalization
+
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script src="../../Scripts/jquery.handsontable.full.js"></script>
+<link rel="stylesheet" media="screen" href="../../Scripts/jquery.handsontable.full.css"/>
+
+@model IndInv.Models.ViewModels.Indicator_CoE_MapsViewModel
+@using IndInv.Models
+@{
+    ViewBag.Title = "editCoEMaps";
+}
+
+    <h2>editInventory</h2>
+
+    <div id="dataTable"></div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+
+    $(document).on('input', '#mytxtBox', function () {
+        console.log($('#mytxtBox').val());
+    });
+
+    var maxed = false
+        , resizeTimeout
+        , availableWidth
+        , availableHeight
+        , $window = $(window)
+        , $example1 = $('#dataTable');
+
+    var calculateSize = function () {
+        var offset = $example1.offset();
+        availableWidth = $window.width() - offset.left + $window.scrollLeft();
+        availableHeight = $window.height() - offset.top + $window.scrollTop();
+    };
+    $window.on('resize', calculateSize);
+
+    var countCoE = @Html.Raw(Model.allCoEs.Count() * 3);
+    var countIndicators = @Html.Raw(Model.allIndicators.Count());
+    var values = [countIndicators -1, countCoE -1];
+    @for(var i =0; i < Model.allIndicators.Count(); i++){
+        @: values[@i,0] = '@Html.Raw(Json.Encode(Model.allIndicators[i].Indicator))';
+        for(var j =0; j < Model.allCoEs.Count()*3; j = j + 3){
+            @: values[@i,@j] = '@Html.Raw(Json.Encode(Model.allCoEs[j/3].CoE))';
+            @: values[@i,@j+1] = '@Html.Raw(Json.Encode(Model.allCoEs[j/3].Indicator_CoE_Map.Contains(Model.allMaps.Where(x=>x.Indicator.Indicator_ID ==Model.allIndicators[i].Indicator_ID).FirstOrDefault(x => x.CoE.CoE_ID == Model.allCoEs[j/3].CoE_ID) ) ))';
+        }
+    }
+
+    $example1 .handsontable({
+        Controller: {
+            buttons: ['move', 'add'],
+            ui: 'float'
+        },
+        data: values,
+        startRows: 1,
+        startCols: 1,
+        rowHeaders: true,
+        colHeaders: true,
+        strechH: 'all',
+        strechW: 'all',
+        scrollH: 'auto',
+        scrollV: 'auto',
+        width: function () {
+            if (maxed && availableWidth === void 0) {
+                calculateSize();
+            }
+            return maxed ? availableWidth *0.98 : 300;
+        },
+        height: function () {
+            if (maxed && availableHeight === void 0) {
+                calculateSize();
+            }
+        return maxed ? availableHeight*0.98: 300;
+        },
+        manualColumnResize: true,
+        minSpareRows: 1,
+    });
+
+    maxed = !maxed;
+    $example1.handsontable('render');
+
+</script>

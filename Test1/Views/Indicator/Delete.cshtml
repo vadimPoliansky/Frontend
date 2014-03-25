@@ -1,0 +1,284 @@
+﻿@model IndInv.Models.Indicators
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Indicators</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Number)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Number)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Area_ID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Area_ID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Indicator)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Indicator)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FootNote_ID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FootNote_ID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_10_11)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_10_11)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_10_11_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_10_11_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_11_12)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_11_12)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_11_12_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_11_12_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_12_13)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_12_13)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_12_13_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_12_13_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q1_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q1_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q2)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q2)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q2_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q2_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q3)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q3)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q3_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q3_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q4)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q4)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_Q4_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_Q4_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_YTD)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_YTD)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.FY_13_14_YTD_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FY_13_14_YTD_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Target)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Target)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Target_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Target_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Comparator)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comparator)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Comparator_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comparator_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Performance_Threshold)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Performance_Threshold)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Performance_Threshold_Sup)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Performance_Threshold_Sup)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Colour_ID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Colour_ID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Custom_YTD)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Custom_YTD)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Custom_Q1)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Custom_Q1)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Custom_Q2)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Custom_Q2)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Custom_Q3)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Custom_Q3)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Custom_Q4)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Custom_Q4)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Definition_Calculation)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Definition_Calculation)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Target_Rationale)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Target_Rationale)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Comparator_Source)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comparator_Source)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Data_Source_MSH)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Data_Source_MSH)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Data_Source_Benchmark)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Data_Source_Benchmark)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.OPEO_Lead)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OPEO_Lead)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

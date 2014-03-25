@@ -1,0 +1,255 @@
+﻿@model IEnumerable<IndInv.Models.Indicators>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Indicator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FootNote_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_10_11)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_10_11_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_11_12)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_11_12_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_12_13)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_12_13_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q1_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q2_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q3_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_Q4_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_YTD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FY_13_14_YTD_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Target)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Target_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comparator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comparator_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Performance_Threshold)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Performance_Threshold_Sup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Colour_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Custom_YTD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Custom_Q1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Custom_Q2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Custom_Q3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Custom_Q4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Definition_Calculation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Target_Rationale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comparator_Source)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Data_Source_MSH)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Data_Source_Benchmark)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OPEO_Lead)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Indicator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FootNote_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_10_11)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_10_11_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_11_12)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_11_12_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_12_13)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_12_13_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q1_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q2_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q3_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_Q4_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_YTD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FY_13_14_YTD_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Target)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Target_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comparator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comparator_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Performance_Threshold)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Performance_Threshold_Sup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Colour_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Custom_YTD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Custom_Q1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Custom_Q2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Custom_Q3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Custom_Q4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Definition_Calculation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Target_Rationale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comparator_Source)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Data_Source_MSH)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Data_Source_Benchmark)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OPEO_Lead)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Indicator_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Indicator_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Indicator_ID })
+        </td>
+    </tr>
+}
+
+</table>

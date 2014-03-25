@@ -1,0 +1,101 @@
+﻿@using IndInv.Helpers
+@model IndInv.Models.ViewModels.PRViewModel
+@using IndInv.Models
+@using System.Globalization
+
+@{
+    ViewBag.Title = "viewPR";
+}
+<h2>viewPR</h2>
+<button id="clickExcel">Export to excel</button>
+
+@foreach (var CoE in Model.allCoEs)
+{
+    <h3>@Html.DisplayFor(modelItem => CoE.CoE)</h3>
+    <table id="tbl" border="1" runat="server" >
+    <tr class="prHeader1">
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_10_11) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_11_12) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_12_13) </td>
+    <td rowspan="1", colspan ="5", class="prHeader1">FY 13/14 Performance</td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Target) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Performance_Threshold) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Comparator) </td>
+    </tr>
+
+    <tr class="prHeader2">
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q1) </td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q2) </td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q3) </td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q4) </td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_YTD) </td>
+    </tr>
+
+    @foreach (var Area_Map in CoE.Area_CoE_Map)
+    {
+        <tr class="prArea">
+        <td colspan="100%">@Html.DisplayFor(modelItem => Area_Map.Area.Area)     @Html.DisplayFor(modelItem => Area_Map.Objective)</td>
+        </tr>
+        foreach (var Map in Model.allMaps.Where(e => e.Indicator.Area.Equals(Area_Map.Area)).Where(d => d.CoE.CoE.Contains(CoE.CoE)).OrderBy(f => f.Number))
+        {
+            <tr style="background-color:White">
+            <td class="prRowID" style="min-width:1%" >@Html.DisplayFor(modelItem => Map.Number)</td>
+            <td style="min-width:29%" class="prRowTitle">@Html.DisplayFor(modelItem => Map.Indicator.Indicator)
+            <sup>
+            @{int j = 0;}
+            @foreach (var Footnote in Map.Indicator.Indicator_Footnote_Map.Where(e => e.Indicator_ID == Map.Indicator_ID).OrderBy(e => e.Indicator_ID))
+            {
+                if (j != 0)
+                { @Html.Raw(",");
+                }
+                @Html.DisplayFor(modelItem => Footnote.Footnote_ID);
+                j++;
+            }
+            @{string[,] columns = new string[,]{
+                    {Map.Indicator.FY_10_11, Map.Indicator.FY_10_11_Sup,"prRow"},
+                    {Map.Indicator.FY_11_12, Map.Indicator.FY_11_12_Sup,"prRow"},
+                    {Map.Indicator.FY_12_13, Map.Indicator.FY_12_13_Sup,"prRow"},
+                    {Map.Indicator.FY_13_14_Q1, Map.Indicator.FY_13_14_Q1_Sup,Map.Indicator.Q1_Color,},
+                    {Map.Indicator.FY_13_14_Q2, Map.Indicator.FY_13_14_Q2_Sup,Map.Indicator.Q2_Color,},
+                    {Map.Indicator.FY_13_14_Q3, Map.Indicator.FY_13_14_Q3_Sup,Map.Indicator.Q3_Color,},
+                    {Map.Indicator.FY_13_14_Q4, Map.Indicator.FY_13_14_Q4_Sup,Map.Indicator.Q4_Color,},
+                    {Map.Indicator.FY_13_14_YTD, Map.Indicator.FY_13_14_YTD_Sup,Map.Indicator.YTD_Color,},
+                    {Map.Indicator.Target, Map.Indicator.Target_Sup,"prRow"},
+                    {Map.Indicator.Performance_Threshold, Map.Indicator.Performance_Threshold_Sup,"prRow"},
+                    {Map.Indicator.Comparator, Map.Indicator.Comparator_Sup,"prRow"},
+                };
+            }
+            </sup>
+            </td>
+            @for (int i = 0; i <= columns.GetUpperBound(0); i++)
+            {
+                int colSpan = 1;
+                if (i != columns.GetUpperBound(0) && columns[i + 1, 0] == "=")
+                {
+                    int k = 1;
+                    while (columns[i + k, 0] == "=")
+                    {
+                        colSpan++;
+                        k++;
+                    }
+                }
+                else { colSpan = 1; };
+                if (columns[i, 0] != "=")
+                {
+                    <td align="center", colspan="@colSpan", class=@Html.Raw(columns[i, 2])>@Html.Raw(columns[i, 0]) <sup>@Html.Raw(columns[i, 1])</sup></td>
+                }
+            }
+            </tr>
+        }
+    }
+    </table>
+    foreach (var test in Model.allFootnoteMaps.Where(e => CoE.Indicator_CoE_Map.Contains(e.Indicator.Indicator_CoE_Map.First())).Distinct())
+    {
+        @Html.DisplayFor(modelItem => test.Footnote.Footnote_ID)
+    }
+    <br />
+    <br />
+
+}
