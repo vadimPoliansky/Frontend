@@ -12,16 +12,10 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Number)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Area_ID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Indicator)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FootNote_ID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FY_10_11)
@@ -131,16 +125,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Number)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Area_ID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Indicator)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FootNote_ID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FY_10_11)
