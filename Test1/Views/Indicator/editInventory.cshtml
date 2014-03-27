@@ -3,6 +3,7 @@
 @using System.Globalization
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <script src="../../Scripts/jquery.handsontable.full.js"></script>
+<script type='text/javascript' src="http://wurfljs.com/wurfl.js"></script>
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.handsontable.full.css" />
 @model IList<IndInv.Models.ViewModels.InventoryViewModel>
 @using IndInv.Models
@@ -64,8 +65,11 @@
     $window.on('resize', calculateSize);
 
     var values = @Html.Raw(Json.Encode(Model));
+    
+    alert(WURFL.complete_device_name);
 
     $example1 .handsontable({
+        clickBeginsEditing : WURFL.is_mobile? true:false,
         data: values,
         startRows: 1,
         startCols: 1,
@@ -88,6 +92,8 @@
             }
         return maxed  ?  availableHeight*0.98: 300;
         },
+        fixedRowsTop: 0,
+        fixedColumnsLeft: 1,
         manualColumnResize: true,
         minSpareRows: 0,
         contextMenu: true,

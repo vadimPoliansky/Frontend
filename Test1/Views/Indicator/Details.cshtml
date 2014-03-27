@@ -1,267 +1,326 @@
 ﻿@model IndInv.Models.Indicators
+@using IndInv.Helpers;
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h1>@Html.DisplayFor(model => model.Indicator) </h1>
 
+<div id="chart1" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
+<pre class="code brush:js"></pre>
+
+<div id="chart2" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
+<pre class="code brush:js"></pre>
 <fieldset>
     <legend>Indicators</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Area_ID)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Area_ID)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Indicator)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Indicator)
     </div>
 
     <div class="display-label">
+        <h5><b>
+            @Html.DisplayNameFor(model => model.Area_ID)
+        </h5></b>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Area_ID)
+    </div>
+
+    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_10_11)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_10_11)
+        <sup>@Html.DisplayFor(model => model.FY_10_11_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_10_11_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_10_11_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_11_12)
+         </b></h5>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_11_12)
+        <sup>@Html.DisplayFor(model => model.FY_11_12_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_11_12_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_11_12_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_12_13)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_12_13)
+        <sup>@Html.DisplayFor(model => model.FY_12_13_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_12_13_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_12_13_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q1)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_13_14_Q1)
+        <sup>@Html.DisplayFor(model => model.FY_13_14_Q1_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_13_14_Q1_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_13_14_Q1_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q2)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_13_14_Q2)
+        <sup>@Html.DisplayFor(model => model.FY_13_14_Q2_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_13_14_Q2_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_13_14_Q2_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q3)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_13_14_Q3)
+        <sup>@Html.DisplayFor(model => model.FY_13_14_Q3_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_13_14_Q3_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_13_14_Q3_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q4)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_13_14_Q4)
+        <sup>@Html.DisplayFor(model => model.FY_13_14_Q4_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_13_14_Q4_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_13_14_Q4_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_YTD)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.FY_13_14_YTD)
+        <sup>@Html.DisplayFor(model => model.FY_13_14_YTD_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.FY_13_14_YTD_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FY_13_14_YTD_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Target)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Target)
+        <sup>@Html.DisplayFor(model => model.Target_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Target_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Target_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Comparator)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Comparator)
+        <sup>@Html.DisplayFor(model => model.Comparator_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Comparator_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Comparator_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Performance_Threshold)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Performance_Threshold)
+        <sup>@Html.DisplayFor(model => model.Performance_Threshold_Sup)</sup>
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Performance_Threshold_Sup)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Performance_Threshold_Sup)
-    </div>
-
-    <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Colour_ID)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Colour_ID)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Custom_YTD)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Custom_YTD)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q1)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Custom_Q1)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q2)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Custom_Q2)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q3)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Custom_Q3)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q4)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Custom_Q4)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Definition_Calculation)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Definition_Calculation)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Target_Rationale)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Target_Rationale)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Comparator_Source)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Comparator_Source)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Data_Source_MSH)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Data_Source_MSH)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.Data_Source_Benchmark)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Data_Source_Benchmark)
     </div>
 
     <div class="display-label">
+        <h5><b>
          @Html.DisplayNameFor(model => model.OPEO_Lead)
+         </h5></b>
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.OPEO_Lead)
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Indicator_ID }) |
+    @Html.ActionLink("Edit", "Edit", new { Indicator_ID = Model.Indicator_ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script src="../../Scripts/jquery.jqplot.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<link rel="stylesheet" media="screen" href="../../Scripts/jquery.jqplot.min.css" />
+<script>
+    $(document).ready(function ($) {
+        var s1 = [
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_13_14_Q1)).ToString()),
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_13_14_Q2)).ToString()),
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_13_14_Q3)).ToString()),
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_13_14_Q4)).ToString()),
+            ];
+        var s2 = [
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_10_11)).ToString()),
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_11_12)).ToString()),
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_12_13)).ToString()),
+                @Colour.getNum((@Html.DisplayFor(model => model.FY_13_14_YTD)).ToString()),
+            ];
+        // Can specify a custom tick Array.
+        // Ticks should match up one for each y value (category) in the series.
+        var ticks1 = ['Q1', 'Q2', 'Q3', 'Q4'];
+        var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
+
+        var plot1 = $.jqplot('chart1', [s1], {
+            // The "seriesDefaults" option is an options object that will
+            // be applied to all series in the chart.
+            seriesDefaults: {
+                renderer: $.jqplot.BarRenderer,
+                rendererOptions: { fillToZero: true }
+            },
+            axes: {
+                // Use a category axis on the x axis and use our custom ticks.
+                xaxis: {
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks: ticks1
+                },
+                // Pad the y axis just a little so bars can get close to, but
+                // not touch, the grid boundaries.  1.2 is the default padding.
+                yaxis: {
+                    pad: 1.05,
+                    tickOptions: { formatString: '%d' }
+                }
+            }
+        });
+        var plot2 = $.jqplot('chart2', [s2], {
+            // The "seriesDefaults" option is an options object that will
+            // be applied to all series in the chart.
+            seriesDefaults: {
+                renderer: $.jqplot.BarRenderer,
+                rendererOptions: { fillToZero: true }
+            },
+            axes: {
+                // Use a category axis on the x axis and use our custom ticks.
+                xaxis: {
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks: ticks2
+                },
+                // Pad the y axis just a little so bars can get close to, but
+                // not touch, the grid boundaries.  1.2 is the default padding.
+                yaxis: {
+                    pad: 1.05,
+                    tickOptions: { formatString: '%d' }
+                }
+            }
+        });
+    });
+</script>

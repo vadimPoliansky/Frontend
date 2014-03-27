@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  * http://handsontable.com/
  *
- * Date: Mon Feb 10 2014 14:15:11 GMT+0100 (CET)
+ * Date: Tue Feb 18 2014 11:11:06 GMT-0500 (Eastern Standard Time)
  */
 /*jslint white: true, browser: true, plusplus: true, indent: 4, maxerr: 50 */
 
@@ -2336,7 +2336,8 @@ DefaultSettings.prototype = {
   nativeScrollbars: false,
   type: 'text',
   copyable: true,
-  debug: false //shows debug overlays in Walkontable
+  debug: false, //shows debug overlays in Walkontable
+  clickBeginsEditing: false
 };
 Handsontable.DefaultSettings = DefaultSettings;
 
@@ -3071,6 +3072,13 @@ Handsontable.TableView.prototype.maximumVisibleElementHeight = function (top) {
         }
       }
       $document.on('keydown.handsontable.' + instance.guid, onKeyDown);
+	  
+	  function onCellClick() {
+		if (instance.getSettings().clickBeginsEditing) {
+			that.openEditor();
+		}
+	  }
+      instance.view.wt.update('onCellClick', onCellClick);
 
       function onDblClick() {
 //        that.instance.destroyEditor();
@@ -10880,6 +10888,9 @@ function WalkontableEvent(instance) {
           dblClickOrigin[1] = null;
         }, 500);
       }
+	  if (cell.TD && cell.TD === dblClickOrigin[0] && cell.TD.nodeName=='TD') {
+		that.instance.getSetting('onCellClick', event, cell.coords, cell.TD);
+	  }
     }
   };
 
@@ -12114,6 +12125,7 @@ function WalkontableSettings(instance, settings) {
     onCellMouseDown: null,
     onCellMouseOver: null,
 //    onCellMouseOut: null,
+	onCellClick: null,
     onCellDblClick: null,
     onCellCornerMouseDown: null,
     onCellCornerDblClick: null,

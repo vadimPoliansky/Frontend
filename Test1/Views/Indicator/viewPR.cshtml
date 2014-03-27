@@ -9,10 +9,129 @@
 <h2>viewPR</h2>
 <button id="clickExcel">Export to excel</button>
 
+<style>
+.prHeader1
+{
+    font-size:11px;
+    background-color:Navy;
+    color:White;
+    text-align:center;
+    padding: 0px;
+}
+.prHeader2
+{
+    font-size:11px;
+    background-color:White;
+    color:Black;
+    text-align:center;
+    padding: 0px;
+}
+.prArea
+{
+    font-size:11px;
+    background-color:Silver;
+    text-align:justify;
+    color:Black;
+    padding: 0px;
+}
+.prRowID
+{
+    font-size:11px;
+    background-color:White;
+    text-align:center;
+    color:Black;
+    min-width:6.5%;
+    padding: 0px 2px 0px 2px;
+}
+.prRowTitle
+{
+    font-size:11px;
+    background-color:White;
+    text-align:justify;
+    color:Black;
+    min-width:6.5%;
+    padding: 0px 2px 0px 2px;
+}
+.prRow
+{
+    font-size:11px;
+    background-color:White;
+    text-align:center;
+    color:Black;
+    min-width:6.5%;
+    max-width:15%;
+    padding: 0px;
+}
+html> .prRow
+{
+    font-size:11px;
+    background-color:White;
+    text-align:center;
+    color:Black;
+    width:6.5%;
+    width:15%;
+    padding: 0px;
+}
+.cssRed
+{
+    font-size:11px;
+    background-color:Red;
+    text-align:center;
+    color:White;
+    min-width:6.5%;
+    padding: 0px;
+}
+.cssGreen
+{
+    font-size:11px;
+    background-color:Green;
+    text-align:center;
+    color:White;
+    min-width:6.5%;
+    padding: 0px;
+}
+.cssYellow
+{
+    font-size:11px;
+    background-color:Yellow;
+    text-align:center;
+    color:Black;
+    min-width:6.5%;
+    padding: 0px;
+}
+
+.cssWhite
+{
+    font-size:11px;
+    background-color:White;
+    text-align:center;
+    color:Black;
+    min-width:6.5%;
+    padding: 0px;
+}
+
+.inventoryEdit
+{
+    padding: 0 0 0 0;
+    margin: 0 0 0 0; 
+}
+.textBox1
+{
+    font-size:11px;
+    width:inherit;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    border:0;
+    background-color:transparent;
+    color:inherit;
+}
+</style>
+
+
 @foreach (var CoE in Model.allCoEs)
 {
     <h3>@Html.DisplayFor(modelItem => CoE.CoE)</h3>
-    <table id="tbl" border="1" runat="server" >
+    <table id="tbl" border="1" style="border-collapse:collapse;" runat="server" >
     <tr class="prHeader1">
     <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
     <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
@@ -32,16 +151,18 @@
     <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q4) </td>
     <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_YTD) </td>
     </tr>
-
+    @{var numCount = 1;}
     @foreach (var Area_Map in CoE.Area_CoE_Map)
     {
-        <tr class="prArea">
-        <td colspan="100%">@Html.DisplayFor(modelItem => Area_Map.Area.Area)     @Html.DisplayFor(modelItem => Area_Map.Objective)</td>
+        <tr >
+        <td class="prArea" colspan="100%">@Html.DisplayFor(modelItem => Area_Map.Area.Area)     @Html.DisplayFor(modelItem => Area_Map.Objective)</td>
         </tr>
+
         foreach (var Map in Model.allMaps.Where(e => e.Indicator.Area.Equals(Area_Map.Area)).Where(d => d.CoE.CoE.Contains(CoE.CoE)).OrderBy(f => f.Number))
         {
             <tr style="background-color:White">
-            <td class="prRowID" style="min-width:1%" >@Html.DisplayFor(modelItem => Map.Number)</td>
+            <td class="prRowID" style="min-width:1%;" >@numCount</td>
+            @{numCount++;}
             <td style="min-width:29%" class="prRowTitle">@Html.DisplayFor(modelItem => Map.Indicator.Indicator)
             <sup>
             @{int j = 0;}
@@ -51,7 +172,7 @@
                 { @Html.Raw(",");
                 }
                 @Html.DisplayFor(modelItem => Footnote.Footnote_ID);
-                j++;
+                                                                   j++;
             }
             @{string[,] columns = new string[,]{
                     {Map.Indicator.FY_10_11, Map.Indicator.FY_10_11_Sup,"prRow"},
@@ -99,3 +220,5 @@
     <br />
 
 }
+
+

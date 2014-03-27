@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  * http://handsontable.com/
  *
- * Date: Mon Feb 10 2014 14:15:11 GMT+0100 (CET)
+ * Date: Tue Feb 18 2014 11:11:06 GMT-0500 (Eastern Standard Time)
  */
 
 .handsontable {
@@ -70,7 +70,7 @@
   line-height: 21px;
   padding: 0 4px 0 4px;
   /* top, bottom padding different than 0 is handled poorly by FF with HTML5 doctype */
-  background-color: transparent;
+  background-color: #FFF;
   vertical-align: top;
   overflow: hidden;
   outline-width: 0;
@@ -403,7 +403,7 @@ ul.context-menu-list li {
 }
 
 .htContextMenu table tbody tr td {
-  background: transparent;
+  background: white;
   border-width: 0;
   padding: 4px 6px 0px 6px;
   cursor: pointer;

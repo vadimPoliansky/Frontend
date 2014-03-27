@@ -25,19 +25,19 @@ namespace IndInv.Models
         [Display(Name = "FY 12/13")]
         public string FY_12_13 { get; set; }
         public string FY_12_13_Sup { get; set; }
-        [Display(Name = "Q1")]
+        [Display(Name = "FY 13/14 Q1")]
         public string FY_13_14_Q1 { get; set; }
         public string FY_13_14_Q1_Sup { get; set; }
-        [Display(Name = "Q2")]
+        [Display(Name = "FY 13/14 Q2")]
         public string FY_13_14_Q2 { get; set; }
         public string FY_13_14_Q2_Sup { get; set; }
-        [Display(Name = "Q3")]
+        [Display(Name = "FY 13/14 Q3")]
         public string FY_13_14_Q3 { get; set; }
         public string FY_13_14_Q3_Sup { get; set; }
-        [Display(Name = "Q4")]
+        [Display(Name = "FY 13/14 Q4")]
         public string FY_13_14_Q4 { get; set; }
         public string FY_13_14_Q4_Sup { get; set; }
-        [Display(Name = "YTD")]
+        [Display(Name = "FY 13/14 YTD")]
         public string FY_13_14_YTD { get; set; }
         public string FY_13_14_YTD_Sup { get; set; }
         [Display(Name = "Target")]

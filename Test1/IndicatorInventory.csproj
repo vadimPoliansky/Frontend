@@ -263,15 +263,21 @@
     <Content Include="Scripts\foundation\foundation.tab.js" />
     <Content Include="Scripts\foundation\foundation.tooltip.js" />
     <Content Include="Scripts\foundation\foundation.topbar.js" />
+    <Content Include="Scripts\jqplot.json2.min.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.min.js" />
     <Content Include="Scripts\jquery.base64.js" />
     <Content Include="Scripts\jquery.btechco.excelexport.js" />
+    <Content Include="Scripts\jquery.floatThead.min.js" />
     <Content Include="Scripts\jquery.handsontable.css" />
     <Content Include="Scripts\jquery.handsontable.full.css" />
     <Content Include="Scripts\jquery.handsontable.full.js" />
     <Content Include="Scripts\jquery.handsontable.js" />
+    <Content Include="Scripts\jquery.jqplot.min.css" />
+    <Content Include="Scripts\jquery.jqplot.min.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.sticky.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -279,6 +285,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jq_plugins\jqplot.barRenderer.min.js" />
+    <Content Include="Scripts\jq_plugins\jqplot.categoryAxisRenderer.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
@@ -432,7 +440,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3490</DevelopmentServerPort>
+          <DevelopmentServerPort>3464</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

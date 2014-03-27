@@ -34,8 +34,8 @@ namespace IndInv.Controllers
                 allFootnoteMaps = db.Indicator_Footnote_Maps.ToList()
             };
 
-            /*Response.AddHeader("Content-Disposition", "filename=thefilename.xls");
-            Response.ContentType = "application/vnd.ms-excel";*/
+            //Response.AddHeader("Content-Disposition", "filename=thefilename.xls");
+            //Response.ContentType = "application/vnd.ms-excel";
 
             return View(viewModel);
         }
@@ -290,9 +290,9 @@ namespace IndInv.Controllers
         //
         // GET: /Indicator/Details/5
 
-        public ActionResult Details(short id = 0)
+        public ActionResult Details(string Indicator_ID)
         {
-            Indicators indicators = db.Indicators.Find(id);
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
             if (indicators == null)
             {
                 return HttpNotFound();
@@ -327,9 +327,9 @@ namespace IndInv.Controllers
         //
         // GET: /Indicator/Edit/5
 
-        public ActionResult Edit(short id = 0)
+        public ActionResult Edit(string Indicator_ID)
         {
-            Indicators indicators = db.Indicators.Find(id);
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
             if (indicators == null)
             {
                 return HttpNotFound();
@@ -340,7 +340,7 @@ namespace IndInv.Controllers
         //
         // POST: /Indicator/Edit/5
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         public ActionResult Edit(Indicators indicators)
         {
             if (ModelState.IsValid)
@@ -355,9 +355,9 @@ namespace IndInv.Controllers
         //
         // GET: /Indicator/Delete/5
 
-        public ActionResult Delete(short id = 0)
+        public ActionResult Delete(string Indicator_ID)
         {
-            Indicators indicators = db.Indicators.Find(id);
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
             if (indicators == null)
             {
                 return HttpNotFound();
@@ -369,9 +369,9 @@ namespace IndInv.Controllers
         // POST: /Indicator/Delete/5
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(short id)
+        public ActionResult DeleteConfirmed(string Indicator_ID)
         {
-            Indicators indicators = db.Indicators.Find(id);
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
             db.Indicators.Remove(indicators);
             db.SaveChanges();
             return RedirectToAction("Index");
