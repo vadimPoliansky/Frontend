@@ -151,10 +151,10 @@ namespace IndInv.Models
         public DbSet<Area_CoE_Maps> Area_CoE_Maps { get; set; }
         public DbSet<Indicator_Footnote_Maps> Indicator_Footnote_Maps { get; set; }
 
-        public InventoryDBContext()
-            : base("Indicator_Inventory")
-        {
-        }
+        //public InventoryDBContext()
+        //    : base("Indicator_Inventory")
+        //{
+        //}
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
