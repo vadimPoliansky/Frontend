@@ -1154,7 +1154,7 @@ meta.foundation-mq-topbar {
     padding-top: .45rem;
     padding-bottom: .35rem;
     margin-bottom: 0;
-    font-size: .75rem; }
+    font-size: 0.75rem; }
   .top-bar .title-area {
     position: relative;
     margin: 0; }
@@ -6369,4 +6369,3 @@ th.hide-for-touch {
 
 .touch th.show-for-touch {
   display: table-cell !important; }
-
