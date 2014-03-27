@@ -66,8 +66,6 @@
 
     var values = @Html.Raw(Json.Encode(Model));
     
-    alert(WURFL.complete_device_name);
-
     $example1 .handsontable({
         clickBeginsEditing : WURFL.is_mobile? true:false,
         data: values,

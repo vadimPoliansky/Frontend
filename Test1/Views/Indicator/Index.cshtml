@@ -14,9 +14,10 @@
         <th style="padding: 0px">
             @Html.DisplayNameFor(model => model.Indicator)
         </th>
+<!--
         <th style="padding: 0px">
             @Html.DisplayNameFor(model => model.Area_ID)
-        </th>
+        </th> 
         <th style="padding: 0px">
             @Html.DisplayNameFor(model => model.FY_10_11)
         </th>
@@ -119,6 +120,7 @@
         <th style="padding: 0px">
             @Html.DisplayNameFor(model => model.OPEO_Lead)
         </th>
+-->
         <th></th>
     </tr>
     </thead>
@@ -129,7 +131,7 @@
         <td>
             @Html.DisplayTextFor(modelItem => item.Indicator)
         </td>
-        <td>
+<!--        <td>
             @Html.DisplayTextFor(modelItem => item.Area_ID)
         </td>
         <td>
@@ -234,6 +236,7 @@
         <td>
             @Html.DisplayTextFor(modelItem => item.OPEO_Lead)
         </td>
+    -->
         <td>
             @Html.ActionLink("Edit", "Edit", new { Indicator_ID = item.Indicator_ID }) |
             @Html.ActionLink("Details", "Details", new { Indicator_ID = item.Indicator_ID }) |

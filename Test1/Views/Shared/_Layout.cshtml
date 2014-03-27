@@ -1,8 +1,38 @@
-﻿<link rel="stylesheet" href="../../Content/foundation.css" />
+﻿<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../../Content/foundation.css" />
 <script src="../../Scripts/vendor/modernizr.js"></script>
+</head>
     <!-- Navigation -->
- 
-<nav class="top-bar" data-topbar> <ul class="title-area"> <li class="name"> <h1><a href="#">My Site</a></h1> </li> <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li> </ul> <section class="top-bar-section"> <!-- Right Nav Section --> <ul class="right"> <li class="active"><a href="#">Right Button Active</a></li> <li class="has-dropdown"> <a href="#">Right Button Dropdown</a> <ul class="dropdown"> <li><a href="#">First link in dropdown</a></li> </ul> </li> </ul> <!-- Left Nav Section --> <ul class="left"> <li><a href="#">Left Nav Button</a></li> </ul> </section> </nav>
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar >
+    <ul class="title-area">
+      <!-- Title Area -->
+      <li class="name">
+
+      </li>
+      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="">Menu</a></li>
+    </ul>
+
+    <section class="top-bar-section">
+      <ul class="title-area">
+        <li class="name">
+            <h1><a href="#">Inventory</a></h1>
+        </li>
+      </ul>
+      <ul class="right">
+        <li class="has-dropdown"><a href="#">Menu</a>
+
+      <ul class="dropdown">
+        <li><label>Indicator Inventory</label></li>
+        <li><a href="/indicator">Entire List</a></li>
+        <li><label>Performance Reports</label></li>
+        <li><a href="/indicator/viewPR">All PRs</a></li>
+        <li><a href="/indicator/editInventory">Edit Inventory</a></li>
+      </ul>
+    </section>
+  </nav>
  
   <br />
   <!-- End Top Bar -->
@@ -54,5 +84,5 @@
     </script>
   </body>
 </html>
-
+  <a class="exit-off-canvas"></a>
 <!-- End Footer -->
