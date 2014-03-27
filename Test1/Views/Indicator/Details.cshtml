@@ -5,252 +5,260 @@
     ViewBag.Title = "Details";
 }
 
-<h1>@Html.DisplayFor(model => model.Indicator) </h1>
-
+    <div class="row">
+        <h1>@Html.DisplayFor(model => model.Indicator) </h1>
+    </div>
+<div class="row">
 <div id="chart1" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
 <pre class="code brush:js"></pre>
+</div> 
 
+<div class="row">
 <div id="chart2" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
 <pre class="code brush:js"></pre>
+</div> 
+
+<div class="row">
 <fieldset>
     <legend>Indicators</legend>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Indicator)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Indicator)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
             @Html.DisplayNameFor(model => model.Area_ID)
         </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Area_ID)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_10_11)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_10_11)
         <sup>@Html.DisplayFor(model => model.FY_10_11_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_11_12)
          </b></h5>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_11_12)
         <sup>@Html.DisplayFor(model => model.FY_11_12_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_12_13)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_12_13)
         <sup>@Html.DisplayFor(model => model.FY_12_13_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q1)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_13_14_Q1)
         <sup>@Html.DisplayFor(model => model.FY_13_14_Q1_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q2)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_13_14_Q2)
         <sup>@Html.DisplayFor(model => model.FY_13_14_Q2_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q3)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_13_14_Q3)
         <sup>@Html.DisplayFor(model => model.FY_13_14_Q3_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_Q4)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_13_14_Q4)
         <sup>@Html.DisplayFor(model => model.FY_13_14_Q4_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.FY_13_14_YTD)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.FY_13_14_YTD)
         <sup>@Html.DisplayFor(model => model.FY_13_14_YTD_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Target)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Target)
         <sup>@Html.DisplayFor(model => model.Target_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Comparator)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Comparator)
         <sup>@Html.DisplayFor(model => model.Comparator_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Performance_Threshold)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Performance_Threshold)
         <sup>@Html.DisplayFor(model => model.Performance_Threshold_Sup)</sup>
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Colour_ID)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Colour_ID)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Custom_YTD)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Custom_YTD)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q1)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Custom_Q1)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q2)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Custom_Q2)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q3)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Custom_Q3)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Custom_Q4)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Custom_Q4)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Definition_Calculation)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Definition_Calculation)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Target_Rationale)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Target_Rationale)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Comparator_Source)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Comparator_Source)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Data_Source_MSH)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Data_Source_MSH)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.Data_Source_Benchmark)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.Data_Source_Benchmark)
     </div>
 
-    <div class="display-label">
+    <div class="row">
         <h5><b>
          @Html.DisplayNameFor(model => model.OPEO_Lead)
          </h5></b>
     </div>
-    <div class="display-field">
+    <div class="row">
         @Html.DisplayFor(model => model.OPEO_Lead)
     </div>
 </fieldset>
+</div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { Indicator_ID = Model.Indicator_ID }) |
     @Html.ActionLink("Back to List", "Index")
