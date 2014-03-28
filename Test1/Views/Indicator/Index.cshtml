@@ -14,6 +14,9 @@
         <th style="padding: 0px">
             @Html.DisplayNameFor(model => model.Indicator)
         </th>
+        <th style="padding: 0px">
+            @Html.DisplayNameFor(model => model.First().Indicator_CoE_Map.First().CoE.CoE)
+        </th>
 <!--
         <th style="padding: 0px">
             @Html.DisplayNameFor(model => model.Area_ID)
@@ -130,6 +133,12 @@
     <tr>
         <td>
             @Html.DisplayTextFor(modelItem => item.Indicator)
+        </td>
+        <td>
+            @foreach (var map in item.Indicator_CoE_Map.Where(x => x.Indicator_ID == item.Indicator_ID))
+            {
+                @Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE)
+            }
         </td>
 <!--        <td>
             @Html.DisplayTextFor(modelItem => item.Area_ID)

@@ -1,22 +1,77 @@
 ﻿@model IndInv.Models.Indicators
 @using IndInv.Helpers;
-
 @{
     ViewBag.Title = "Details";
 }
 
+
     <div class="row">
         <h1>@Html.DisplayTextFor(model => model.Indicator) </h1>
     </div>
+    <div class="row">
+    @foreach(var map in Model.Indicator_CoE_Map.Where(x => x.Indicator_ID == Model.Indicator_ID)){
+        <div class="round alert label"><h6 class="subheader" style="color:White">
+       @Html.DisplayTextFor(model => map.CoE.CoE)
+       </div>
+    }
+    </h1>
+    </div>
 <div class="row">
-<div id="chart1" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
+<div id="chart1" style="margin-top:20px; margin-left:20px; width:300px; height:400px;"></div>
 <pre class="code brush:js"></pre>
 </div> 
+<div class="row">
+<br />
+<div class="small-offset-1">
+<table>
+    <tr>
+        <td>Target</td>
+        <td>Comparator</td>
+    </tr>
+    <tr>
+        <td style="color:red">@Html.DisplayTextFor(model => model.Target)</td>
+        <td style="color:green">@Html.DisplayTextFor(model => model.Comparator)</td>
+    </tr>
+</table>
+</div>
+</div>
 
 <div class="row">
-<div id="chart2" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
+<div id="chart2" style="margin-top:20px; margin-left:20px; width:300px; height:400px;"></div>
 <pre class="code brush:js"></pre>
 </div> 
+<div class="row">
+<br />
+<div class="small-offset-1">
+<table>
+    <tr>
+        <td></td>
+        <td>Target</td>
+        <td>Comparator</td>
+    </tr>
+    <tr>
+        <td>2010</td>
+        <td style="color:red; text-align:center"></td>
+        <td style="color:green; text-align:center"></td>
+    </tr>
+    <tr>
+        <td>2011</td>
+        <td style="color:red; text-align:center"></td>
+        <td style="color:green; text-align:center"></td>
+    </tr>
+    <tr>
+        <td>2012</td>
+        <td style="color:red; text-align:center"></td>
+        <td style="color:green; text-align:center"></td>
+    </tr>
+    <tr>
+        <td>2013</td>
+        <td style="color:red; text-align:center">@Html.DisplayTextFor(model => model.Target)</td>
+        <td style="color:green; text-align:center">@Html.DisplayTextFor(model => model.Comparator)</td>
+    </tr>
+</table>
+</div>
+</div>
 
 <div class="row">
 <fieldset>
@@ -168,74 +223,190 @@
     <br />
 </fieldset>
 </div>
+<div class="row">
 <p>
     @Html.ActionLink("Edit", "Edit", new { Indicator_ID = Model.Indicator_ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+</div>
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <script src="../../Scripts/jquery.jqplot.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.pointLabels.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.canvasOverlay.min.js"></script>
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.jqplot.min.css" />
+
+<style type="text/css">
+#chart1 .jqplot-point-label {
+    font-size:14;
+    font-weight:bolder;
+}
+#chart2 .jqplot-point-label {
+    font-size:14;
+    font-weight:bolder;
+}
+#chart2 .jqplot-table-legend-label
+{
+
+}
+</style>
+
 <script>
     $(document).ready(function ($) {
+        var chartWidth = 300 - 20 - 20;
+        var valuesArray = [
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_10_11)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_10_11)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_11_12)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_11_12)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_12_13)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_12_13)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)
+        ];
+        function remove(arrOriginal, elementToRemove) {
+            return arrOriginal.filter(function (el) { return el !== elementToRemove });
+        }
+
+        var maxY = Math.max.apply(Math, valuesArray);
+        var minY = Math.min.apply(Math, remove(valuesArray, 0));
+
+        var precision = maxY.toString().indexOf('.') == -1 ? 0 : maxY.toString().split('.')[1].length;
+        //var decimalFormat = '
+
         var s1 = [
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString()),
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString()),
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString()),
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString()),
+                valuesArray[0],
+                valuesArray[1],
+                valuesArray[2],
+                valuesArray[3],
             ];
         var s2 = [
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_10_11)).ToString()),
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_11_12)).ToString()),
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_12_13)).ToString()),
-                @Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString()),
+                valuesArray[4],
+                valuesArray[5],
+                valuesArray[6],
+                valuesArray[7],
             ];
+
+        var target_FY = valuesArray[8]
+        var target_4 = valuesArray[8]
+
+        var comparator_FY = valuesArray[9]
+        var comparator_4 = valuesArray[9]
+
         // Can specify a custom tick Array.
         // Ticks should match up one for each y value (category) in the series.
         var ticks1 = ['Q1', 'Q2', 'Q3', 'Q4'];
         var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
 
         var plot1 = $.jqplot('chart1', [s1], {
-            // The "seriesDefaults" option is an options object that will
-            // be applied to all series in the chart.
+            series: [
+                { color: '#233863' },
+            ],
             seriesDefaults: {
                 renderer: $.jqplot.BarRenderer,
-                rendererOptions: { fillToZero: true }
+                pointLabels: { show: true }
+            },
+            grid: {
+                backgroundColor: '#fff'
+            },
+            canvasOverlay: {
+                show: true,
+                objects: [
+                    { horizontalLine: {
+                        name: 'target',
+                        y: target_FY,
+                        lineWidth: 3,
+                        xOffset: 0,
+                        color: 'red',
+                        shadow: false
+                    }
+                    },
+                    { horizontalLine: {
+                        name: 'comparator',
+                        y: comparator_FY,
+                        lineWidth: 3,
+                        xOffset: 0,
+                        color: 'green',
+                        shadow: false
+                    }
+                    },
+                ],
             },
             axes: {
-                // Use a category axis on the x axis and use our custom ticks.
                 xaxis: {
                     renderer: $.jqplot.CategoryAxisRenderer,
                     ticks: ticks1
                 },
-                // Pad the y axis just a little so bars can get close to, but
-                // not touch, the grid boundaries.  1.2 is the default padding.
                 yaxis: {
-                    pad: 1.05,
-                 //   tickOptions: { formatString: '%d' }
+                    min: minY * 0.9,
+                    max: maxY * 1.05,
+                    tickOptions: { formatString: '%.' + precision + 'f' }
                 }
             }
         });
+
         var plot2 = $.jqplot('chart2', [s2], {
-            // The "seriesDefaults" option is an options object that will
-            // be applied to all series in the chart.
             seriesDefaults: {
-                renderer: $.jqplot.BarRenderer,
-                rendererOptions: { fillToZero: true }
+                pointLabels: { show: true },
+                renderer: $.jqplot.BarRenderer, 
+                rendererOptions: {
+                    barPadding:-45,
+                },
+            },
+            series: [
+                { color: '#233863' },
+            ],
+            grid: {
+                backgroundColor: '#fff'
+            },
+            canvasOverlay: {
+                show: true,
+                objects: [
+                    { horizontalLine: {
+                        name: 'target_4',
+                        y: target_4,
+                        lineWidth: 3,
+                        xminOffset: chartWidth/4 *3 + 'px',
+                        xmaxOffset: '0px',
+                        color: 'red',
+                        shadow: false
+                    }
+                    },
+                    { horizontalLine: {
+                        name: 'comparator_4',
+                        y: comparator_4,
+                        lineWidth: 3,
+                        xminOffset: chartWidth/4 *3 + 'px',
+                        xmaxOffset: '0px',
+                        color: 'green',
+                        shadow: false
+                    }
+                    },
+                ],
             },
             axes: {
-                // Use a category axis on the x axis and use our custom ticks.
                 xaxis: {
                     renderer: $.jqplot.CategoryAxisRenderer,
                     ticks: ticks2
                 },
-                // Pad the y axis just a little so bars can get close to, but
-                // not touch, the grid boundaries.  1.2 is the default padding.
                 yaxis: {
-                    pad: 1.05,
-                    //tickOptions: { formatString: '%d' }
+                    min: minY * 0.9,
+                    max: maxY * 1.05,
+                    tickOptions: { formatString: '%.' + precision + 'f' }
                 }
             }
         });
