@@ -16,6 +16,8 @@ namespace IndInv.Models
         public Int16 Area_ID { get; set; }
         [Display(Name = "Indicator")]
         public string Indicator { get; set; }
+        [Display(Name = "Indicator Type")]
+        public string Indicator_Type { get; set; }
         [Display(Name = "FY 10/11")]
         public string FY_10_11 { get; set; }
         public string FY_10_11_Sup { get; set; }

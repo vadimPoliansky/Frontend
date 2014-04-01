@@ -18,9 +18,44 @@ namespace IndInv.Controllers
         //
         // GET: /Indicator/
 
+        [HttpGet]
         public ActionResult Index()
         {
-            return View(db.Indicators.ToList());
+            var viewModel = new indexViewModel
+            {
+                allIndicators = db.Indicators.ToList(),
+                allCoEs = db.CoEs.ToList(),
+                allAreas = db.Areas.ToList(),
+                allFootnotes=db.Indicator_Footnote_Maps.ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Index(IList<indexAdvancedViewModel> advancedSearch)
+        {
+//            if (ModelState.IsValid){
+                var viewModel = new indexViewModel
+                {
+                    allIndicators = db.Indicators.Where(x => x.Indicator_ID == "1001").ToList(),
+                    allCoEs = db.CoEs.ToList(),
+                    allAreas = db.Areas.ToList(),
+                    allFootnotes = db.Indicator_Footnote_Maps.ToList()
+                };
+                TempData["model"] = viewModel;
+                return RedirectToAction("indexTemp");
+//            }
+
+
+//            return View("index", viewModel);
+            //return View(viewModel);
+        }
+
+        public ActionResult indexTemp()
+        {
+            indexViewModel viewModel = (indexViewModel)TempData["model"];
+            return View(viewModel);
         }
 
         public ActionResult viewPR()

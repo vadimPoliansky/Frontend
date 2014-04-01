@@ -12,9 +12,9 @@
     @foreach(var map in Model.Indicator_CoE_Map.Where(x => x.Indicator_ID == Model.Indicator_ID)){
         <div class="round alert label"><h6 class="subheader" style="color:White">
        @Html.DisplayTextFor(model => map.CoE.CoE)
-       </div>
+        </h6></div>
     }
-    </h1>
+
     </div>
 <div class="row">
 <div id="chart1" style="margin-top:20px; margin-left:20px; width:300px; height:400px;"></div>
@@ -368,7 +368,7 @@
                 },
             },
             series: [
-                { color: '#233863' },
+                { fillToZero:false, color: '#233863' },
             ],
             grid: {
                 backgroundColor: '#fff'

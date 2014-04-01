@@ -178,6 +178,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="ViewModels\indexAdvancedVM.cs" />
+    <Compile Include="ViewModels\indexVM.cs" />
     <Compile Include="ViewModels\IndicatorListVM.cs" />
     <Compile Include="ViewModels\Indicator_CoE_MapsVM.cs" />
     <Compile Include="ViewModels\Indicator_Footnote_MapsVM.cs" />
@@ -189,6 +191,10 @@
     <Content Include="Content\foundation.css" />
     <Content Include="Content\foundation.min.css" />
     <Content Include="Content\normalize.css" />
+    <Content Include="Content\tablesorter\asc.gif" />
+    <Content Include="Content\tablesorter\bg.gif" />
+    <Content Include="Content\tablesorter\desc.gif" />
+    <Content Include="Content\tablesorter\style.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -278,6 +284,8 @@
     <Content Include="Scripts\jquery.jqplot.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.sticky.min.js" />
+    <Content Include="Scripts\jquery.tablesorter.min.js" />
+    <Content Include="Scripts\jquery.uitablefilter.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -306,7 +314,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
+    <Content Include="Controllers\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />

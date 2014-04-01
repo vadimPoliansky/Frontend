@@ -1,265 +1,150 @@
-﻿@model IEnumerable<IndInv.Models.Indicators>
+﻿@model IndInv.Models.ViewModels.indexViewModel
 @{
     ViewBag.Title = "Index";
 }
+
+<dl class="tabs" data-tab>
+    <dd class="active"><a href="#panel2-1">Simple Search</a></dd>
+    <dd><a href="#panel2-2">Advanced Search</a></dd>
+</dl>
+
+<div class="tabs-content">
+  <div class="content active" id="panel2-1">
+    <div class="row">
+        <input type="text" placeholder="Search Indicators" id="simpleSearchString">        
+    </div>
+  </div>
+  <div class="content" id="panel2-2">
+      <div class="row">
+        <input type="text" placeholder="Search Indicators" id="advancedSearchString">
+    </div>
+    <form>
+        <div class="row">
+            <div class="large-12-columns">
+                <fieldset>
+                    <legend>Areas</legend>
+                    @foreach(var area in  Model.allAreas.OrderBy(x => x.Area)){
+                        <div class="small-12 large-4 columns">
+                         <li style="list-style:none"><input id="Area_@Html.DisplayTextFor(model => area.Area_ID)" type="checkbox"><label for="Area_@Html.DisplayTextFor(model => area.Area_ID)">@Html.DisplayTextFor(model => area.Area)</label></li>
+                        </div>
+                    }
+                </fieldset>
+                <fieldset>
+                    <legend>CoEs</legend>
+                    @foreach (var coe in Model.allCoEs.OrderBy(x => x.CoE))
+                    {
+                        <div class="small-12 large-4 columns">
+                         <li style="list-style:none"><input id="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)" type="checkbox"><label for="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)">@Html.DisplayTextFor(model => coe.CoE)</label></li>
+                        </div>
+                    }
+                </fieldset>
+                <a id="advancedSearch" class="button expand">Search</a>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+
 
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
+
+<table id="indicators">
     <thead>
     <tr>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Indicator)
+        <th >
+            @Html.DisplayNameFor(model => model.allIndicators.First().Indicator_CoE_Map.First().CoE.CoE)
         </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.First().Indicator_CoE_Map.First().CoE.CoE)
-        </th>
-<!--
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Area_ID)
-        </th> 
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_10_11)
+        <th class="hide-for-small-only">
+            @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Area)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FY_10_11_Sup)
-        </th style="padding: 0px">
+            @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Indicator_Type)
+        </th>
         <th>
-            @Html.DisplayNameFor(model => model.FY_11_12)
-        </th style="padding: 0px">
-        <th>
-            @Html.DisplayNameFor(model => model.FY_11_12_Sup)
-        </th style="padding: 0px">
-        <th>
-            @Html.DisplayNameFor(model => model.FY_12_13)
-        </th style="padding: 0px">
-        <th>
-            @Html.DisplayNameFor(model => model.FY_12_13_Sup)
-        </th style="padding: 0px">
-        <th>
-            @Html.DisplayNameFor(model => model.FY_13_14_Q1)
-        </th style="padding: 0px">
-        <th>
-            @Html.DisplayNameFor(model => model.FY_13_14_Q1_Sup)
-        </th style="padding: 0px">
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_Q2)
+            @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Indicator)
         </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_Q2_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_Q3)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_Q3_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_Q4)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_Q4_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_YTD)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.FY_13_14_YTD_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Target)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Target_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Comparator)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Comparator_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Performance_Threshold)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Performance_Threshold_Sup)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Colour_ID)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Custom_YTD)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Custom_Q1)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Custom_Q2)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Custom_Q3)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Custom_Q4)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Definition_Calculation)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Target_Rationale)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Comparator_Source)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Data_Source_MSH)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.Data_Source_Benchmark)
-        </th>
-        <th style="padding: 0px">
-            @Html.DisplayNameFor(model => model.OPEO_Lead)
-        </th>
--->
         <th></th>
     </tr>
     </thead>
 
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Indicator)
-        </td>
-        <td>
-            @foreach (var map in item.Indicator_CoE_Map.Where(x => x.Indicator_ID == item.Indicator_ID))
-            {
-                @Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE)
-            }
-        </td>
-<!--        <td>
-            @Html.DisplayTextFor(modelItem => item.Area_ID)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_10_11)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_10_11_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_11_12)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_11_12_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_12_13)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_12_13_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q1)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q1_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q2)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q2_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q3)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q3_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q4)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_Q4_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_YTD)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.FY_13_14_YTD_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Target)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Target_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Comparator)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Comparator_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Performance_Threshold)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Performance_Threshold_Sup)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Colour_ID)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Custom_YTD)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Custom_Q1)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Custom_Q2)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Custom_Q3)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Custom_Q4)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Definition_Calculation)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Target_Rationale)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Comparator_Source)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Data_Source_MSH)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.Data_Source_Benchmark)
-        </td>
-        <td>
-            @Html.DisplayTextFor(modelItem => item.OPEO_Lead)
-        </td>
-    -->
-        <td>
-            <div class="row">
-            <div class="large-3 small-12 columns" style="padding:2px; text-align:center;">@Html.ActionLink("Edit", "Edit", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>    
-            <div class="large-3 small-12 columns" style="padding:2px; text-align:center;">@Html.ActionLink("Details", "Details", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
-            <div class="large-5 small-12 columns" style="padding:2px; text-align:center;">@Html.ActionLink("Delete", "Delete", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
-            </div>
-        </td>
-    </tr>
-}
-</tbody>
+        @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
+        {
+            <tr>
+                <td>
+                    <strong>
+                    @foreach (var map in item.Indicator_CoE_Map.Where(x => x.Indicator_ID == item.Indicator_ID))
+                    {
+                        <li style="list-style:none">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE)</li>
+                    }
+                    </strong>
+                </td>
+                <td class="hide-for-small-only">
+                    @Html.DisplayTextFor(modelItem => item.Area.Area)
+                </td>
+                <td class="hide-for-small-only">
+                    @Html.DisplayTextFor(modelItem => item.Indicator_Type)
+                </td>
+                <td>
+                    <span class="show-for-medium-up">
+                        @Html.DisplayTextFor(modelItem => item.Indicator)
+                    </span>
+                    <div class="show-for-small-only">
+                        <strong>
+                            @Html.DisplayTextFor(modelItem => item.Indicator)
+                        </strong>
+                        <li style="list-style:none"><sub>@Html.DisplayTextFor(modelItem => item.Area.Area)</sub></li>
+                        <li style="list-style:none"><sub>@Html.DisplayTextFor(modelItem => item.Indicator_Type)</sub></li>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="row">
+                    <div class="large-3 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Edit", "Edit", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>    
+                    <div class="large-3 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Details", "Details", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
+                    <div class="large-5 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Delete", "Delete", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
-<script src="../../Scripts/jquery.floatThead.min.js"></script>
+<script src="../../Scripts/jquery.tablesorter.min.js"></script>
 <script type="text/javascript">
-   // $('table').floatThead($)
+    $(document).ready(function ($) {
+        $theTable = $('#indicators')
+            .tablesorter();
+
+    });
+/*
+    $("#advancedSearch").click(function ($) {
+        var parameters = [];
+        var coes = []
+        @foreach(var coe in Model.allCoEs){
+            @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
+            @:  coes.push({ CoE_ID : @Html.DisplayTextFor(model => coe.CoE_ID) })    
+            @:}
+        }
+        parameters.push({
+            searchString: jQuery("#advancedSearchString").val(),
+            selectedCoEs: coes
+        })
+        alert(parameters);
+        jQuery.ajax({
+            url: this.action,
+            type: 'POST',
+            data: JSON.stringify(parameters),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+            },
+            error: function (request){
+            }
+        });
+    });*/
 </script>
