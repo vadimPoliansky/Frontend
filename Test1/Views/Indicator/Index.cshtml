@@ -3,11 +3,14 @@
     ViewBag.Title = "Index";
 }
 
+<div class="row">
 <dl class="tabs" data-tab>
     <dd class="active"><a href="#panel2-1">Simple Search</a></dd>
     <dd><a href="#panel2-2">Advanced Search</a></dd>
 </dl>
+</div>
 
+<div class="row">
 <div class="tabs-content">
   <div class="content active" id="panel2-1">
     <div class="row">
@@ -44,14 +47,18 @@
     </form>
   </div>
 </div>
+</div>
 
-
+<div class="row">
 <h2>Index</h2>
-
+</div>
+<div class="row">
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+</div>
 
+<div class="row">
 <table id="indicators">
     <thead>
     <tr>
@@ -61,7 +68,7 @@
         <th class="hide-for-small-only">
             @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Area)
         </th>
-        <th>
+        <th class="hide-for-small-only">
             @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Indicator_Type)
         </th>
         <th>
@@ -104,15 +111,16 @@
 
                 <td>
                     <div class="row">
-                    <div class="large-3 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Edit", "Edit", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>    
-                    <div class="large-3 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Details", "Details", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
-                    <div class="large-5 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Delete", "Delete", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
+                    <div class="large-12 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Edit", "Edit", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>    
+                    <div class="large-12 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Details", "Details", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
+                    <div class="large-12 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Delete", "Delete", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
                     </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <script src="../../Scripts/jquery.tablesorter.min.js"></script>
