@@ -3,13 +3,22 @@
     ViewBag.Title = "Indicator Inventory";
 }
 
+<link rel="stylesheet" href="../../Content/Icons/foundation-icons.css" />
 
+<br />
+<br />
+<br />
 <div class="row">
     <div class="row">
-        <input type="text" placeholder="Search Indicators" id="searchString">        
+        <div class="small-offset-1 small-9 columns" style="padding:0px"> 
+            <input type="text" placeholder="Search Indicators" id="searchString">        
+        </div>
+        <div class="small-2 columns" style="padding:0px">
+            <a class="button tiny" id="searchButton" style="font-size:16px"><i class="step fi-magnifying-glass size-12"></i></a>
+        </div>
     </div>
     <div class="row" style="text-align:center">
-        <a class="button" id="searchButton">Search</a>
+        <!--a class="button" id="searchButton">Search</a-->
         <a class="button" data-dropdown="advancedSearchView">Advanced Search Options &raquo;</a>
     </div>
 

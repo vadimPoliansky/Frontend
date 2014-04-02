@@ -190,6 +190,7 @@
   <ItemGroup>
     <Content Include="Content\foundation.css" />
     <Content Include="Content\foundation.min.css" />
+    <Content Include="Content\Icons\foundation-icons.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\tablesorter\asc.gif" />
     <Content Include="Content\tablesorter\bg.gif" />
@@ -437,6 +438,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Indicator\searchResults.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Icons\.DS_Store" />
+    <None Include="Content\Icons\.fontcustom-data" />
+    <None Include="Content\Icons\foundation-icons.eot" />
+    <None Include="Content\Icons\foundation-icons.svg" />
+    <None Include="Content\Icons\foundation-icons.ttf" />
+    <None Include="Content\Icons\foundation-icons.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
