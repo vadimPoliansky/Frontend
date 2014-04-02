@@ -45,8 +45,8 @@ namespace IndInv.Controllers
             TempData.Keep();
             searchViewModel advancedSearch = (searchViewModel)TempData["search"];
 
-            List<Indicators> indicatorList = db.Indicators.ToList();
-            
+            //List<Indicators> indicatorList = db.Indicators.ToList();
+            List<Indicators> indicatorList = new List<Indicators>();
             string searchString = advancedSearch.searchString;
             if (searchString != null)
             {
@@ -54,7 +54,8 @@ namespace IndInv.Controllers
                 searchStrings = searchString.Split(' ');
                 foreach (var sS in searchStrings)
                 {
-                    indicatorList = indicatorList.Where(s => s.Indicator.ToLower().Contains(sS.ToLower())).ToList();
+                    //indicatorList = indicatorList.Where(s => s.Indicator.ToLower().Contains(sS.ToLower())).ToList();
+                    indicatorList.AddRange(db.Indicators.Where(s => s.Indicator.ToLower().Contains(sS.ToLower())).ToList());
                 }
             }
 
