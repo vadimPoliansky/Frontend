@@ -29,5 +29,11 @@ namespace IndInv
             GlobalConfiguration.Configuration.Filters.Add(new System.Web.Http.AuthorizeAttribute());
         }
 
+        protected void Application_BeginRequest()
+        {
+            if (!Context.Request.IsSecureConnection)
+                Response.Redirect(Context.Request.Url.ToString().Replace
+                ("http:", "https:"));
+        }
     }
 }
