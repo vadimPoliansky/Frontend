@@ -11,10 +11,10 @@ namespace IndInv.Models
 {
     public class UsersContext : DbContext
     {
-        public UsersContext()
-            : base("db6c597dc728694fbda0d7a2f901049bf7")
-        {
-        }
+       // public UsersContext()
+       //     : base("Indicator_Inventory")
+       // {
+       //}
 
         public DbSet<UserProfile> UserProfiles { get; set; }
     }
