@@ -1,61 +1,10 @@
 ﻿@model IndInv.Models.ViewModels.indexViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search Results";
 }
 
 <div class="row">
-<dl class="tabs" data-tab>
-    <dd class="active"><a href="#panel2-1">Simple Search</a></dd>
-    <dd><a href="#panel2-2">Advanced Search</a></dd>
-</dl>
-</div>
-
-<div class="row">
-<div class="tabs-content">
-  <div class="content active" id="panel2-1">
-    <div class="row">
-        <input type="text" placeholder="Search Indicators" id="simpleSearchString">        
-    </div>
-  </div>
-  <div class="content" id="panel2-2">
-      <div class="row">
-        <input type="text" placeholder="Search Indicators" id="advancedSearchString">
-    </div>
-    <form>
-        <div class="row">
-            <div class="large-12-columns">
-                <fieldset>
-                    <legend>Areas</legend>
-                    @foreach(var area in  Model.allAreas.OrderBy(x => x.Area)){
-                        <div class="small-12 large-4 columns">
-                         <li style="list-style:none"><input id="Area_@Html.DisplayTextFor(model => area.Area_ID)" type="checkbox"><label for="Area_@Html.DisplayTextFor(model => area.Area_ID)">@Html.DisplayTextFor(model => area.Area)</label></li>
-                        </div>
-                    }
-                </fieldset>
-                <fieldset>
-                    <legend>CoEs</legend>
-                    @foreach (var coe in Model.allCoEs.OrderBy(x => x.CoE))
-                    {
-                        <div class="small-12 large-4 columns">
-                         <li style="list-style:none"><input id="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)" type="checkbox"><label for="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)">@Html.DisplayTextFor(model => coe.CoE)</label></li>
-                        </div>
-                    }
-                </fieldset>
-                <a id="advancedSearch" class="button expand">Search</a>
-            </div>
-        </div>
-    </form>
-  </div>
-</div>
-</div>
-
-<div class="row">
-<h2>Index</h2>
-</div>
-<div class="row">
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    <a class="button" href="index">Back</a>
 </div>
 
 <div class="row">
@@ -130,29 +79,50 @@
             .tablesorter();
 
     });
-    
-    $("#advancedSearch").click(function ($) {
-    var parameters = [];
-    var coes = []
-    @foreach(var coe in Model.allCoEs){
-    @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
-    @:  coes.push({ CoE_ID : @Html.DisplayTextFor(model => coe.CoE_ID) })    
-    @:}
-    }
-    parameters.push({
-    searchString: jQuery("#advancedSearchString").val(),
-    selectedCoEs: coes
-    })
-    alert(parameters);
-    jQuery.ajax({
-    url: this.action,
-    type: 'POST',
-    data: JSON.stringify(parameters),
-    contentType: 'application/json; charset=utf-8',
-    success: function (result) {
-    },
-    error: function (request){
-    }
-    });
+
+    $("#searchButton").click(function ($) {
+        var parameters = [];
+        var coes = [];
+        var areas = [];
+        var types = [];
+        @foreach (var coe in Model.allCoEs)
+        {
+            @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
+            @:  coes.push({ CoE_ID : @Html.DisplayTextFor(model => coe.CoE_ID) })    
+            @:}
+        }
+        @foreach (var area in Model.allAreas)
+        {
+            @:if(jQuery("#Area_@Html.DisplayTextFor(model => area.Area_ID)").is(':checked')){
+            @:  areas.push({ Area_ID : @Html.DisplayTextFor(model => area.Area_ID) })    
+            @:}
+        }
+        @foreach (var type in Model.allIndicators.Select(x => x.Indicator_Type).OrderBy(x => x).Distinct())
+        {
+            string typeClean = (type == null) ? null : type.Replace("/", "");
+            typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
+            typeClean = (typeClean == null) ? null : typeClean.Replace(" ", "");
+            @:if(jQuery("#Type_@Html.DisplayTextFor(model => typeClean)").is(':checked')){
+            @:  types.push({ Indicator_Type : "@Html.DisplayTextFor(model => typeClean)" })    
+            @:}
+        }
+        parameters.push({
+            searchString: jQuery("#searchString").val(),
+            selectedCoEs: coes,
+            selectedAreas: areas,
+            selectedTypes: types
+        })
+        jQuery.ajax({
+            url: "/indicator/searchAdvanced",
+            type: 'POST',
+            data: JSON.stringify(parameters),
+            contentType: 'application/json; charset=utf-8',
+            success: function(data){
+                window.location.href = data;
+            },
+            error: function (request){
+                alert("search Failed")
+            }
+        });
     });
 </script>

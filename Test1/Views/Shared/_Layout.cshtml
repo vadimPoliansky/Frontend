@@ -2,9 +2,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../../Content/foundation.css" />
 <script src="../../Scripts/vendor/modernizr.js"></script>
+<title>@ViewBag.Title</title>
 </head>
     <!-- Navigation -->
 
+<div class="show-for-medium-up">
 <nav class="top-bar docs-bar" data-topbar >
     <ul class="title-area">
       <!-- Title Area -->
@@ -23,16 +25,38 @@
       </ul>
       <ul class="right">
         <li class="has-dropdown"><a href="#">Menu</a>
-
       <ul class="dropdown">
         <li><a href="/indicator">See All Indicators</a></li>
         <li><a href="/indicator/viewPR">See All PRs</a></li>
         <li><a href="/indicator/editInventory">Edit Inventory</a></li>
       </ul>
     </section>
-  </nav>
+</nav>
+</div>
+
+<div class="show-for-small-only">
+<nav class="top-bar docs-bar" data-topbar >
+    <ul class="title-area">
+      <!-- Title Area -->
+      <li class="name">
+
+      </li>
+      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="">Menu</a></li>
+    </ul>
+
+    <section class="top-bar-section">
+      <ul class="title-area">
+        <li class="name">
+            <h1><a href="/indicator">Search Indicators</a></h1>
+        </li>
+      </ul>
+    </section>
+</nav>
+</div>
+
     <div class="row">
-      <div class="small-offset-8">
+      <div style="text-align:center">
     <img src="http://outonbayst.org/wp-content/uploads/2012/07/Mount-Sinai-Logo.png" alt="Mount Sinai" width="400" height="700">
     </div>
     </div>
@@ -60,7 +84,6 @@
             <div class="row">
  
               <div class="large-6 columns">
-                  <p>© 2014</p>
               </div>
  
               <div class="large-6 small-12 columns">
