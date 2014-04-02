@@ -12,7 +12,7 @@ namespace IndInv.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base("Accounts")
+            : base("db6c597dc728694fbda0d7a2f901049bf7")
         {
         }
 
