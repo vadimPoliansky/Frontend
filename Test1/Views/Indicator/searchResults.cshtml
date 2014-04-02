@@ -1,0 +1,158 @@
+﻿@model IndInv.Models.ViewModels.indexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+<dl class="tabs" data-tab>
+    <dd class="active"><a href="#panel2-1">Simple Search</a></dd>
+    <dd><a href="#panel2-2">Advanced Search</a></dd>
+</dl>
+</div>
+
+<div class="row">
+<div class="tabs-content">
+  <div class="content active" id="panel2-1">
+    <div class="row">
+        <input type="text" placeholder="Search Indicators" id="simpleSearchString">        
+    </div>
+  </div>
+  <div class="content" id="panel2-2">
+      <div class="row">
+        <input type="text" placeholder="Search Indicators" id="advancedSearchString">
+    </div>
+    <form>
+        <div class="row">
+            <div class="large-12-columns">
+                <fieldset>
+                    <legend>Areas</legend>
+                    @foreach(var area in  Model.allAreas.OrderBy(x => x.Area)){
+                        <div class="small-12 large-4 columns">
+                         <li style="list-style:none"><input id="Area_@Html.DisplayTextFor(model => area.Area_ID)" type="checkbox"><label for="Area_@Html.DisplayTextFor(model => area.Area_ID)">@Html.DisplayTextFor(model => area.Area)</label></li>
+                        </div>
+                    }
+                </fieldset>
+                <fieldset>
+                    <legend>CoEs</legend>
+                    @foreach (var coe in Model.allCoEs.OrderBy(x => x.CoE))
+                    {
+                        <div class="small-12 large-4 columns">
+                         <li style="list-style:none"><input id="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)" type="checkbox"><label for="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)">@Html.DisplayTextFor(model => coe.CoE)</label></li>
+                        </div>
+                    }
+                </fieldset>
+                <a id="advancedSearch" class="button expand">Search</a>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>
+</div>
+
+<div class="row">
+<h2>Index</h2>
+</div>
+<div class="row">
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+</div>
+
+<div class="row">
+<table id="indicators">
+    <thead>
+    <tr>
+        <th >
+            @Html.DisplayNameFor(model => model.allIndicators.First().Indicator_CoE_Map.First().CoE.CoE)
+        </th>
+        <th class="hide-for-small-only">
+            @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Area)
+        </th>
+        <th class="hide-for-small-only">
+            @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Indicator_Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.allIndicators.FirstOrDefault().Indicator)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
+        {
+            <tr>
+                <td>
+                    <strong>
+                    @foreach (var map in item.Indicator_CoE_Map.Where(x => x.Indicator_ID == item.Indicator_ID))
+                    {
+                        <li style="list-style:none">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE)</li>
+                    }
+                    </strong>
+                </td>
+                <td class="hide-for-small-only">
+                    @Html.DisplayTextFor(modelItem => item.Area.Area)
+                </td>
+                <td class="hide-for-small-only">
+                    @Html.DisplayTextFor(modelItem => item.Indicator_Type)
+                </td>
+                <td>
+                    <span class="show-for-medium-up">
+                        @Html.DisplayTextFor(modelItem => item.Indicator)
+                    </span>
+                    <div class="show-for-small-only">
+                        <strong>
+                            @Html.DisplayTextFor(modelItem => item.Indicator)
+                        </strong>
+                        <li style="list-style:none"><sub>@Html.DisplayTextFor(modelItem => item.Area.Area)</sub></li>
+                        <li style="list-style:none"><sub>@Html.DisplayTextFor(modelItem => item.Indicator_Type)</sub></li>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="row">
+                    <div class="large-12 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Edit", "Edit", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>    
+                    <div class="large-12 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Details", "Details", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
+                    <div class="large-12 small-12 columns" style="text-align:center; padding:2px">@Html.ActionLink("Delete", "Delete", new { Indicator_ID = item.Indicator_ID }, new { @class = "round alert label" })</div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script src="../../Scripts/jquery.tablesorter.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        $theTable = $('#indicators')
+            .tablesorter();
+
+    });
+    
+    $("#advancedSearch").click(function ($) {
+    var parameters = [];
+    var coes = []
+    @foreach(var coe in Model.allCoEs){
+    @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
+    @:  coes.push({ CoE_ID : @Html.DisplayTextFor(model => coe.CoE_ID) })    
+    @:}
+    }
+    parameters.push({
+    searchString: jQuery("#advancedSearchString").val(),
+    selectedCoEs: coes
+    })
+    alert(parameters);
+    jQuery.ajax({
+    url: this.action,
+    type: 'POST',
+    data: JSON.stringify(parameters),
+    contentType: 'application/json; charset=utf-8',
+    success: function (result) {
+    },
+    error: function (request){
+    }
+    });
+    });
+</script>

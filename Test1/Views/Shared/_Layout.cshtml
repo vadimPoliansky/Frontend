@@ -45,6 +45,7 @@
  
   
          <div id="body">
+            @RenderSection("scripts", required: false)
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()

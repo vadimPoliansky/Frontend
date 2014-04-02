@@ -11,6 +11,7 @@ using IndInv.Models.ViewModels;
 
 namespace IndInv.Controllers
 {
+
     public class IndicatorController : Controller
     {
         private InventoryDBContext db = new InventoryDBContext();
@@ -33,29 +34,80 @@ namespace IndInv.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(IList<indexAdvancedViewModel> advancedSearch)
+        public ActionResult searchAdvanced(IList<searchViewModel> advancedSearch)
         {
-//            if (ModelState.IsValid){
+                TempData["search"] = advancedSearch.FirstOrDefault();
+                return Json(Url.Action("searchResults", "Indicator")); 
+        }
+
+        public ActionResult searchResults()
+        {
+            TempData.Keep();
+            searchViewModel advancedSearch = (searchViewModel)TempData["search"];
+
+            List<Indicators> indicatorList = db.Indicators.ToList();
+            
+            string searchString = advancedSearch.searchString;
+            if (searchString != null)
+            {
+                string[] searchStrings;
+                searchStrings = searchString.Split(' ');
+                foreach (var sS in searchStrings)
+                {
+                    indicatorList = indicatorList.Where(s => s.Indicator.ToLower().Contains(sS.ToLower())).ToList();
+                }
+            }
+
+            List<Indicators> indicatorListCoE = new List<Indicators>();
+            List<CoE_IDsViewModel> searchCoEs;
+            searchCoEs = advancedSearch.selectedCoEs;
+            if (searchCoEs != null)
+            {
+                foreach (var coe in searchCoEs)
+                {
+                    indicatorListCoE.AddRange(db.Indicators.Where(s => s.Indicator_CoE_Map.Any(x => x.CoE_ID == coe.CoE_ID)).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListCoE).ToList();
+            }
+            
+            List<Indicators> indicatorListAreas = new List<Indicators>();
+            List<Area_IDsViewModel> searchAreas;
+            searchAreas = advancedSearch.selectedAreas;
+            if (searchAreas != null)
+            {
+                foreach (var area in searchAreas)
+                {
+                    indicatorListAreas.AddRange(db.Indicators.Where(s => s.Area_ID == area.Area_ID).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListAreas).ToList();
+            }
+
+            List<Indicators> indicatorListTypes = new List<Indicators>();
+            List<Indicator_TypesViewModel> searchTypes;
+            searchTypes = advancedSearch.selectedTypes;
+            if (searchTypes != null)
+            {
+                foreach (var type in searchTypes)
+                {
+                    indicatorListTypes.AddRange(db.Indicators.Where(s => s.Indicator_Type.Replace("/","").Replace("&","").Replace(" ","") == type.Indicator_Type).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListTypes).ToList();
+            }
+
+            if (ModelState.IsValid)
+            {
                 var viewModel = new indexViewModel
                 {
-                    allIndicators = db.Indicators.Where(x => x.Indicator_ID == "1001").ToList(),
+                    allIndicators = indicatorList.Distinct().ToList(),
+                    
                     allCoEs = db.CoEs.ToList(),
                     allAreas = db.Areas.ToList(),
                     allFootnotes = db.Indicator_Footnote_Maps.ToList()
                 };
-                TempData["model"] = viewModel;
-                return RedirectToAction("indexTemp");
-//            }
+                return View(viewModel);
+            }
 
-
-//            return View("index", viewModel);
-            //return View(viewModel);
-        }
-
-        public ActionResult indexTemp()
-        {
-            indexViewModel viewModel = (indexViewModel)TempData["model"];
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult viewPR()
