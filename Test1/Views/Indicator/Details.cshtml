@@ -29,8 +29,8 @@
         <td>Comparator</td>
     </tr>
     <tr>
-        <td style="color:#642EFE">@Html.DisplayTextFor(model => model.Target)</td>
-        <td style="color:#FF00FF">@Html.DisplayTextFor(model => model.Comparator)</td>
+        <td style="color:#111">@Html.DisplayTextFor(model => model.Target)</td>
+        <td style="color:#111">@Html.DisplayTextFor(model => model.Comparator)</td>
     </tr>
 </table>
 </div>
@@ -46,28 +46,28 @@
 <table>
     <tr>
         <td></td>
-        <td>Target</td>
-        <td>Comparator</td>
+        <td style="color:#111; text-align:center">Target</td>
+        <td style="color:#111; text-align:center">Comparator</td>
     </tr>
     <tr>
         <td>2010</td>
-        <td style="color:#642EFE; text-align:center"></td>
-        <td style="color:#FF00FF; text-align:center"></td>
+        <td style="color:#111; text-align:center"></td>
+        <td style="color:#111; text-align:center"></td>
     </tr>
     <tr>
         <td>2011</td>
-        <td style="color:#642EFE; text-align:center"></td>
-        <td style="color:#FF00FF; text-align:center"></td>
+        <td style="color:#111; text-align:center"></td>
+        <td style="color:#111; text-align:center"></td>
     </tr>
     <tr>
         <td>2012</td>
-        <td style="color:#642EFE; text-align:center"></td>
-        <td style="color:#FF00FF; text-align:center"></td>
+        <td style="color:#111; text-align:center"></td>
+        <td style="color:#111; text-align:center"></td>
     </tr>
     <tr>
         <td>2013</td>
-        <td style="color:#642EFE; text-align:center">@Html.DisplayTextFor(model => model.Target)</td>
-        <td style="color:#FF00FF; text-align:center">@Html.DisplayTextFor(model => model.Comparator)</td>
+        <td style="color:#111; text-align:center">@Html.DisplayTextFor(model => model.Target)</td>
+        <td style="color:#111; text-align:center">@Html.DisplayTextFor(model => model.Comparator)</td>
     </tr>
 </table>
 </div>
@@ -300,12 +300,17 @@
                 valuesArray[6],
                 valuesArray[7],
             ];
-
-        var target_FY = valuesArray[8]
-        var target_4 = valuesArray[8]
-
+        var sComparator = [
+            0,
+            0,
+            0,
+            valuesArray[9],
+        ];
+        
         var comparator_FY = valuesArray[9]
-        var comparator_4 = valuesArray[9]
+        var target_FY = valuesArray[8]
+
+        var target_4 = valuesArray[8]
 
         // Can specify a custom tick Array.
         // Ticks should match up one for each y value (category) in the series.
@@ -314,7 +319,7 @@
 
         var plot1 = $.jqplot('chart1', [s1], {
             series: [
-                { color: '#233863' },
+                { color: '#151B54' },
             ],
             seriesDefaults: {
                 renderer: $.jqplot.BarRenderer,
@@ -327,20 +332,20 @@
                 show: true,
                 objects: [
                     { horizontalLine: {
-                        name: 'target',
-                        y: target_FY,
-                        lineWidth: 3,
-                        xOffset: 0,
-                        color: '#642EFE',
-                        shadow: false
-                    }
-                    },
-                    { horizontalLine: {
                         name: 'comparator',
                         y: comparator_FY,
                         lineWidth: 3,
                         xOffset: 0,
-                        color: '#FF00FF',
+                        color: '#BDEDFF',
+                        shadow: false
+                    }
+                    },
+                    { horizontalLine: {
+                        name: 'target',
+                        y: target_FY,
+                        lineWidth: 3,
+                        xOffset: 0,
+                        color: '#151B54',
                         shadow: false
                     }
                     },
@@ -359,16 +364,17 @@
             }
         });
 
-        var plot2 = $.jqplot('chart2', [s2], {
+        var plot2 = $.jqplot('chart2', [s2, sComparator], {
             seriesDefaults: {
                 pointLabels: { show: true },
                 renderer: $.jqplot.BarRenderer, 
                 rendererOptions: {
-                    barPadding:-45,
+                    barPadding:1,
                 },
             },
             series: [
-                { fillToZero:false, color: '#233863' },
+                { fillToZero:false, color: '#151B54' },
+                { fillToZero:false, color: '#BDEDFF' },
             ],
             grid: {
                 backgroundColor: '#fff'
@@ -382,20 +388,20 @@
                         lineWidth: 3,
                         xminOffset: chartWidth/4 *3 + 'px',
                         xmaxOffset: '0px',
-                        color: '#642EFE',
+                        color: '#151B54',
                         shadow: false
                     }
                     },
-                    { horizontalLine: {
+                    /*{ horizontalLine: {
                         name: 'comparator_4',
                         y: comparator_4,
                         lineWidth: 3,
                         xminOffset: chartWidth/4 *3 + 'px',
                         xmaxOffset: '0px',
-                        color: '#FF00FF',
+                        color: '#BDEDFF',
                         shadow: false
                     }
-                    },
+                    },*/
                 ],
             },
             axes: {
