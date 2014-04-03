@@ -36,10 +36,10 @@ namespace IndInv.Helpers
             }
 
             if (maxPos != 0){
-                numStr = str.Substring(minPos, maxPos - minPos + 1);
+                numStr = str.Substring(minPos, maxPos - minPos + 1).Replace(",", "").Replace("$", "");
             }
             //string num = numStr;
-            return numStr;
+             return numStr;
         }
 
         public static String getColour(String inStr, String inTarget, String inMonth, String inCustom, Boolean isYTD, Indicators inIndicator)

@@ -76,7 +76,6 @@
 <div class="row">
 <fieldset>
     <legend>Details</legend>
-
     <div class="panel">
         <h5><b>
          @Html.DisplayNameFor(model => model.Indicator)
@@ -255,7 +254,21 @@
 
 <script>
     $(document).ready(function ($) {
-        var chartWidth = 300 - 20 - 20;
+        var chartWidth = 275 - 20 - 20;
+
+        var currency=false;
+        var valuesArrayString = [
+            "@Html.DisplayTextFor(model => model.FY_13_14_Q1)",
+            "@Html.DisplayTextFor(model => model.FY_13_14_Q2)",
+            "@Html.DisplayTextFor(model => model.FY_13_14_Q3)",
+            "@Html.DisplayTextFor(model => model.FY_13_14_Q4)",
+        ];
+        for(i=0;i<valuesArrayString.length;i++){
+            if(valuesArrayString[i].indexOf("$") != -1){
+                currency=true;
+            }
+        }
+
         var valuesArray = [
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10)) ?
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10),
@@ -278,12 +291,14 @@
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)) ?
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)
         ];
+
         function remove(arrOriginal, elementToRemove) {
             return arrOriginal.filter(function (el) { return el !== elementToRemove });
         }
 
         var maxY = Math.max.apply(Math, valuesArray);
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
+        //alert (currency = valuesArray.indexOf());
 
         var precision = maxY.toString().indexOf('.') == -1 ? 0 : maxY.toString().split('.')[1].length;
         //var decimalFormat = '
@@ -323,7 +338,14 @@
             ],
             seriesDefaults: {
                 renderer: $.jqplot.BarRenderer,
-                pointLabels: { show: true }
+                useNegativeColors : false,
+                pointLabels: {
+                    show: true,
+                    hideZeros : true,
+                    formatString: (currency)?"$%'d" 
+                                            :'%.' + (precision + 1) + 'f' 
+                },
+                fillToZero: true,
             },
             grid: {
                 backgroundColor: '#fff'
@@ -357,24 +379,32 @@
                     ticks: ticks1
                 },
                 yaxis: {
-                    min: minY * 0.9,
-                    max: maxY * 1.05,
-                    tickOptions: { formatString: '%.' + precision + 'f' }
+                    min: minY > 0 ? minY * 0.76 : minY * 1.3,
+                    max: maxY * 1.1,
+                    tickOptions: (currency)? { formatString: "$%'d" }
+                                           : { formatString: '%.' + precision + 'f' }
                 }
             }
         });
 
         var plot2 = $.jqplot('chart2', [s2, sComparator], {
             seriesDefaults: {
-                pointLabels: { show: true },
+                pointLabels: {
+                    show: true,
+                    hideZeros: true,
+                    formatString: (currency)?"$%'d" 
+                                            :'%.' + (precision + 1) + 'f' 
+                },
+                useNegativeColors : false,
                 renderer: $.jqplot.BarRenderer, 
                 rendererOptions: {
                     barPadding:1,
                 },
+                fillToZero: true,
             },
             series: [
-                { fillToZero:false, color: '#151B54' },
-                { fillToZero:false, color: '#BDEDFF' },
+                { color: '#151B54' },
+                { color: '#BDEDFF' },
             ],
             grid: {
                 backgroundColor: '#fff'
@@ -410,9 +440,10 @@
                     ticks: ticks2
                 },
                 yaxis: {
-                    min: minY * 0.9,
-                    max: maxY * 1.05,
-                    tickOptions: { formatString: '%.' + precision + 'f' }
+                    min: minY > 0 ? minY * 0.76 : minY * 1.3,
+                    max: maxY * 1.1,
+                    tickOptions: (currency)? { formatString: "$%'d" }
+                                           : { formatString: '%.' + precision + 'f' }
                 }
             }
         });
