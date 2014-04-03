@@ -441,11 +441,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Icons\.DS_Store" />
-    <None Include="Content\Icons\.fontcustom-data" />
-    <None Include="Content\Icons\foundation-icons.eot" />
-    <None Include="Content\Icons\foundation-icons.svg" />
-    <None Include="Content\Icons\foundation-icons.ttf" />
-    <None Include="Content\Icons\foundation-icons.woff" />
+    <Content Include="Content\Icons\.fontcustom-data" />
+    <Content Include="Content\Icons\foundation-icons.eot" />
+    <Content Include="Content\Icons\foundation-icons.svg" />
+    <Content Include="Content\Icons\foundation-icons.ttf" />
+    <Content Include="Content\Icons\foundation-icons.woff" />
     <None Include="Content\Icons\svgs\fi-address-book.svg" />
     <None Include="Content\Icons\svgs\fi-alert.svg" />
     <None Include="Content\Icons\svgs\fi-align-center.svg" />
