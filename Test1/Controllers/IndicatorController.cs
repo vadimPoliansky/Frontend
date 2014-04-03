@@ -54,12 +54,8 @@ namespace IndInv.Controllers
                 searchStrings = searchString.Split(' ');
                 foreach (var sS in searchStrings)
                 {
-                    indicatorList = indicatorList.Where(s => s.Indicator.ToString().ToLower().Contains(sS.ToLower())).ToList();
-                    //indicatorListString.AddRange(db.Indicators.Where(s => s.Indicator.ToLower().Contains(sS.ToLower())).ToList());
-                    //indicatorListString = indicatorList.Where(s => s.Indicator.ToString().ToLower().Contains(sS.ToLower())).ToList();
-                    //indicatorList = indicatorListString;
+                    indicatorList = indicatorList.Where(s => s.Indicator != null && s.Indicator.ToLower().Contains(sS.ToLower())).ToList();
                 }
-                //indicatorList = indicatorList.Intersect(indicatorListString).ToList();
             }
 
             List<Indicators> indicatorListCoE = new List<Indicators>();
