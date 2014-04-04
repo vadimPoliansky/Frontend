@@ -80,49 +80,4 @@
 
     });
 
-    $("#searchButton").click(function ($) {
-        var parameters = [];
-        var coes = [];
-        var areas = [];
-        var types = [];
-        @foreach (var coe in Model.allCoEs)
-        {
-            @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
-            @:  coes.push({ CoE_ID : @Html.DisplayTextFor(model => coe.CoE_ID) })    
-            @:}
-        }
-        @foreach (var area in Model.allAreas)
-        {
-            @:if(jQuery("#Area_@Html.DisplayTextFor(model => area.Area_ID)").is(':checked')){
-            @:  areas.push({ Area_ID : @Html.DisplayTextFor(model => area.Area_ID) })    
-            @:}
-        }
-        @foreach (var type in Model.allIndicators.Select(x => x.Indicator_Type).OrderBy(x => x).Distinct())
-        {
-            string typeClean = (type == null) ? null : type.Replace("/", "");
-            typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
-            typeClean = (typeClean == null) ? null : typeClean.Replace(" ", "");
-            @:if(jQuery("#Type_@Html.DisplayTextFor(model => typeClean)").is(':checked')){
-            @:  types.push({ Indicator_Type : "@Html.DisplayTextFor(model => typeClean)" })    
-            @:}
-        }
-        parameters.push({
-            searchString: jQuery("#searchString").val(),
-            selectedCoEs: coes,
-            selectedAreas: areas,
-            selectedTypes: types
-        })
-        jQuery.ajax({
-            url: "/indicator/searchAdvanced",
-            type: 'POST',
-            data: JSON.stringify(parameters),
-            contentType: 'application/json; charset=utf-8',
-            success: function(data){
-                window.location.href = data;
-            },
-            error: function (request){
-                alert("search Failed")
-            }
-        });
-    });
 </script>

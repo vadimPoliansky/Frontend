@@ -55,16 +55,16 @@
         columns: [
             {data:'Indicator_ID', readOnly:true},
             {data:'Indicator', readOnly:true},
-            {data:'Footnote_ID_1'},
-            {data:'Footnote_ID_2'},
-            {data:'Footnote_ID_3'},
-            {data:'Footnote_ID_4'},
-            {data:'Footnote_ID_5'},
-            {data:'Footnote_ID_6'},
-            {data:'Footnote_ID_7'},
-            {data:'Footnote_ID_8'},
-            {data:'Footnote_ID_9'},
-            {data:'Footnote_ID_10'},
+            {data:'Footnote_Symbol_1'},
+            {data:'Footnote_Symbol_2'},
+            {data:'Footnote_Symbol_3'},
+            {data:'Footnote_Symbol_4'},
+            {data:'Footnote_Symbol_5'},
+            {data:'Footnote_Symbol_6'},
+            {data:'Footnote_Symbol_7'},
+            {data:'Footnote_Symbol_8'},
+            {data:'Footnote_Symbol_9'},
+            {data:'Footnote_Symbol_10'},
         ],
         width: function () {
             if (maxed && availableWidth === void 0) {
@@ -89,52 +89,63 @@
                     var changedValue = change[i][3]
                     var mapID;
                     var mapColumn;
+                    var footnoteID;
                     switch( changedParameter ) {
-                        case "Footnote_ID_1":
+                        case "Footnote_Symbol_1":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_1');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_1');
                             mapColumn = 'Map_ID_1'
                             break;
-                        case "Footnote_ID_2":
+                        case "Footnote_Symbol_2":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_2');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_2');
                             mapColumn = 'Map_ID_2'
                             break;
-                        case "Footnote_ID_3":
+                        case "Footnote_Symbol_3":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_3');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_3');
                             mapColumn = 'Map_ID_3'
                             break;
-                        case "Footnote_ID_4":
+                        case "Footnote_Symbol_4":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_4');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_4');
                             mapColumn = 'Map_ID_4'
                             break;
-                        case "Footnote_ID_5":
+                        case "Footnote_Symbol_5":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_5');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_5');
                             mapColumn = 'Map_ID_5'
                             break;
-                        case "Footnote_ID_6":
+                        case "Footnote_Symbol_6":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_6');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_6');
                             mapColumn = 'Map_ID_6'
                             break;
-                        case "Footnote_ID_7":
+                        case "Footnote_Symbol_7":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_7');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_7');
                             mapColumn = 'Map_ID_7'
                             break;
-                        case "Footnote_ID_8":
+                        case "Footnote_Symbol_8":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_8');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_8');
                             mapColumn = 'Map_ID_8'
                             break;
-                        case "Footnote_ID_9":
+                        case "Footnote_Symbol_9":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_9');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_9');
                             mapColumn = 'Map_ID_9'
                             break;
-                        case "Footnote_ID_10":
+                        case "Footnote_Symbol_10":
                             mapID = $example1.handsontable('getDataAtCell', changedRow,'Map_ID_10');
+                            footnoteID = $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID_10');
                             mapColumn = 'Map_ID_10'
                             break;
                     }
-                    var footnoteID = changedValue;
+                    var footnoteSymbol = changedValue;
                     var indicatorID = $example1.handsontable('getDataAtCell', changedRow,'Indicator_ID')
                     if(changedParameter.toString().substring(0,3) != 'Map'){
-                        updateFootnoteMap(mapID, footnoteID, indicatorID, changedRow, mapColumn, changedParameter);
+                        updateFootnoteMap(mapID, footnoteID, footnoteSymbol, indicatorID, changedRow, mapColumn, changedParameter);
                     }
                 }
             }
@@ -144,11 +155,12 @@
     maxed = !maxed;
     $example1.handsontable('render');
 
-    function updateFootnoteMap(mapID, footnoteID, indicatorID, changedRow, mapColumn, changedParameter){
+    function updateFootnoteMap(mapID, footnoteID, footnoteSymbol, indicatorID, changedRow, mapColumn, changedParameter){
         var parameters = []
         parameters.push({
-            Map_ID: mapID,
-            Footnote_ID: footnoteID,
+            Map_ID_1: mapID,
+            Footnote_ID_1: footnoteID,
+            Footnote_Symbol_1: footnoteSymbol,
             Indicator_ID: indicatorID,
         })
         $.ajax({
@@ -161,7 +173,7 @@
                     $example1.handsontable('setDataAtRowProp', changedRow, mapColumn, result.Map_ID);
                 }else if (result.State == 'InvalidChange'){
                     alert('Invalid Footnote 1');
-                    $example1.handsontable('setDataAtRowProp', changedRow, changedParameter, result.Footnote_ID);
+                    $example1.handsontable('setDataAtRowProp', changedRow, changedParameter, result.Footnote_Symbol);
                 }else if (result.State == 'InvalidAdd'){
                     alert('Invalid Footnote 2');
                     $example1.handsontable('setDataAtRowProp', changedRow, changedParameter, null);

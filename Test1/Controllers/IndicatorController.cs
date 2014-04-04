@@ -27,7 +27,7 @@ namespace IndInv.Controllers
                 allIndicators = db.Indicators.ToList(),
                 allCoEs = db.CoEs.ToList(),
                 allAreas = db.Areas.ToList(),
-                allFootnotes=db.Indicator_Footnote_Maps.ToList()
+                allFootnotes= db.Footnotes.ToList()
             };
 
             return View(viewModel);
@@ -59,7 +59,7 @@ namespace IndInv.Controllers
             }
 
             List<Indicators> indicatorListCoE = new List<Indicators>();
-            List<CoE_IDsViewModel> searchCoEs;
+            List<selectedCoEs> searchCoEs;
             searchCoEs = advancedSearch.selectedCoEs;
             if (searchCoEs != null)
             {
@@ -71,7 +71,7 @@ namespace IndInv.Controllers
             }
             
             List<Indicators> indicatorListAreas = new List<Indicators>();
-            List<Area_IDsViewModel> searchAreas;
+            List<selectedAreas> searchAreas;
             searchAreas = advancedSearch.selectedAreas;
             if (searchAreas != null)
             {
@@ -83,7 +83,7 @@ namespace IndInv.Controllers
             }
 
             List<Indicators> indicatorListTypes = new List<Indicators>();
-            List<Indicator_TypesViewModel> searchTypes;
+            List<selectedTypes> searchTypes;
             searchTypes = advancedSearch.selectedTypes;
             if (searchTypes != null)
             {
@@ -94,15 +94,27 @@ namespace IndInv.Controllers
                 indicatorList = indicatorList.Intersect(indicatorListTypes).ToList();
             }
 
+            List<Indicators> indicatorListFootnotes = new List<Indicators>();
+            List<selectedFootnotes> searchFootnotes;
+            searchFootnotes = advancedSearch.selectedFootnotes;
+            if (searchFootnotes != null)
+            {
+                foreach (var footnote in searchFootnotes)
+                {
+                    indicatorListFootnotes.AddRange(db.Indicators.Where(s => s.Indicator_Footnote_Map.Any(x => x.Footnote_ID == footnote.Footnote_ID)).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListFootnotes).ToList();
+            }
+
             if (ModelState.IsValid)
             {
                 var viewModel = new indexViewModel
                 {
                     allIndicators = indicatorList.Distinct().ToList(),
                     
-                    allCoEs = db.CoEs.ToList(),
-                    allAreas = db.Areas.ToList(),
-                    allFootnotes = db.Indicator_Footnote_Maps.ToList()
+//                    allCoEs = db.CoEs.ToList(),
+//                    allAreas = db.Areas.ToList(),
+ //                   allFootnotes = db.Footnotes.ToList()
                 };
                 return View(viewModel);
             }
@@ -138,6 +150,54 @@ namespace IndInv.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public ActionResult editFootnotes(String Footnote_ID_Filter)
+        {
+            var viewModelItems = db.Footnotes.ToArray();
+            var viewModel = viewModelItems.OrderBy(x => x.Footnote_ID).Select(x => new FootnotesViewModel
+            {
+                Footnote_ID = x.Footnote_ID,
+                Footnote = x.Footnote,
+                //Footnote_Symbol = x.Footnote_Symbol,
+            }).ToList();
+            if (Request.IsAjaxRequest())
+            {
+                return Json(viewModel.Where(x => x.Footnote_ID.ToString().Contains(Footnote_ID_Filter == null ? "" : Footnote_ID_Filter)), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return View(viewModel);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult editFootnotes(IList<Footnotes> footnoteChange)
+        {
+            var footnoteID = footnoteChange[0].Footnote_ID;
+            if (db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(footnoteChange[0]).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return View();
+                }
+                return View();
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Footnotes.Add(footnoteChange[0]);
+                    db.SaveChanges();
+                    return View();
+                }
+                return View();
+            }
+
+        }
+
         public ActionResult editFootnoteMaps()
         {
             List<Indicator_Footnote_Maps> footnoteMaps = new List<Indicator_Footnote_Maps>();
@@ -158,51 +218,61 @@ namespace IndInv.Controllers
                 {
                     Indicator.Footnote_ID_1 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).First().Footnote_ID;
                     Indicator.Map_ID_1 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).First().Map_ID;
+                    //Indicator.Footnote_Symbol_1 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_1).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 1)
                 {
                     Indicator.Footnote_ID_2 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(1).First().Footnote_ID;
                     Indicator.Map_ID_2 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(1).First().Map_ID;
+                    //Indicator.Footnote_Symbol_2 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_2).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 2)
                 {
                     Indicator.Footnote_ID_3 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(2).First().Footnote_ID;
                     Indicator.Map_ID_3 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(2).First().Map_ID;
+                    //Indicator.Footnote_Symbol_3 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_3).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 3)
                 {
                     Indicator.Footnote_ID_4 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(3).First().Footnote_ID;
                     Indicator.Map_ID_4 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(3).First().Map_ID;
+                    //Indicator.Footnote_Symbol_4 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_4).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 4)
                 {
                     Indicator.Footnote_ID_5 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(4).First().Footnote_ID;
                     Indicator.Map_ID_5 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(4).First().Map_ID;
+                    //Indicator.Footnote_Symbol_5 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_5).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 5)
                 {
                     Indicator.Footnote_ID_6 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(5).First().Footnote_ID;
                     Indicator.Map_ID_6 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(5).First().Map_ID;
+                    //Indicator.Footnote_Symbol_6 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_6).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 6)
                 {
                     Indicator.Footnote_ID_7 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(6).First().Footnote_ID;
                     Indicator.Map_ID_7 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(6).First().Map_ID;
+                    //Indicator.Footnote_Symbol_7 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_7).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 7)
                 {
                     Indicator.Footnote_ID_8 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(7).First().Footnote_ID;
                     Indicator.Map_ID_8 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(7).First().Map_ID;
+                    //Indicator.Footnote_Symbol_8 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_8).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 8)
                 {
                     Indicator.Footnote_ID_9 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(8).First().Footnote_ID;
                     Indicator.Map_ID_9 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(8).First().Map_ID;
+                    //Indicator.Footnote_Symbol_9 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_9).Footnote_Symbol;
                 }
                 if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 9)
                 {
                     Indicator.Footnote_ID_10 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(9).First().Footnote_ID;
                     Indicator.Map_ID_10 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(9).First().Map_ID;
+                    //Indicator.Footnote_Symbol_10 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_10).Footnote_Symbol;
                 }
             }
 
@@ -210,13 +280,19 @@ namespace IndInv.Controllers
         }
 
         [HttpPost]
-        public ActionResult editFootnoteMaps(IList<Indicator_Footnote_Maps> newMaps)
+        public ActionResult editFootnoteMaps(IList<Indicator_Footnote_MapsViewModel> newMapsViewModel)
         {
-            var mapID = newMaps[0].Map_ID;
-            var footnoteID = newMaps[0].Footnote_ID;
+
+            var newMaps = new Indicator_Footnote_Maps();
+            newMaps.Indicator_ID = newMapsViewModel.FirstOrDefault().Indicator_ID;
+            //newMaps.Footnote_ID = newMapsViewModel.FirstOrDefault().Footnote_Symbol_1 == null ? null : db.Footnotes.ToList().FirstOrDefault(x => x.Footnote_Symbol == newMapsViewModel.FirstOrDefault().Footnote_Symbol_1).Footnote_ID;
+            newMaps.Map_ID = newMapsViewModel.FirstOrDefault().Map_ID_1;
+
+            var mapID = newMaps.Map_ID;
+            var footnoteID = newMaps.Footnote_ID;
             if (footnoteID == null)
             {
-                var deleteMap = db.Indicator_Footnote_Maps.Find(newMaps[0].Map_ID);
+                var deleteMap = db.Indicator_Footnote_Maps.Find(newMaps.Map_ID);
                 if (deleteMap != null)
                 {
                     db.Indicator_Footnote_Maps.Remove(deleteMap);
@@ -228,13 +304,13 @@ namespace IndInv.Controllers
             {
                 if (ModelState.IsValid && db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
                 {
-                    db.Entry(newMaps[0]).State = EntityState.Modified;
+                    db.Entry(newMaps).State = EntityState.Modified;
                     db.SaveChanges();
                     return View();
                 }
                 else
                 {
-                    var oldMap = db.Indicator_Footnote_Maps.Find(newMaps[0].Map_ID);
+                    var oldMap = db.Indicator_Footnote_Maps.Find(newMaps.Map_ID);
                     var viewModel = new
                     {
                         Map_ID = oldMap.Map_ID,
@@ -249,13 +325,13 @@ namespace IndInv.Controllers
             {
                 if (ModelState.IsValid && db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
                 {
-                    db.Indicator_Footnote_Maps.Add(newMaps[0]);
+                    db.Indicator_Footnote_Maps.Add(newMaps);
                     db.SaveChanges();
                     var viewModel = new  
                     {
-                        Map_ID = newMaps[0].Map_ID,
-                        Footnote_ID  = newMaps[0].Footnote_ID ,
-                        Indicator_ID = newMaps[0].Indicator_ID,
+                        Map_ID = newMaps.Map_ID,
+                        Footnote_ID  = newMaps.Footnote_ID ,
+                        Indicator_ID = newMaps.Indicator_ID,
                         State = "NewID"
                     };
                     return Json(viewModel, JsonRequestBehavior.AllowGet);

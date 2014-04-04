@@ -4,16 +4,18 @@
     ViewBag.Title = "Log in";
 }
 
+<div class="row">
 <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
 </hgroup>
+</div>
 
 <section id="loginForm">
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    
+    <div class="row">
     <div class="small-6 column">
         <ol>
             <li>
@@ -32,6 +34,7 @@
             </li>
         </ol>
         <input type="submit" value="Log in" />
+    </div>
     </div>
 
 

@@ -9,7 +9,7 @@ namespace IndInv.Models.ViewModels
     {
         public List<Indicators> allIndicators { get; set; }
 
-        public List<Indicator_Footnote_Maps> allFootnotes { get; set; }
+        public List<Footnotes> allFootnotes { get; set; }
         public List<CoEs> allCoEs { get; set; }
         public List<Areas> allAreas { get; set; }
     }

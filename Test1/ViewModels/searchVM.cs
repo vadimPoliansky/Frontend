@@ -5,26 +5,32 @@ using System.Web;
 
 namespace IndInv.Models.ViewModels
 {
-    public class CoE_IDsViewModel
+    public class selectedCoEs
     {
         public Int16 CoE_ID { get; set; }
     }
 
-    public class Area_IDsViewModel
+    public class selectedAreas
     {
         public Int16 Area_ID { get; set; }
     }
 
-    public class Indicator_TypesViewModel
+    public class selectedTypes
     {
         public string Indicator_Type { get; set; }
+    }
+
+    public class selectedFootnotes
+    {
+        public string Footnote_ID { get; set; }
     }
 
     public class searchViewModel
     {
         public string searchString { get; set; }
-        public List<CoE_IDsViewModel> selectedCoEs { get; set; }
-        public List<Area_IDsViewModel> selectedAreas { get; set; }
-        public List<Indicator_TypesViewModel> selectedTypes { get; set; }
+        public List<selectedCoEs> selectedCoEs { get; set; }
+        public List<selectedAreas> selectedAreas { get; set; }
+        public List<selectedTypes> selectedTypes { get; set; }
+        public List<selectedFootnotes> selectedFootnotes { get; set; }
     }
 }

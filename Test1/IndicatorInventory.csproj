@@ -178,6 +178,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="ViewModels\FootnotesVM.cs" />
     <Compile Include="ViewModels\searchVM.cs" />
     <Compile Include="ViewModels\indexVM.cs" />
     <Compile Include="ViewModels\IndicatorListVM.cs" />
@@ -729,6 +730,7 @@
     <None Include="Content\Icons\svgs\fi-yen.svg" />
     <None Include="Content\Icons\svgs\fi-zoom-in.svg" />
     <None Include="Content\Icons\svgs\fi-zoom-out.svg" />
+    <Content Include="Views\Indicator\editFootnotes.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

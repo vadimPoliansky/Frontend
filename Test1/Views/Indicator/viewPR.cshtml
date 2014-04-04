@@ -214,9 +214,11 @@ html> .prRow
         }
     }
     </table>
-    foreach (var test in Model.allFootnoteMaps.Where(e => CoE.Indicator_CoE_Map.Contains(e.Indicator.Indicator_CoE_Map.First())).Distinct())
+    foreach (var test in Model.allFootnoteMaps.Where(x => CoE.Indicator_CoE_Map.Any(y => y.Indicator.Indicator_Footnote_Map == x.Indicator.Indicator_Footnote_Map)).Distinct())
     {
-        @Html.DisplayFor(modelItem => test.Footnote.Footnote_ID)
+        <div class="row"><div class="small">
+        @Html.DisplayFor(modelItem => test.Footnote.Footnote)
+        </div></div>
     }
     <br />
     <br />

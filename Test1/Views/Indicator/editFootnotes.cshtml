@@ -1,0 +1,113 @@
+﻿@using IndInv.Helpers
+@using IndInv.Models
+@using System.Globalization
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script src="../../Scripts/jquery.handsontable.full.js"></script>
+<script type='text/javascript' src="http://wurfljs.com/wurfl.js"></script>
+<link rel="stylesheet" media="screen" href="../../Scripts/jquery.handsontable.full.css" />
+@model IList<IndInv.Models.ViewModels.FootnotesViewModel>
+@using IndInv.Models
+@{
+    ViewBag.Title = "Edit Indicator Inventory";
+}
+
+
+<div id="dataTable">
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    var maxed = false
+        , resizeTimeout
+        , availableWidth
+        , availableHeight
+        , $window = $(window)
+        , $example1 = $('#dataTable');
+
+    var calculateSize = function () {
+        var offset = $example1.offset();
+        availableWidth = $window.width() - offset.left + $window.scrollLeft();
+        availableHeight = $window.height() - offset.top + $window.scrollTop();
+    };
+    $window.on('resize', calculateSize);
+
+    var values = @Html.Raw(Json.Encode(Model));
+    
+    $example1 .handsontable({
+        data: values,
+        startRows: 1,
+        startCols: 1,
+        rowHeaders: true,
+        colHeaders: true,
+        strechH: 'all',
+        strechW: 'all',
+        scrollH: 'auto',
+        scrollV: 'auto',
+        width: function () {
+            if (maxed && availableWidth === void 0) {
+                calculateSize();
+            }
+            return maxed  ?  availableWidth *0.98 : 300;
+        },
+        height: function () {
+            if (maxed && availableHeight === void 0) {
+                calculateSize();
+            }
+        return maxed  ?  availableHeight*0.98: 300;
+        },
+        fixedRowsTop: 0,
+        fixedColumnsLeft: 1,
+        manualColumnResize: true,
+        minSpareRows: 0,
+        contextMenu: true,
+        colHeaders: [
+            "Footnote",
+            "Footnote Text",
+        ],
+        columns: [
+            {data:"Footnote_Symbol"},
+            {data:"Footnote"},
+        ],
+        afterChange: function (change, source) {
+            if (source === 'loadData') {
+                return;
+            } else {
+                for (var i = 0; i< change.length; ++i){
+                    updateIndicator(change, i);
+                }
+            }
+        }
+    });
+
+    maxed = !maxed;
+    $example1.handsontable('render');
+
+    function updateIndicator(change, i){
+        var changedRow = change[i][0];
+        var changedParameter = change[i][1];
+        var changedValue = change[i][3];
+        $.get('@Url.Action("/editFootnotes")', {Footnote_ID_Filter : $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID')}, function (data) {
+            var newValue = data;
+            var parameters = []
+            parameters.push({
+                Footnote: (changedParameter=="Footnote" ?  changedValue : newValue[0].Footnote),
+                Footnote_ID: (changedParameter=="Footnote_ID" ?  changedValue : newValue[0].Footnote_ID),
+                Footnote_Symbol: (changedParameter=="Footnote_Symbol" ?  changedValue : newValue[0].Footnote_Symbol),
+            })
+            $.ajax({
+                url: this.action,
+                type: 'POST',
+                data: JSON.stringify(parameters),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result) {
+                },
+                error: function (request){
+                }
+            });
+        });
+    }
+
+</script>
+ 

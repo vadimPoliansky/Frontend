@@ -21,6 +21,17 @@ namespace IndInv.Models.ViewModels
         public string Footnote_ID_9 { get; set; }
         public string Footnote_ID_10 { get; set; }
 
+        public string Footnote_Symbol_1 { get; set; }
+        public string Footnote_Symbol_2 { get; set; }
+        public string Footnote_Symbol_3 { get; set; }
+        public string Footnote_Symbol_4 { get; set; }
+        public string Footnote_Symbol_5 { get; set; }
+        public string Footnote_Symbol_6 { get; set; }
+        public string Footnote_Symbol_7 { get; set; }
+        public string Footnote_Symbol_8 { get; set; }
+        public string Footnote_Symbol_9 { get; set; }
+        public string Footnote_Symbol_10 { get; set; }
+
         public Int16 Map_ID_1 { get; set; }
         public Int16 Map_ID_2 { get; set; }
         public Int16 Map_ID_3 { get; set; }

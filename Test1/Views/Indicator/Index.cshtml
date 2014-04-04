@@ -10,7 +10,7 @@
 <br />
 <div class="row">
     <div class="row" style="padding:10px">
-        <div class="small-10  large-12 columns" style="padding:0px"> 
+        <div class="small-10  medium-12 columns" style="padding:0px"> 
             <input type="text" placeholder="Search Indicators" id="searchString">        
         </div>
         <div class="show-for-small-only small-2 columns" style="padding:0px">
@@ -21,8 +21,14 @@
         <a class="button" data-dropdown="advancedSearchView">Advanced Search Options &raquo;</a>
     </div>
     <div class="show-for-medium-up row" style="padding:10px">
-        <a class="button" id="searchButtonBig">Search</a>
-        <a class="button" data-dropdown="advancedSearchView">Advanced Search Options &raquo;</a>
+        <div class="row">
+            <div class="small-4 columns">
+                <a class="button" data-dropdown="advancedSearchView">Advanced Search Options &raquo;</a>
+            </div>
+            <div class="small-7 columns">
+                <a class="button" id="searchButtonBig">Search</a>
+            </div>
+        </div>
     </div>
 
     <div class="f-dropdown content large" data-options="align:left" data-dropdown-content="" id="advancedSearchView">
@@ -51,8 +57,19 @@
                 string typeClean = (type == null) ? null : type.Replace("/", "");
                 typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
                 typeClean = (typeClean == null) ? null : typeClean.Replace(" ", "");
+                typeClean = (typeClean == null) ? null : typeClean.Replace("(", "");
+                typeClean = (typeClean == null) ? null : typeClean.Replace(")", "");
                 <div class="small-12 large-4 columns">
                     <li style="list-style:none"><input id="Type_@Html.DisplayTextFor(model => typeClean)" type="checkbox"><label for="Type_@Html.DisplayTextFor(model => typeClean)">@Html.DisplayTextFor(model => type)</label></li>
+                </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Indicator </legend>
+            @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
+            {
+                <div class="small-12 large-12 columns">
+                    <input id="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)" type="checkbox"><label for="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)">@Html.DisplayTextFor(model => footnote.Footnote)</label>
                 </div>
             }
         </fieldset>
@@ -90,6 +107,7 @@
         var coes = [];
         var areas = [];
         var types = [];
+        var footnotes = [];
         @foreach (var coe in Model.allCoEs)
         {
             @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
@@ -107,15 +125,24 @@
             string typeClean = (type == null) ? null : type.Replace("/", "");
             typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
             typeClean = (typeClean == null) ? null : typeClean.Replace(" ", "");
+            typeClean = (typeClean == null) ? null : typeClean.Replace("(", "");
+            typeClean = (typeClean == null) ? null : typeClean.Replace(")", "");
             @:if(jQuery("#Type_@Html.DisplayTextFor(model => typeClean)").is(':checked')){
             @:  types.push({ Indicator_Type : "@Html.DisplayTextFor(model => typeClean)" })    
             @:}
         }
+/*        @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
+        {
+            @:if(jQuery("#Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID )").is(':checked')){
+            @:  footnotes.push({ Footnote_ID : "@Html.DisplayTextFor(model => footnote.Footnote_ID)" })    
+            @:}
+        }*/
         parameters.push({
             searchString: jQuery("#searchString").val(),
             selectedCoEs: coes,
             selectedAreas: areas,
-            selectedTypes: types
+            selectedTypes: types,
+            selectedFootnotes: footnotes,
         })
         jQuery.ajax({
             url: "/indicator/searchAdvanced",
