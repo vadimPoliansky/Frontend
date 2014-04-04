@@ -324,9 +324,9 @@
             precision = 1
         }
         //maxY = Math.pow(10,Math.ceil(Math.log(maxY)/Math.log(10)));
-        maxY = Math.abs(maxY) > 1 ? Math.ceil(maxY/10)*10 : 1
+        maxY = Math.abs(maxY) > 1 ? Math.ceil(maxY/10)*10 : maxY
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
-        minY = Math.abs(minY) > 1 ? Math.floor(minY/10)*10 : 1
+        minY = Math.abs(minY) > 1 ? Math.floor(minY/10)*10 : minY
         minY = minY < 0 ? minY : 0;
 
         //var decimalFormat = '
