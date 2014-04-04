@@ -238,13 +238,20 @@
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.jqplot.min.css" />
 
 <style type="text/css">
-#chart1 .jqplot-point-label {
-    font-size:14;
-    font-weight:bolder;
+#chart1 .jqplot-point-label 
+{
+    color:fff;
+    font-size:12;
+    font-weight:bold;
+    background-color:rgba(32,92,144,0.8);
+    
 }
-#chart2 .jqplot-point-label {
-    font-size:14;
-    font-weight:bolder;
+#chart2 .jqplot-point-label 
+{
+    color:fff;
+    font-size:12;
+    font-weight:bold;
+    background-color:rgba(32,92,144,0.8);
 }
 #chart2 .jqplot-table-legend-label
 {
@@ -254,7 +261,7 @@
 
 <script>
     $(document).ready(function ($) {
-        var chartWidth = 275 - 20 - 20;
+
         var minBufferMutliplier = 0.68;
         var maxBufferMutliplier = 1.1;
         var lineWidthInt = 2;
@@ -271,6 +278,16 @@
                 currency=true;
             }
         }
+
+        var valuesArrayLengthString = [
+            @Html.DisplayTextFor(model => model.FY_13_14_Q1).ToString().Replace(".","").Length,
+            @Html.DisplayTextFor(model => model.FY_13_14_Q2).ToString().Replace(".","").Length,
+            @Html.DisplayTextFor(model => model.FY_13_14_Q3).ToString().Replace(".","").Length,
+            @Html.DisplayTextFor(model => model.FY_13_14_Q4).ToString().Replace(".","").Length,
+        ];
+        var axisLength = Math.max.apply(Math, valuesArrayLengthString);
+        //alert(axisLength);
+        var chartWidth = 300 - 20 - 20;
 
         var valuesArray = [
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10)) ?
@@ -300,10 +317,18 @@
         }
 
         var maxY = Math.max.apply(Math, valuesArray);
+        var precision;
+        if (maxY != 1){
+            precision = maxY.toString().indexOf('.') == -1 ? 0 : maxY.toString().split('.')[1].length;
+        } else {
+            precision = 1
+        }
+        //maxY = Math.pow(10,Math.ceil(Math.log(maxY)/Math.log(10)));
+        maxY = Math.abs(maxY) > 1 ? Math.ceil(maxY/10)*10 : 1
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
-        //alert (currency = valuesArray.indexOf());
+        minY = Math.abs(minY) > 1 ? Math.floor(minY/10)*10 : 1
+        minY = minY < 0 ? minY : 0;
 
-        var precision = maxY.toString().indexOf('.') == -1 ? 0 : maxY.toString().split('.')[1].length;
         //var decimalFormat = '
 
         var s1 = [
@@ -337,16 +362,17 @@
 
         var plot1 = $.jqplot('chart1', [s1], {
             series: [
-                { color: '#151B54' },
+                { color: '#205c90' },
             ],
             seriesDefaults: {
                 renderer: $.jqplot.BarRenderer,
                 useNegativeColors : false,
                 pointLabels: {
+                    location: "s",
                     show: true,
-                    hideZeros : true,
                     formatString: (currency)?"$%'d" 
-                                            :'%.' + (precision + 1) + 'f' 
+                                            :'%.' + (precision ) + 'f' ,
+                    hideZeros : true,
                 },
                 fillToZero: true,
             },
@@ -361,7 +387,7 @@
                         y: comparator_FY,
                         lineWidthInt: 3,
                         xOffset: 0,
-                        color: '#BDEDFF',
+                        color: '#9dbbd9',
                         shadow: false
                     }
                     },
@@ -370,7 +396,7 @@
                         y: target_FY,
                         lineWidth: lineWidthInt,
                         xOffset: 0,
-                        color: '#151B54',
+                        color: '#205c90',
                         shadow: false
                     }
                     },
@@ -382,8 +408,8 @@
                     ticks: ticks1
                 },
                 yaxis: {
-                    min: minY > 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
-                    max: maxY * maxBufferMutliplier,
+                    min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
+                    max: maxY,//* maxBufferMutliplier,
                     tickOptions: (currency)? { formatString: "$%'d" }
                                            : { formatString: '%.' + precision + 'f' }
                 }
@@ -392,22 +418,32 @@
 
         var plot2 = $.jqplot('chart2', [s2, sComparator], {
             seriesDefaults: {
-                pointLabels: {
-                    show: true,
-                    hideZeros: true,
-                    formatString: (currency)?"$%'d" 
-                                            :'%.' + (precision + 1) + 'f' 
-                },
                 useNegativeColors : false,
                 renderer: $.jqplot.BarRenderer, 
                 rendererOptions: {
-                    barPadding:1,
+                    barPadding:15,
                 },
                 fillToZero: true,
             },
             series: [
-                { color: '#151B54' },
-                { color: '#BDEDFF' },
+                { color: '#205c90',
+                  pointLabels: {
+                    location: "s",
+                    show: true,
+                    formatString: (currency)?"$%'d" 
+                                            :'%.' + (precision ) + 'f' ,
+                    hideZeros : true,
+                    },
+                },
+                { color: '#9dbbd9',
+                  pointLabels: {
+                    location: "s",
+                    show: true,
+                    formatString: (currency)?"$%'d" 
+                                            :'%.' + (precision ) + 'f' ,
+                    hideZeros : true,
+                    },
+                },
             ],
             grid: {
                 backgroundColor: '#fff'
@@ -421,7 +457,7 @@
                         lineWidth: lineWidthInt,
                         xminOffset: chartWidth/4 *3 + 'px',
                         xmaxOffset: '0px',
-                        color: '#151B54',
+                        color: '#205c90',
                         shadow: false
                     }
                     },
@@ -431,7 +467,7 @@
                         lineWidth: 3,
                         xminOffset: chartWidth/4 *3 + 'px',
                         xmaxOffset: '0px',
-                        color: '#BDEDFF',
+                        color: '#9dbbd9',
                         shadow: false
                     }
                     },*/
@@ -443,8 +479,8 @@
                     ticks: ticks2
                 },
                 yaxis: {
-                    min: minY > 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
-                    max: maxY * maxBufferMutliplier,
+                    min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
+                    max: maxY,//* maxBufferMutliplier,
                     tickOptions: (currency)? { formatString: "$%'d" }
                                            : { formatString: '%.' + precision + 'f' }
                 }
