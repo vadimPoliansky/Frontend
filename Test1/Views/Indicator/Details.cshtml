@@ -9,12 +9,14 @@
         <h1>@Html.DisplayTextFor(model => model.Indicator) </h1>
     </div>
     <div class="row">
+    @{var i = 1;}
     @foreach (var footnote in Model.Indicator_Footnote_Map.Where(x => x.Indicator_ID == Model.Indicator_ID))
     {
         <sup>
-       @Html.DisplayTextFor(model => footnote.Footnote.Footnote_Symbol).
-       <span>  </span>@Html.DisplayTextFor(model => footnote.Footnote.Footnote)  
+        @i.
+        <span>  </span>@Html.DisplayTextFor(model => footnote.Footnote.Footnote)
         </sup>
+        i++;
     }
     </div>
     <br />
