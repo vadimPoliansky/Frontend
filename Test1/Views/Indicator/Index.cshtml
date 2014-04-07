@@ -65,12 +65,34 @@
             }
         </fieldset>
         <fieldset>
-            <legend>Indicator </legend>
+            <legend>Indicator</legend>
             @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
             {
                 <div class="small-12 large-12 columns">
                     <input id="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)" type="checkbox"><label for="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)">@Html.DisplayTextFor(model => footnote.Footnote)</label>
                 </div>
+            }
+        </fieldset>
+        <fieldset>
+            <legend>Objectives</legend>
+            @{string[] temp = new string[] {
+              "Improve overall perception of experience for inpatients",
+              "Understand ambulatory patient satisfaction ",
+              "Improve hand hygiene adherence by 5%",
+              "Reduction of c-section surgical site infection rate",
+              "Reduce Length of stay for mom and babies",
+              "Reduce sick time",
+              "Improve overall  Mortality and Morbidity",
+              "Reduce Length of stay",
+             };
+              var i = 0;
+            }
+            @foreach (var objective in temp.OrderBy(x=>x))
+            {
+                <div class="small-12 large-12 columns">
+                    <input id="@i" type="checkbox"><label for="@i">@objective</label>
+                </div>
+                i++;
             }
         </fieldset>
         </div>
@@ -132,8 +154,8 @@
             @:}
         }
 /*        @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
-        {
-            @:if(jQuery("#Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID )").is(':checked')){
+          {
+            @:if(jQuery("#Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)").is(':checked')){
             @:  footnotes.push({ Footnote_ID : "@Html.DisplayTextFor(model => footnote.Footnote_ID)" })    
             @:}
         }*/

@@ -9,6 +9,16 @@
         <h1>@Html.DisplayTextFor(model => model.Indicator) </h1>
     </div>
     <div class="row">
+    @foreach (var footnote in Model.Indicator_Footnote_Map.Where(x => x.Indicator_ID == Model.Indicator_ID))
+    {
+        <sup>
+       @Html.DisplayTextFor(model => footnote.Footnote.Footnote_Symbol).
+       <span>  </span>@Html.DisplayTextFor(model => footnote.Footnote.Footnote)  
+        </sup>
+    }
+    </div>
+    <br />
+    <div class="row">
     @foreach(var map in Model.Indicator_CoE_Map.Where(x => x.Indicator_ID == Model.Indicator_ID)){
         <div class="round alert label"><h6 class="subheader" style="color:White">
        @Html.DisplayTextFor(model => map.CoE.CoE)

@@ -128,7 +128,7 @@ namespace IndInv.Models
         [Key]
         public string Footnote_ID { get; set; }
         public string Footnote { get; set; }
-        //public string Footnote_Symbol { get; set; }
+        public string Footnote_Symbol { get; set; }
         public virtual ICollection<Indicator_Footnote_Maps> Indicator_Footnote_Map { get; set; }
     }
 
