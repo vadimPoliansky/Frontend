@@ -36,7 +36,7 @@ namespace IndInv.Helpers
             }
 
             if (maxPos != 0){
-                numStr = str.Substring(minPos, maxPos - minPos + 1).Replace(",", "").Replace("$", "");
+                numStr = str.Substring(minPos, maxPos - minPos + 1).Replace(",", "").Replace("$", "").Replace(":", ".");
             }
             //string num = numStr;
              return numStr;

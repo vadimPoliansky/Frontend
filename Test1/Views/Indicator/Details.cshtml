@@ -249,6 +249,9 @@
 <script src="../../Scripts/jq_plugins/jqplot.categoryAxisRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.pointLabels.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.canvasOverlay.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.canvasOverlay.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.dateAxisRenderer.min.js"></script>
+
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.jqplot.min.css" />
 
 <style type="text/css">
@@ -281,26 +284,44 @@
         var lineWidthInt = 2;
 
         var currency=false;
+        var time=false;
+        var precision;
         var valuesArrayString = [
-            "@Html.DisplayTextFor(model => model.FY_13_14_Q1)",
-            "@Html.DisplayTextFor(model => model.FY_13_14_Q2)",
-            "@Html.DisplayTextFor(model => model.FY_13_14_Q3)",
-            "@Html.DisplayTextFor(model => model.FY_13_14_Q4)",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_10_11)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_10_11)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_11_12)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_12_13)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.Target)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.Comparator)).ToString())",
         ];
         for(i=0;i<valuesArrayString.length;i++){
+            if (valuesArrayString[i] != null) {
+                precision = valuesArrayString[i].indexOf('.') != -1 ? valuesArrayString[i].split('.')[1].length : 0;
+            }
+
             if(valuesArrayString[i].indexOf("$") != -1){
                 currency=true;
+                i = valuesArrayString.length;
+            }
+            if(valuesArrayString[i].indexOf(":") != -1){
+                time=true;
+                i = valuesArrayString.length;
             }
         }
 
-        var valuesArrayLengthString = [
+        @*var valuesArrayLengthString = [
             @Html.DisplayTextFor(model => model.FY_13_14_Q1).ToString().Replace(".","").Length,
             @Html.DisplayTextFor(model => model.FY_13_14_Q2).ToString().Replace(".","").Length,
             @Html.DisplayTextFor(model => model.FY_13_14_Q3).ToString().Replace(".","").Length,
             @Html.DisplayTextFor(model => model.FY_13_14_Q4).ToString().Replace(".","").Length,
         ];
-        var axisLength = Math.max.apply(Math, valuesArrayLengthString);
-        //alert(axisLength);
+        //var axisLength = Math.max.apply(Math, valuesArrayLengthString);
+        //alert(axisLength);*@
         var chartWidth = 300 - 20 - 20;
 
         var valuesArray = [
@@ -331,12 +352,10 @@
         }
 
         var maxY = Math.max.apply(Math, valuesArray);
-        var precision;
-        if (maxY != 1){
-            precision = maxY.toString().indexOf('.') == -1 ? 0 : maxY.toString().split('.')[1].length;
-        } else {
+        if (maxY == 1){
             precision = 1
         }
+
         //maxY = Math.pow(10,Math.ceil(Math.log(maxY)/Math.log(10)));
         maxY = Math.abs(maxY) > 1 ? Math.ceil(maxY/10)*10 : maxY
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
@@ -384,8 +403,9 @@
                 pointLabels: {
                     location: "s",
                     show: true,
-                    formatString: (currency)?"$%'d" 
-                                            :'%.' + (precision ) + 'f' ,
+                    formatString: (currency)?"$%'d" :
+                                  (time)?'%.' + (2 ) + 'f':
+                                  '%.' + (precision ) + 'f',
                     hideZeros : true,
                 },
                 fillToZero: true,
@@ -424,8 +444,9 @@
                 yaxis: {
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
-                    tickOptions: (currency)? { formatString: "$%'d" }
-                                           : { formatString: '%.' + precision + 'f' }
+                    tickOptions: (currency)? { formatString: "$%'d" }   :
+                                 (time)?     { formatString: '%.' + 2 + 'f' }  :
+                                             { formatString: '%.' + precision + 'f' }
                 }
             }
         });
@@ -444,8 +465,9 @@
                   pointLabels: {
                     location: "s",
                     show: true,
-                    formatString: (currency)?"$%'d" 
-                                            :'%.' + (precision ) + 'f' ,
+                    formatString: (currency)?"$%'d" :
+                                  (time)?'%.' + (2 ) + 'f':
+                                  '%.' + (precision ) + 'f',
                     hideZeros : true,
                     },
                 },
@@ -453,8 +475,9 @@
                   pointLabels: {
                     location: "s",
                     show: true,
-                    formatString: (currency)?"$%'d" 
-                                            :'%.' + (precision ) + 'f' ,
+                    formatString: (currency)?"$%'d" :
+                                  (time)?'%' + (2 ) + 'f':
+                                  '%.' + (precision ) + 'f',
                     hideZeros : true,
                     },
                 },
@@ -495,8 +518,9 @@
                 yaxis: {
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
-                    tickOptions: (currency)? { formatString: "$%'d" }
-                                           : { formatString: '%.' + precision + 'f' }
+                    tickOptions: (currency)? { formatString: "$%'d" }   :
+                                 (time)?     { formatString: '%.' + 2 + 'f' }  :
+                                             { formatString: '%.' + precision + 'f' }
                 }
             }
         });
