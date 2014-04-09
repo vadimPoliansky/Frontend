@@ -50,9 +50,9 @@
                 </div>
             }
         </fieldset>
-        <fieldset>
+        @*<fieldset>
             <legend>Indicator Types</legend>
-            @foreach (var type in Model.allIndicators.Select(x => x.Indicator_Type).OrderBy(x => x).Distinct())
+            foreach (var type in Model.allIndicators.Select(x => x.Indicator_Type).OrderBy(x => x).Distinct())
             {
                 string typeClean = (type == null) ? null : type.Replace("/", "");
                 typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
@@ -66,7 +66,7 @@
         </fieldset>
         <fieldset>
             <legend>Indicator</legend>
-            @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
+            foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
             {
                 <div class="small-12 large-12 columns">
                     <input id="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)" type="checkbox"><label for="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)">@Html.DisplayTextFor(model => footnote.Footnote)</label>
@@ -75,7 +75,7 @@
         </fieldset>
         <fieldset>
             <legend>Objectives</legend>
-            @{string[] temp = new string[] {
+            {string[] temp = new string[] {
               "Improve overall perception of experience for inpatients",
               "Understand ambulatory patient satisfaction ",
               "Improve hand hygiene adherence by 5%",
@@ -87,14 +87,14 @@
              };
               var i = 0;
             }
-            @foreach (var objective in temp.OrderBy(x=>x))
+            foreach (var objective in temp.OrderBy(x=>x))
             {
                 <div class="small-12 large-12 columns">
                     <input id="@i" type="checkbox"><label for="@i">@objective</label>
                 </div>
                 i++;
             }
-        </fieldset>
+        </fieldset>*@
         </div>
     </div>
 </div>
@@ -153,12 +153,12 @@
             @:  types.push({ Indicator_Type : "@Html.DisplayTextFor(model => typeClean)" })    
             @:}
         }
-/*        @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
+        @*foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
           {
             @:if(jQuery("#Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)").is(':checked')){
             @:  footnotes.push({ Footnote_ID : "@Html.DisplayTextFor(model => footnote.Footnote_ID)" })    
             @:}
-        }*/
+        }*@
         parameters.push({
             searchString: jQuery("#searchString").val(),
             selectedCoEs: coes,

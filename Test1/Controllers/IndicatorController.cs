@@ -22,12 +22,20 @@ namespace IndInv.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var viewModel = new indexViewModel
+            /*var viewModel = new indexViewModel
             {
                 allIndicators = db.Indicators.ToList(),
                 allCoEs = db.CoEs.ToList(),
                 allAreas = db.Areas.ToList(),
                 allFootnotes= db.Footnotes.ToList()
+            };*/
+
+            var viewModel = new indexViewModel
+            {
+                allIndicators = db.Indicators.ToList(),
+                allCoEs = db.CoEs.Where(x => x.CoE_ID == 10 || x.CoE_ID == 27 || x.CoE_ID == 30 || x.CoE_ID == 40 || x.CoE_ID == 50).ToList(),
+                allAreas = db.Areas.Where(x => x.Area_ID == 1).ToList(),
+                //allFootnotes= db.Footnotes.Where(x => x.Footnote_ID == 9999).ToList()
             };
 
             return View(viewModel);
@@ -45,7 +53,8 @@ namespace IndInv.Controllers
             TempData.Keep();
             searchViewModel advancedSearch = (searchViewModel)TempData["search"];
 
-            List<Indicators> indicatorList = db.Indicators.ToList();
+            //List<Indicators> indicatorList = db.Indicators.ToList();
+            List<Indicators> indicatorList = db.Indicators.Where(x => x.Area_ID.Equals(1)).Where(y => y.Indicator_CoE_Map.Any(x => x.CoE_ID.Equals(10) || x.CoE_ID.Equals(27) || x.CoE_ID.Equals(30) || x.CoE_ID.Equals(40) || x.CoE_ID.Equals(50))).ToList();
             List<Indicators> indicatorListString = new List<Indicators>();
             string searchString = advancedSearch.searchString;
             if (searchString != null)
