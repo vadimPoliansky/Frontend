@@ -153,12 +153,12 @@
             @:  types.push({ Indicator_Type : "@Html.DisplayTextFor(model => typeClean)" })    
             @:}
         }
-/*        @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
+        @foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
           {
             @:if(jQuery("#Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)").is(':checked')){
             @:  footnotes.push({ Footnote_ID : "@Html.DisplayTextFor(model => footnote.Footnote_ID)" })    
             @:}
-        }*/
+        }
         parameters.push({
             searchString: jQuery("#searchString").val(),
             selectedCoEs: coes,
