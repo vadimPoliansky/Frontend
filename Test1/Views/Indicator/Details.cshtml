@@ -351,7 +351,7 @@
             return arrOriginal.filter(function (el) { return el !== elementToRemove });
         }
 
-        var maxY = Math.max.apply(Math, valuesArray);
+        var maxY = Math.max.apply(Math, valuesArray)+0.01;
         if (maxY == 1){
             precision = 1
         }
@@ -361,6 +361,12 @@
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
         minY = Math.abs(minY) > 1 ? Math.floor(minY/10)*10 : minY
         minY = minY < 0 ? minY : 0;
+
+        var tickInterval = Math.pow(10,Math.floor(Math.log(maxY/2 - 0.01)/Math.log(10)));
+        tickInterval = maxY / tickInterval > 10 ? tickInterval * 2 : tickInterval;
+        tickInterval = maxY / tickInterval < 5 ? tickInterval / 2 : tickInterval;
+        maxY = maxY % tickInterval === 0 ? maxY : maxY + tickInterval/2;
+        
 
         //var decimalFormat = '
 
@@ -444,6 +450,7 @@
                 yaxis: {
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
+                    tickInterval: tickInterval,
                     tickOptions: (currency)? { formatString: "$%'d" }   :
                                  (time)?     { formatString: '%.' + 2 + 'f' }  :
                                              { formatString: '%.' + precision + 'f' }
@@ -518,6 +525,7 @@
                 yaxis: {
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
+                    tickInterval: tickInterval,
                     tickOptions: (currency)? { formatString: "$%'d" }   :
                                  (time)?     { formatString: '%.' + 2 + 'f' }  :
                                              { formatString: '%.' + precision + 'f' }
