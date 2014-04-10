@@ -351,13 +351,12 @@
             return arrOriginal.filter(function (el) { return el !== elementToRemove });
         }
 
-        var maxY = Math.max.apply(Math, valuesArray)+0.01;
-        if (maxY == 1){
-            precision = 1
-        }
+        var maxYarray = Math.max.apply(Math, valuesArray)+0.01;
+        var maxY = maxYarray;
+        var maxLog = Math.pow(10,Math.floor(Math.log(maxY / 2)/Math.log(10)))/2
+        if (maxY == 1){ precision = 1 }
+        maxY = Math.abs(maxYarray) > 1 ? Math.ceil(maxYarray/maxLog)*maxLog : maxYarray;
 
-        //maxY = Math.pow(10,Math.ceil(Math.log(maxY)/Math.log(10)));
-        maxY = Math.abs(maxY) > 1 ? Math.ceil(maxY/10)*10 : maxY
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
         minY = Math.abs(minY) > 1 ? Math.floor(minY/10)*10 : minY
         minY = minY < 0 ? minY : 0;
@@ -366,6 +365,7 @@
         tickInterval = maxY / tickInterval > 10 ? tickInterval * 2 : tickInterval;
         tickInterval = maxY / tickInterval < 5 ? tickInterval / 2 : tickInterval;
         maxY = maxY % tickInterval === 0 ? maxY : maxY + tickInterval/2;
+        maxY = maxY / maxYarray > 2 ? maxY / 2 : maxY;
         
 
         //var decimalFormat = '
