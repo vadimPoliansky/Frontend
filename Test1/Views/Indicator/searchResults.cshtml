@@ -64,6 +64,80 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td colspan=100% style="text-align:center; padding:0px">
+                    <table style="display:inline-block; width:100%">
+                    <thead>
+                        <tr>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_10_11).ToString().Replace("FY ", "").Replace("/", "")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_11_12).ToString().Replace("FY ", "").Replace("/", "")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_12_13).ToString().Replace("FY ", "").Replace("/", "")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_13_14_Q1).ToString().Replace("FY ", "").Replace("/","")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_13_14_Q2).ToString().Replace("FY ", "").Replace("/", "")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_13_14_Q3).ToString().Replace("FY ", "").Replace("/", "")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_13_14_Q4).ToString().Replace("FY ", "").Replace("/", "")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.FY_13_14_YTD).ToString().Replace("FY ", "").Replace("/","")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.Target).ToString().Replace("FY ", "").Replace("/","")
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayNameFor(modelItem => item.Comparator).ToString().Replace("FY ", "").Replace("/","")
+                        </sub></td>
+                        </tr>                    
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_10_11) <sup>@Html.DisplayTextFor(modelItem => item.FY_10_11_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_11_12) <sup>@Html.DisplayTextFor(modelItem => item.FY_11_12_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_12_13) <sup>@Html.DisplayTextFor(modelItem => item.FY_12_13_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_13_14_Q1) <sup>@Html.DisplayTextFor(modelItem => item.FY_13_14_Q1_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_13_14_Q2) <sup>@Html.DisplayTextFor(modelItem => item.FY_13_14_Q2_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_13_14_Q3) <sup>@Html.DisplayTextFor(modelItem => item.FY_13_14_Q3_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_13_14_Q4) <sup>@Html.DisplayTextFor(modelItem => item.FY_13_14_Q4_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.FY_13_14_YTD) <sup>@Html.DisplayTextFor(modelItem => item.FY_13_14_YTD_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.Target) <sup>@Html.DisplayTextFor(modelItem => item.Target_Sup)</sup>
+                        </sub></td>
+                        <td style="padding:0px;text-align:center;width:13%"><sub>
+                        @Html.DisplayTextFor(modelItem => item.Comparator) <sup>@Html.DisplayTextFor(modelItem => item.Comparator_Sup)</sup>
+                        </sub></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
