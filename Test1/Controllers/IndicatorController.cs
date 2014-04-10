@@ -371,7 +371,8 @@ namespace IndInv.Controllers
         [HttpGet]
         public ActionResult editInventory(String Indicator_ID_Filter)
         {
-            var viewModelItems = db.Indicators.ToArray();
+            //var viewModelItems = db.Indicators.ToArray();
+            var viewModelItems = db.Indicators.Where(x => x.Area_ID.Equals(1)).Where(y => y.Indicator_CoE_Map.Any(x => x.CoE_ID.Equals(10) || x.CoE_ID.Equals(27) || x.CoE_ID.Equals(30) || x.CoE_ID.Equals(40) || x.CoE_ID.Equals(50))).ToArray();
             var viewModel = viewModelItems.OrderBy(x => x.Indicator_ID).Select(x => new InventoryViewModel
             {
                 Indicator_ID = x.Indicator_ID,
