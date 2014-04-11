@@ -53,6 +53,11 @@ namespace IndInv.Controllers
             TempData.Keep();
             searchViewModel advancedSearch = (searchViewModel)TempData["search"];
 
+            if (advancedSearch == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             //List<Indicators> indicatorList = db.Indicators.ToList();
             List<Indicators> indicatorList = db.Indicators.Where(x => x.Area_ID.Equals(1)).Where(y => y.Indicator_CoE_Map.Any(x => x.CoE_ID.Equals(10) || x.CoE_ID.Equals(27) || x.CoE_ID.Equals(30) || x.CoE_ID.Equals(40) || x.CoE_ID.Equals(50))).ToList();
             List<Indicators> indicatorListString = new List<Indicators>();

@@ -279,13 +279,12 @@
 <script>
     $(document).ready(function ($) {
 
-        var minBufferMutliplier = 0.68;
-        var maxBufferMutliplier = 1.1;
         var lineWidthInt = 2;
 
         var currency=false;
         var time=false;
         var precision;
+
         var valuesArrayString = [
             "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())",
@@ -367,9 +366,6 @@
         maxY = maxY % tickInterval === 0 ? maxY : maxY + tickInterval/2;
         maxY = maxY / maxYarray > 2 ? maxY / 2 : maxY;
         
-
-        //var decimalFormat = '
-
         var s1 = [
                 valuesArray[0],
                 valuesArray[1],
@@ -394,8 +390,6 @@
 
         var target_4 = valuesArray[8]
 
-        // Can specify a custom tick Array.
-        // Ticks should match up one for each y value (category) in the series.
         var ticks1 = ['Q1', 'Q2', 'Q3', 'Q4'];
         var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
 
