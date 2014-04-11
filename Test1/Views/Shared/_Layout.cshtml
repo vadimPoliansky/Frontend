@@ -38,8 +38,11 @@
 <nav class="top-bar docs-bar" data-topbar >
     <ul class="title-area">
       <!-- Title Area -->
-      <li class="name">
-
+      <li class="name"><h5>
+            <div class="show-for-small-only" style="vertical-align:middle">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </h5>
       </li>
       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
       <li class="toggle-topbar menu-icon"><a href="">Menu</a></li>
@@ -51,6 +54,11 @@
             <h1><a href="/indicator">Search Indicators</a></h1>
         </li>
       </ul>
+      <div class="show-for-medium-up">
+        <ul class="right">
+            @Html.Partial("_LoginPartial")
+        </ul>
+      </div>
     </section>
 </nav>
 @*</div>*@
