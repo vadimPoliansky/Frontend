@@ -133,3 +133,8 @@ C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList7.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList8.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList9.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\logo.png
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\logoOPEO.png
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\monthly.png
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\na.png
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\quaterly.png
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\target.png

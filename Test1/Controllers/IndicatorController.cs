@@ -611,15 +611,15 @@ namespace IndInv.Controllers
 
             string picPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/logo.png");
             SLPicture picLogo = new SLPicture(picPath);
-            string picPathOPEO = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/logoOPEO.png");
+            string picPathOPEO = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/logoOPEO.png");
             SLPicture picLogoOPEO = new SLPicture(picPathOPEO);
-            string picMonthlyPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/Monthly.png");
+            string picMonthlyPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/Monthly.png");
             SLPicture picMonthly = new SLPicture(picMonthlyPath);
-            string picQuaterlyPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/quaterly.png");
+            string picQuaterlyPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/quaterly.png");
             SLPicture picQuaterly = new SLPicture(picQuaterlyPath);
-            string picNAPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/na.png");
+            string picNAPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/na.png");
             SLPicture picNA = new SLPicture(picNAPath);
-            string picTargetPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/target.png");
+            string picTargetPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/target.png");
             SLPicture picTarget = new SLPicture(picTargetPath);
 
             foreach (var ws in wb.Worksheets)
