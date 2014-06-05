@@ -109,4 +109,8 @@ C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\ClosedXML.xml
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\DocumentFormat.OpenXml.dll
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\SpreadsheetLight.dll
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\SpreadsheetLight.xml
-C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\obj\Debug\Indicator Inventory.g.resources
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\ClosedXML.dll
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\ClosedXML.xml
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\DocumentFormat.OpenXml.dll
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\SpreadsheetLight.dll
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\SpreadsheetLight.xml
