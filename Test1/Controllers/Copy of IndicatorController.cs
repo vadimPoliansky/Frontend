@@ -1,0 +1,873 @@
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using IndInv.Models;
+using IndInv.Models.ViewModels;
+using DocumentFormat.OpenXml;
+using ClosedXML.Excel;
+
+namespace IndInv.Controllers
+{
+
+    public class IndicatorController : Controller
+    {
+        private InventoryDBContext db = new InventoryDBContext();
+
+        //
+        // GET: /Indicator/
+
+        [HttpGet]
+        public ActionResult Index()
+        {
+            /*var viewModel = new indexViewModel
+            {
+                allIndicators = db.Indicators.ToList(),
+                allCoEs = db.CoEs.ToList(),
+                allAreas = db.Areas.ToList(),
+                allFootnotes= db.Footnotes.ToList()
+            };*/
+
+            var viewModel = new indexViewModel
+            {
+                allIndicators = db.Indicators.ToList(),
+                allCoEs = db.CoEs.Where(x => x.CoE_ID == 10 || x.CoE_ID == 27 || x.CoE_ID == 30 || x.CoE_ID == 40 || x.CoE_ID == 50).ToList(),
+                allAreas = db.Areas.Where(x => x.Area_ID == 1).ToList(),
+                //allFootnotes= db.Footnotes.Where(x => x.Footnote_ID == 9999).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult searchAdvanced(IList<searchViewModel> advancedSearch)
+        {
+                TempData["search"] = advancedSearch.FirstOrDefault();
+                return Json(Url.Action("searchResults", "Indicator")); 
+        }
+
+        public ActionResult searchResults()
+        {
+            TempData.Keep();
+            searchViewModel advancedSearch = (searchViewModel)TempData["search"];
+
+            if (advancedSearch == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            //List<Indicators> indicatorList = db.Indicators.ToList();
+            List<Indicators> indicatorList = db.Indicators.Where(x => x.Area_ID.Equals(1)).Where(y => y.Indicator_CoE_Map.Any(x => x.CoE_ID.Equals(10) || x.CoE_ID.Equals(27) || x.CoE_ID.Equals(30) || x.CoE_ID.Equals(40) || x.CoE_ID.Equals(50))).ToList();
+            List<Indicators> indicatorListString = new List<Indicators>();
+            string searchString = advancedSearch.searchString;
+            if (searchString != null)
+            {
+                string[] searchStrings;
+                searchStrings = searchString.Split(' ');
+                foreach (var sS in searchStrings)
+                {
+                    indicatorList = indicatorList.Where(s => s.Indicator != null && s.Indicator.ToLower().Contains(sS.ToLower())).ToList();
+                }
+            }
+
+            List<Indicators> indicatorListCoE = new List<Indicators>();
+            List<selectedCoEs> searchCoEs;
+            searchCoEs = advancedSearch.selectedCoEs;
+            if (searchCoEs != null)
+            {
+                foreach (var coe in searchCoEs)
+                {
+                    indicatorListCoE.AddRange(db.Indicators.Where(s => s.Indicator_CoE_Map.Any(x => x.CoE_ID == coe.CoE_ID)).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListCoE).ToList();
+            }
+            
+            List<Indicators> indicatorListAreas = new List<Indicators>();
+            List<selectedAreas> searchAreas;
+            searchAreas = advancedSearch.selectedAreas;
+            if (searchAreas != null)
+            {
+                foreach (var area in searchAreas)
+                {
+                    indicatorListAreas.AddRange(db.Indicators.Where(s => s.Area_ID == area.Area_ID).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListAreas).ToList();
+            }
+
+            List<Indicators> indicatorListTypes = new List<Indicators>();
+            List<selectedTypes> searchTypes;
+            searchTypes = advancedSearch.selectedTypes;
+            if (searchTypes != null)
+            {
+                foreach (var type in searchTypes)
+                {
+                    indicatorListTypes.AddRange(db.Indicators.Where(s => s.Indicator_Type.Replace("/","").Replace("&","").Replace(" ","") == type.Indicator_Type).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListTypes).ToList();
+            }
+
+            List<Indicators> indicatorListFootnotes = new List<Indicators>();
+            List<selectedFootnotes> searchFootnotes;
+            searchFootnotes = advancedSearch.selectedFootnotes;
+            if (searchFootnotes != null)
+            {
+                foreach (var footnote in searchFootnotes)
+                {
+                    indicatorListFootnotes.AddRange(db.Indicators.Where(s => s.Indicator_Footnote_Map.Any(x => x.Footnote_ID == footnote.Footnote_ID)).ToList());
+                }
+                indicatorList = indicatorList.Intersect(indicatorListFootnotes).ToList();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var viewModel = new indexViewModel
+                {
+                    allIndicators = indicatorList.Distinct().ToList(),
+                    
+//                    allCoEs = db.CoEs.ToList(),
+//                    allAreas = db.Areas.ToList(),
+ //                   allFootnotes = db.Footnotes.ToList()
+                };
+                return View(viewModel);
+            }
+
+            return View();
+        }
+
+        public ActionResult viewPR()
+        {
+            ModelState.Clear();
+            var viewModel = new PRViewModel
+            {
+                //allCoEs = db.CoEs.ToList(),
+                allCoEs = db.CoEs.ToList(),
+                allMaps = db.Indicator_CoE_Maps.ToList(),
+                allFootnoteMaps = db.Indicator_Footnote_Maps.ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        public ActionResult viewPRExcel()
+        {
+            ModelState.Clear();
+            var viewModel = new PRViewModel
+            {
+                //allCoEs = db.CoEs.ToList(),
+                allCoEs = db.CoEs.ToList(),
+                allMaps = db.Indicator_CoE_Maps.ToList(),
+                allFootnoteMaps = db.Indicator_Footnote_Maps.ToList()
+            };
+
+            // Create the workbook
+            var wb = new XLWorkbook();
+            var swPRName = "PR";
+            var swDefName = "Definitions";
+            var wsPR = wb.Worksheets.Add(swPRName);
+            var wsDef = wb.Worksheets.Add(swDefName);
+            List<IXLWorksheet> wsList = new List<IXLWorksheet>();
+            wsList.Add(wsPR);
+            wsList.Add(wsDef);
+
+            var prBlue = XLColor.FromArgb(0, 51, 102);
+            var prGreen = XLColor.FromArgb(0,118,53);
+            var prYellow = XLColor.FromArgb(255,192,0);
+            var prRed = XLColor.FromArgb(255,0,0);
+            var prHeader1Fill = prBlue;
+            var prHeader1Font = XLColor.White;
+            var prHeader2Fill = XLColor.White;
+            var prHeader2Font = XLColor.Black;
+            var prBorder = XLColor.FromArgb(0, 0, 0);
+            var prAreaFill = XLColor.FromArgb(192, 192, 192);
+            var prAreaFont = XLColor.Black;
+            var prBorderWidth = XLBorderStyleValues.Thin;
+            var prFontSize = 10;
+            var prTitleFont = 20;
+            var prFootnoteSize = 8;
+            var prHeighSeperator = 7.5;
+
+
+            var prNumberWidth = 4;
+            var prIndicatorWidth = 50;
+            var prValueWidth = 10;
+
+            var prFootnoteCharsNewLine = 125;
+
+            foreach (var ws in wsList)
+            {
+                var currentRow = 1;
+                int startRow;
+                foreach (var coe in viewModel.allCoEs.Where(x => x.CoE_ID == 20))
+                {
+                    string[,] columnHeaders = new string[,]{
+                        {"Number",""},
+                        {"Indicator",""},
+                        {"FY_10_11",""},
+                        {"FY_11_12",""},
+                        {"FY_12_13",""},
+                        {"FY 13 14 Performance","FY_13_14_Q1"},
+                        {"FY 13 14 Performance","FY_13_14_Q2"},
+                        {"FY 13 14 Performance","FY_13_14_Q3"},
+                        {"FY 13 14 Performance","FY_13_14_Q4"},
+                        {"FY 13 14 Performance","FY_13_14_YTD"},
+                        {"Target",""},
+                        {"Performance_Threshold",""},
+                        {"Comparator",""}
+                    };
+
+                    var currentCol = 1;
+                    var prHeader2ColStart = 99;
+                    var prHeader2ColEnd = 1;
+                    int maxCol = columnHeaders.GetUpperBound(0) + 1;
+
+                    var prTitle = ws.Cell(currentRow, 1);
+                    prTitle.Value = coe.CoE;
+                    prTitle.Style.Font.FontSize = prTitleFont;
+                    prTitle.Style.Font.Bold = true;
+                    prTitle.Style.Font.FontColor = prHeader1Font;
+                    prTitle.Style.Fill.BackgroundColor = prHeader1Fill;
+                    ws.Range(ws.Cell(currentRow, 1), ws.Cell(currentRow, maxCol)).Merge();
+                    ws.Range(ws.Cell(currentRow + 1, 1), ws.Cell(currentRow + 1, maxCol)).Merge();
+                    ws.Row(currentRow + 1).Height = prHeighSeperator;
+                    currentRow += 2;
+                    startRow = currentRow;
+
+                    for (int i = 0; i <= columnHeaders.GetUpperBound(0); i++)
+                    {
+                        if (columnHeaders[i, 1] == "")
+                        {
+                            var columnField = columnHeaders[i, 0];
+                            string cellValue;
+                            Type t = typeof(Indicators);
+                            cellValue = t.GetProperty(columnField) != null ?
+                                ModelMetadataProviders.Current.GetMetadataForProperty(null, typeof(Indicators), columnField).DisplayName :
+                                ModelMetadataProviders.Current.GetMetadataForProperty(null, typeof(Indicator_CoE_Maps), columnField).DisplayName;
+                            ws.Cell(currentRow, currentCol).Value = cellValue;
+                            ws.Range(ws.Cell(currentRow, currentCol), ws.Cell(currentRow + 1, currentCol)).Merge();
+                            currentCol++;
+                        }
+                        else
+                        {
+                            var columnField = columnHeaders[i, 1];
+                            var columnFieldTop = columnHeaders[i, 0];
+                            ws.Cell(currentRow + 1, currentCol).Value = ModelMetadataProviders.Current.GetMetadataForProperty(null, typeof(Indicators), columnField).DisplayName;
+                            ws.Cell(currentRow, currentCol).Value = columnFieldTop;
+                            if (currentCol < prHeader2ColStart) { prHeader2ColStart = currentCol; }
+                            if (currentCol > prHeader2ColEnd) { prHeader2ColEnd = currentCol; }
+                            currentCol++;
+                        }
+                    }
+                    currentCol--;
+                    ws.Range(ws.Cell(currentRow, prHeader2ColStart).Address, ws.Cell(currentRow, prHeader2ColEnd).Address).Merge();
+                    var prHeader1 = ws.Range(ws.Cell(currentRow, 1).Address, ws.Cell(currentRow + 1, currentCol).Address);
+                    var prHeader2 = ws.Range(ws.Cell(currentRow + 1, prHeader2ColStart).Address, ws.Cell(currentRow + 1, prHeader2ColEnd).Address);
+
+                    prHeader1.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    prHeader1.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                    prHeader1.Style.Fill.BackgroundColor = prHeader1Fill;
+                    prHeader1.Style.Font.FontColor = prHeader1Font;
+
+                    prHeader2.Style.Fill.BackgroundColor = prHeader2Fill;
+                    prHeader2.Style.Font.FontColor = prHeader2Font;
+
+                    currentRow += 2;
+
+                    List<Footnotes> footnotes = new List<Footnotes>();
+                    foreach (var areaMap in coe.Area_CoE_Map)
+                    {
+                        var prArea = ws.Range(ws.Cell(currentRow, 1), ws.Cell(currentRow, maxCol));
+                        prArea.Merge();
+                        prArea.Style.Fill.BackgroundColor = prAreaFill;
+                        prArea.Style.Font.FontColor = prAreaFont;
+                        prArea.Value = areaMap.Area.Area;
+                        currentRow++;
+
+                        foreach (var map in viewModel.allMaps.Where(e => e.Indicator.Area.Equals(areaMap.Area)).Where(d => d.CoE.CoE.Contains(coe.CoE)).OrderBy(f => f.Number))
+                        {
+                            currentCol = 1;
+
+                            ws.Cell(currentRow, currentCol).Value = map.Number;
+                            ws.Cell(currentRow, currentCol).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                            currentCol++;
+
+                            int j = 0;
+                            ws.Cell(currentRow, currentCol).Value = map.Indicator.Indicator;
+                            foreach (var footnote in map.Indicator.Indicator_Footnote_Map.Where(e => e.Indicator_ID == map.Indicator_ID).OrderBy(e => e.Indicator_ID))
+                            {
+                                if (!footnotes.Contains(footnote.Footnote)) { footnotes.Add(footnote.Footnote); }
+                                if (j != 0)
+                                {
+                                    ws.Cell(currentRow, currentCol).RichText.AddText(",").VerticalAlignment = XLFontVerticalTextAlignmentValues.Superscript;
+                                }
+                                ws.Cell(currentRow, currentCol).RichText.AddText(footnote.Footnote_ID).VerticalAlignment = XLFontVerticalTextAlignmentValues.Superscript;
+                                j++;
+                            }
+                            ws.Cell(currentRow, currentCol).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                            currentCol++;
+
+                            string[,] columnIndicators = new string[,]{
+                                {map.Indicator.FY_10_11, map.Indicator.FY_10_11_Sup,""},
+                                {map.Indicator.FY_11_12, map.Indicator.FY_11_12_Sup,""},
+                                {map.Indicator.FY_12_13, map.Indicator.FY_12_13_Sup,""},
+                                {map.Indicator.FY_13_14_Q1, map.Indicator.FY_13_14_Q1_Sup,map.Indicator.Q1_Color,},
+                                {map.Indicator.FY_13_14_Q2, map.Indicator.FY_13_14_Q2_Sup,map.Indicator.Q2_Color,},
+                                {map.Indicator.FY_13_14_Q3, map.Indicator.FY_13_14_Q3_Sup,map.Indicator.Q3_Color,},
+                                {map.Indicator.FY_13_14_Q4, map.Indicator.FY_13_14_Q4_Sup,map.Indicator.Q4_Color,},
+                                {map.Indicator.FY_13_14_YTD, map.Indicator.FY_13_14_YTD_Sup,map.Indicator.YTD_Color,},
+                                {map.Indicator.Target, map.Indicator.Target_Sup,""},
+                                {map.Indicator.Performance_Threshold, map.Indicator.Performance_Threshold_Sup,""},
+                                {map.Indicator.Comparator, map.Indicator.Comparator_Sup,""},
+                            };
+                            var startCol = currentCol;
+                            int k = 1;
+                            for (var i = 0; i <= columnIndicators.GetUpperBound(0); i++)
+                            {
+                                for (j = 0; j <= columnIndicators.GetUpperBound(1); j++)
+                                {
+                                    if (columnIndicators[i, j] != null)
+                                    {
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("<b>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("</b>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("<u>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("</u>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("<i>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("</i>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("<sup>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("</sup>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("<sub>", "");
+                                        columnIndicators[i, j] = columnIndicators[i, j].Replace("</sub>", "");
+                                    }
+                                }
+                                if (i != columnIndicators.GetUpperBound(0) && columnIndicators[i, 0] == "=")
+                                {
+                                    k = 1;
+                                    while (columnIndicators[i + k, 0] == "=") { k++; }
+                                    ws.Range(ws.Cell(currentRow, startCol + i - 1), ws.Cell(currentRow, startCol + i + k - 1)).Merge();
+                                    i += k - 1;
+                                    k = 1;
+                                }
+                                else if (columnIndicators[i, 0] != "=")
+                                {
+                                    var cell = ws.Cell(currentRow, currentCol + i);
+                                    string cellValue = "";
+
+                                    if (columnIndicators[i, 0] != null)
+                                    {
+                                        cellValue = columnIndicators[i, 0].ToString();
+                                    }
+
+                                    if (cellValue.Contains("$"))
+                                    {
+                                        cell.Style.NumberFormat.Format = "_-$* #,##0_-;-$* #,##0_-;_-$* \" - \"??_-;_-@_-";
+                                    }
+
+                                    cell.Value = "'" + cellValue;
+                                    if (columnIndicators[i, 1] != null)
+                                    {
+                                        cell.RichText.AddText(columnIndicators[i, 1]).VerticalAlignment = XLFontVerticalTextAlignmentValues.Superscript;
+                                    }
+                                    switch (columnIndicators[i, 2])
+                                    {
+                                        case "cssWhite":
+                                            cell.RichText.SetFontColor(XLColor.Black);
+                                            cell.Style.Fill.BackgroundColor = XLColor.White;
+                                            break;
+                                        case "cssGreen":
+                                            cell.RichText.SetFontColor(XLColor.White);
+                                            cell.Style.Fill.BackgroundColor = prGreen;
+                                            break;
+                                        case "cssYellow":
+                                            cell.RichText.SetFontColor(XLColor.Black);
+                                            cell.Style.Fill.BackgroundColor = prYellow;
+                                            break;
+                                        case "cssRed":
+                                            cell.RichText.SetFontColor(XLColor.White);
+                                            cell.Style.Fill.BackgroundColor = prRed;
+                                            break;
+                                    }
+                                    cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                                }
+                            }
+                            currentRow++;
+                        }
+                    }
+
+                    var footnoteRow = ws.Range(ws.Cell(currentRow, 1), ws.Cell(currentRow, maxCol));
+                    footnoteRow.Merge();
+                    footnoteRow.Style.Font.FontSize = prFootnoteSize;
+
+                    Footnotes defaultFootnote = db.Footnotes.FirstOrDefault(x => x.Footnote_Symbol == "*");
+                    if (!footnotes.Contains(defaultFootnote))
+                    {
+                        footnotes.Add(defaultFootnote);
+                    }
+
+                    int cellLength = 0;
+                    foreach (var footnote in footnotes.OrderBy(x => x.Footnote_ID))
+                    {
+                        ws.Cell(currentRow, 1).RichText.AddText(footnote.Footnote_Symbol).VerticalAlignment = XLFontVerticalTextAlignmentValues.Superscript;
+                        ws.Cell(currentRow, 1).RichText.AddText(" " + footnote.Footnote + ";");
+                        cellLength += footnote.Footnote_Symbol.ToString().Length + footnote.Footnote.ToString().Length + 2;
+                        if (cellLength > prFootnoteCharsNewLine)
+                        {
+                            ws.Cell(currentRow, 1).RichText.AddNewLine();
+                            cellLength = 0;
+                            ws.Row(currentRow).Height += 15;
+                        }
+                    }
+
+                    var pr = ws.Range(ws.Cell(startRow, 1), ws.Cell(currentRow, maxCol));
+
+                    pr.Style.Border.InsideBorder = prBorderWidth;
+                    pr.Style.Border.InsideBorderColor = prBorder;
+                    pr.Style.Border.OutsideBorder = prBorderWidth;
+                    pr.Style.Border.OutsideBorderColor = prBorder;
+                    pr.Style.Font.FontSize = prFontSize;
+                    pr.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    pr.Style.Alignment.WrapText = true;
+
+                    ws.Column(1).Width = prNumberWidth;
+                    ws.Column(2).Width = prIndicatorWidth;
+                    for (var i = 3; i <= 15; i++)
+                    {
+                        ws.Column(i).Width = prValueWidth;
+                    }
+
+                    currentRow += 2;
+                    footnotes.Clear();
+                }
+            }
+
+            // Prepare the response
+            HttpResponse httpResponse = this.HttpContext.ApplicationInstance.Context.Response;
+            httpResponse.Clear();
+            httpResponse.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            httpResponse.AddHeader("content-disposition", "attachment;filename=\"HelloWorld.xlsx\"");
+
+            // Flush the workbook to the Response.OutputStream
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                wb.SaveAs(memoryStream);
+                memoryStream.WriteTo(httpResponse.OutputStream);
+                memoryStream.Close();
+            }
+
+            httpResponse.End();
+
+            return View(viewModel);
+        }
+
+        public ActionResult editCoEMaps()
+        {
+            var viewModel = new Indicator_CoE_MapsViewModel
+            {
+                allIndicators = db.Indicators.ToList(),
+                allCoEs = db.CoEs.ToList(),
+                allMaps = db.Indicator_CoE_Maps.ToList()
+            };
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult editFootnotes(String Footnote_ID_Filter)
+        {
+            var viewModelItems = db.Footnotes.ToArray();
+            var viewModel = viewModelItems.OrderBy(x => x.Footnote_ID).Select(x => new FootnotesViewModel
+            {
+                Footnote_ID = x.Footnote_ID,
+                Footnote = x.Footnote,
+                Footnote_Symbol = x.Footnote_Symbol,
+            }).ToList();
+            if (Request.IsAjaxRequest())
+            {
+                return Json(viewModel.Where(x => x.Footnote_ID.ToString().Contains(Footnote_ID_Filter == null ? "" : Footnote_ID_Filter)), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return View(viewModel);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult editFootnotes(IList<Footnotes> footnoteChange)
+        {
+            var footnoteID = footnoteChange[0].Footnote_ID;
+            if (db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(footnoteChange[0]).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return View();
+                }
+                return View();
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Footnotes.Add(footnoteChange[0]);
+                    db.SaveChanges();
+                    return View();
+                }
+                return View();
+            }
+
+        }
+
+        public ActionResult editFootnoteMaps()
+        {
+            List<Indicator_Footnote_Maps> footnoteMaps = new List<Indicator_Footnote_Maps>();
+            foreach (var footnote in db.Indicator_Footnote_Maps.OrderBy(e => e.Map_ID).ToList())
+            {
+                footnoteMaps.Add(footnote);
+            }
+
+            var viewModel = db.Indicators.Select(x => new Indicator_Footnote_MapsViewModel
+            {
+                Indicator_ID = x.Indicator_ID,
+                Indicator= x.Indicator,
+            }).ToList();
+
+            foreach (var Indicator in viewModel)
+            {
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 0)
+                {
+                    Indicator.Footnote_ID_1 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).First().Footnote_ID;
+                    Indicator.Map_ID_1 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).First().Map_ID;
+                    Indicator.Footnote_Symbol_1 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_1).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 1)
+                {
+                    Indicator.Footnote_ID_2 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(1).First().Footnote_ID;
+                    Indicator.Map_ID_2 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(1).First().Map_ID;
+                    Indicator.Footnote_Symbol_2 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_2).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 2)
+                {
+                    Indicator.Footnote_ID_3 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(2).First().Footnote_ID;
+                    Indicator.Map_ID_3 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(2).First().Map_ID;
+                    Indicator.Footnote_Symbol_3 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_3).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 3)
+                {
+                    Indicator.Footnote_ID_4 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(3).First().Footnote_ID;
+                    Indicator.Map_ID_4 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(3).First().Map_ID;
+                    Indicator.Footnote_Symbol_4 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_4).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 4)
+                {
+                    Indicator.Footnote_ID_5 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(4).First().Footnote_ID;
+                    Indicator.Map_ID_5 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(4).First().Map_ID;
+                    Indicator.Footnote_Symbol_5 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_5).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 5)
+                {
+                    Indicator.Footnote_ID_6 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(5).First().Footnote_ID;
+                    Indicator.Map_ID_6 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(5).First().Map_ID;
+                    Indicator.Footnote_Symbol_6 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_6).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 6)
+                {
+                    Indicator.Footnote_ID_7 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(6).First().Footnote_ID;
+                    Indicator.Map_ID_7 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(6).First().Map_ID;
+                    Indicator.Footnote_Symbol_7 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_7).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 7)
+                {
+                    Indicator.Footnote_ID_8 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(7).First().Footnote_ID;
+                    Indicator.Map_ID_8 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(7).First().Map_ID;
+                    Indicator.Footnote_Symbol_8 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_8).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 8)
+                {
+                    Indicator.Footnote_ID_9 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(8).First().Footnote_ID;
+                    Indicator.Map_ID_9 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(8).First().Map_ID;
+                    Indicator.Footnote_Symbol_9 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_9).Footnote_Symbol;
+                }
+                if (footnoteMaps.Count(e => e.Indicator_ID == Indicator.Indicator_ID) > 9)
+                {
+                    Indicator.Footnote_ID_10 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(9).First().Footnote_ID;
+                    Indicator.Map_ID_10 = footnoteMaps.Where(e => e.Indicator_ID == Indicator.Indicator_ID).OrderBy(e => e.Map_ID).Skip(9).First().Map_ID;
+                    Indicator.Footnote_Symbol_10 = db.Footnotes.FirstOrDefault(e => e.Footnote_ID == Indicator.Footnote_ID_10).Footnote_Symbol;
+                }
+            }
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult editFootnoteMaps(IList<Indicator_Footnote_MapsViewModel> newMapsViewModel)
+        {
+
+            var newMaps = new Indicator_Footnote_Maps();
+            newMaps.Indicator_ID = newMapsViewModel.FirstOrDefault().Indicator_ID;
+            newMaps.Footnote_ID = newMapsViewModel.FirstOrDefault().Footnote_Symbol_1 == null ? null : db.Footnotes.ToList().FirstOrDefault(x => x.Footnote_Symbol == newMapsViewModel.FirstOrDefault().Footnote_Symbol_1).Footnote_ID;
+            newMaps.Map_ID = newMapsViewModel.FirstOrDefault().Map_ID_1;
+
+            var mapID = newMaps.Map_ID;
+            var footnoteID = newMaps.Footnote_ID;
+            if (footnoteID == null)
+            {
+                var deleteMap = db.Indicator_Footnote_Maps.Find(newMaps.Map_ID);
+                if (deleteMap != null)
+                {
+                    db.Indicator_Footnote_Maps.Remove(deleteMap);
+                    db.SaveChanges();
+                }
+                return View();
+            }
+            else if (db.Indicator_Footnote_Maps.Any(x => x.Map_ID == mapID))
+            {
+                if (ModelState.IsValid && db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
+                {
+                    db.Entry(newMaps).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return View();
+                }
+                else
+                {
+                    var oldMap = db.Indicator_Footnote_Maps.Find(newMaps.Map_ID);
+                    var viewModel = new
+                    {
+                        Map_ID = oldMap.Map_ID,
+                        Footnote_ID = oldMap.Footnote_ID,
+                        Indicator_ID = oldMap.Indicator_ID,
+                        State = "InvalidChange"
+                    };
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                if (ModelState.IsValid && db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
+                {
+                    db.Indicator_Footnote_Maps.Add(newMaps);
+                    db.SaveChanges();
+                    var viewModel = new  
+                    {
+                        Map_ID = newMaps.Map_ID,
+                        Footnote_ID  = newMaps.Footnote_ID ,
+                        Indicator_ID = newMaps.Indicator_ID,
+                        State = "NewID"
+                    };
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+                else if (ModelState.IsValid && !db.Footnotes.Any(x => x.Footnote_ID == footnoteID))
+                {
+                    var viewModel = new
+                    {
+                        State = "InvalidAdd"
+                    };
+                    return Json(viewModel, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult getIndicatorList()
+        {
+            var viewModel = db.Indicators.Select(x => new IndicatorListViewModel
+            {
+                Indicator_ID = x.Indicator_ID,
+                Indicator = x.Indicator,
+            }).ToList();
+            return Json(viewModel, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult editInventory(String Indicator_ID_Filter)
+        {
+            //var viewModelItems = db.Indicators.ToArray();
+            var viewModelItems = db.Indicators.Where(x => x.Area_ID.Equals(1)).Where(y => y.Indicator_CoE_Map.Any(x => x.CoE_ID.Equals(10) || x.CoE_ID.Equals(27) || x.CoE_ID.Equals(30) || x.CoE_ID.Equals(40) || x.CoE_ID.Equals(50))).ToArray();
+            var viewModel = viewModelItems.OrderBy(x => x.Indicator_ID).Select(x => new InventoryViewModel
+            {
+                Indicator_ID = x.Indicator_ID,
+                Area_ID = x.Area_ID,
+                Indicator = x.Indicator,
+                FY_10_11 = x.FY_10_11,
+                FY_10_11_Sup = x.FY_10_11_Sup,
+                FY_11_12 = x.FY_11_12,
+                FY_11_12_Sup = x.FY_11_12_Sup,
+                FY_12_13 = x.FY_12_13,
+                FY_12_13_Sup = x.FY_12_13_Sup,
+                FY_13_14_Q1 = x.FY_13_14_Q1,
+                FY_13_14_Q1_Sup = x.FY_13_14_Q1_Sup,
+                FY_13_14_Q2 = x.FY_13_14_Q2,
+                FY_13_14_Q2_Sup = x.FY_13_14_Q2_Sup,
+                FY_13_14_Q3 = x.FY_13_14_Q3,
+                FY_13_14_Q3_Sup = x.FY_13_14_Q3_Sup,
+                FY_13_14_Q4 = x.FY_13_14_Q4,
+                FY_13_14_Q4_Sup = x.FY_13_14_Q4_Sup,
+                FY_13_14_YTD = x.FY_13_14_YTD,
+                FY_13_14_YTD_Sup = x.FY_13_14_YTD_Sup,
+                Target = x.Target,
+                Target_Sup = x.Target_Sup,
+                Comparator = x.Comparator,
+                Comparator_Sup = x.Comparator_Sup,
+                Performance_Threshold = x.Performance_Threshold,
+                Performance_Threshold_Sup = x.Performance_Threshold_Sup,
+
+                Colour_ID = x.Colour_ID,
+                Custom_YTD = x.Custom_YTD,
+                Custom_Q1 = x.Custom_Q1,
+                Custom_Q2 = x.Custom_Q2,
+                Custom_Q3 = x.Custom_Q3,
+                Custom_Q4 = x.Custom_Q4,
+
+                Definition_Calculation = x.Definition_Calculation,
+                Target_Rationale = x.Target_Rationale,
+                Comparator_Source = x.Comparator_Source,
+
+                Data_Source_MSH = x.Data_Source_MSH,
+                Data_Source_Benchmark = x.Data_Source_Benchmark,
+                OPEO_Lead = x.OPEO_Lead,
+
+                Q1_Color = x.Q1_Color,
+                Q2_Color = x.Q2_Color,
+                Q3_Color = x.Q3_Color,
+                Q4_Color = x.Q4_Color,
+                YTD_Color = x.YTD_Color
+            }).ToList();
+            if (Request.IsAjaxRequest())
+            {
+                return Json(viewModel.Where(x => x.Indicator_ID.ToString().Contains(Indicator_ID_Filter == null ? "" : Indicator_ID_Filter)), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return View(viewModel);
+            }
+            
+        }
+
+        [HttpPost]
+        public ActionResult editInventory(IList<Indicators> indicatorChange)
+        {
+            var indicatorID = indicatorChange[0].Indicator_ID;
+            if (db.Indicators.Any(x => x.Indicator_ID == indicatorID ))
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Entry(indicatorChange[0]).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return View();
+                }
+                return View();
+            } 
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Indicators.Add(indicatorChange[0]);
+                    db.SaveChanges();
+                    return View();
+                }
+                return View();
+            }
+
+        }
+
+        //
+        // GET: /Indicator/Details/5
+
+        public ActionResult Details(string Indicator_ID)
+        {
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
+            if (indicators == null)
+            {
+                return HttpNotFound();
+            }
+            return View(indicators);
+        }
+
+        //
+        // GET: /Indicator/Create
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Indicator/Create
+
+        [HttpPost]
+        public ActionResult Create(Indicators indicators)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Indicators.Add(indicators);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(indicators);
+        }
+
+        //
+        // GET: /Indicator/Edit/5
+
+        public ActionResult Edit(string Indicator_ID)
+        {
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
+            if (indicators == null)
+            {
+                return HttpNotFound();
+            }
+            return View(indicators);
+        }
+
+        //
+        // POST: /Indicator/Edit/5
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Edit(Indicators indicators)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(indicators).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(indicators);
+        }
+
+        //
+        // GET: /Indicator/Delete/5
+
+        public ActionResult Delete(string Indicator_ID)
+        {
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
+            if (indicators == null)
+            {
+                return HttpNotFound();
+            }
+            return View(indicators);
+        }
+
+        //
+        // POST: /Indicator/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(string Indicator_ID)
+        {
+            Indicators indicators = db.Indicators.Find(Indicator_ID);
+            db.Indicators.Remove(indicators);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+    }
+}

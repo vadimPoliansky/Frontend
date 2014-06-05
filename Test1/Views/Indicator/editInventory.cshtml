@@ -11,6 +11,7 @@
     ViewBag.Title = "Edit Indicator Inventory";
 }
 
+Search: <input id="searchgrid" type="text" />
 
 <div id="dataTable">
 </div>
@@ -192,48 +193,6 @@
         var changedValue = change[i][3];
         if (changedParameter != "Q1_Color" && changedParameter != "Q2_Color" && changedParameter != "Q3_Color" && changedParameter != "Q4_Color" && changedParameter != "YTD_Color"){
             $.get('@Url.Action("/editInventory")', {Indicator_ID_Filter : $example1.handsontable('getDataAtCell',change[i][0],0)}, function (data) {
-              /*  if (data.length === 0 && changedParameter == "Indicator_ID"){
-                    data.push({
-                        Area_ID: 0,
-                        Indicator: null,
-                        FY_10_11: null,
-                        FY_10_11_Sup: null,
-                        FY_11_12: null,
-                        FY_11_12_Sup: null,
-                        FY_12_13: null,
-                        FY_12_13_Sup: null,
-                        FY_13_14_Q1: null,
-                        FY_13_14_Q1_Sup: null,
-                        FY_13_14_Q2: null,
-                        FY_13_14_Q2_Sup: null,
-                        FY_13_14_Q3: null,
-                        FY_13_14_Q3_Sup: null,
-                        FY_13_14_Q4: null,
-                        FY_13_14_Q4_Sup: null,
-                        FY_13_14_YTD: null,
-                        FY_13_14_YTD_Sup: null,
-                        Target: null,
-                        Target_Sup: null,
-                        Comparator: null,
-                        Comparator_Sup: null,
-                        Performance_Threshold: null,
-                        Performance_Threshold_Sup: null,
-                        color_ID: 1,
-                        Custom_YTD: null,
-                        Custom_Q1: null,
-                        Custom_Q2: null,
-                        Custom_Q3: null,
-                        Custom_Q4: null,
-                        Definition_Calculation: null,
-                        Target_Rationale: null,
-                        Comparator_Source: null,
-                        Data_Source_MSH: null,
-                        Data_Source_Benchmark: null,
-                        OPEO_Lead: null
-                    });
-                } else { 
-                
-                } */
                 var newValue = data;
                 var parameters = []
                 parameters.push({
@@ -322,9 +281,5 @@
         });
     });
 </script>
-
- 
-Search: <input id="searchgrid" type="text" />
-<div id="example1">
 </div>
  

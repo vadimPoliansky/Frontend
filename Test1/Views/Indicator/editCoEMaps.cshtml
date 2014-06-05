@@ -12,76 +12,128 @@
     ViewBag.Title = "editCoEMaps";
 }
 
-    <h2>editInventory</h2>
 
-    <div id="dataTable"></div>
+<h2>editInventory</h2>
+
+<style type="text/css">
+
+label { display: block; padding:10px; }
+input[type="checkbox"] { display: none; }
+​
+input[type=checkbox].css-checkbox {
+							display:none;
+						}
+
+						input[type=checkbox].css-checkbox + label.css-label {
+							padding-left:23px;
+							height:0px; 
+							display:inline-block;
+							line-height:18px;
+							background-repeat:no-repeat;
+							background-position: 0 0;
+							font-size:10px;
+							vertical-align:text-bottom;
+							cursor:pointer;
+
+						}
+
+						input[type=checkbox].css-checkbox:checked + label.css-label {
+							background-position: 0 -18px;
+						}
+						label.css-label {
+				background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_cb8a3cddf56b78d07c1d109787dd4567.png);
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+
+</style>
+
+<table style="border-collapse:collapse; padding:0; margin:0;">
+
+@foreach (var indicator in Model.allIndicators.OrderBy(x => x.Indicator_ID))
+{
+    <tbody>
+        <tr>
+            <td class="coeMapTable">
+                @Html.DisplayTextFor(x => indicator.Indicator_ID)
+            </td>
+            <td class="coeMapTable">
+                @Html.DisplayTextFor(x => indicator.Indicator)
+            </td>
+            @foreach (var coe in Model.allCoEs.OrderBy(x => x.CoE_Abbr))
+            {
+            string checkID = indicator.Indicator_ID + "_" + coe.CoE_ID;
+            Indicator_CoE_Maps map = Model.allMaps.FirstOrDefault(x => x.Indicator_ID == indicator.Indicator_ID && x.CoE_ID == coe.CoE_ID);
+            if (map != null) { checkID += "_" + map.Map_ID; }
+            <td class="coeMapTable">
+                <input type="checkbox" id="@checkID" value="@coe.CoE_Abbr"  class="css-checkbox"
+                    @{if (Model.allMaps.Any(x => x.Indicator_ID == indicator.Indicator_ID && x.CoE_ID == coe.CoE_ID)){
+                        @Html.Raw("checked");
+                    }}
+                />
+                <label for="@checkID" class="css-label">@coe.CoE_Abbr</label>
+            </td>
+            }
+        </tr>
+    </tbody>
+}
+</table>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
 
 <script type="text/javascript">
-
-    $(document).on('input', '#mytxtBox', function () {
-        console.log($('#mytxtBox').val());
-    });
-
-    var maxed = false
-        , resizeTimeout
-        , availableWidth
-        , availableHeight
-        , $window = $(window)
-        , $example1 = $('#dataTable');
-
-    var calculateSize = function () {
-        var offset = $example1.offset();
-        availableWidth = $window.width() - offset.left + $window.scrollLeft();
-        availableHeight = $window.height() - offset.top + $window.scrollTop();
-    };
-    $window.on('resize', calculateSize);
-
-    var countCoE = @Html.Raw(Model.allCoEs.Count() * 3);
-    var countIndicators = @Html.Raw(Model.allIndicators.Count());
-    var values = [countIndicators -1, countCoE -1];
-    @for(var i =0; i < Model.allIndicators.Count(); i++){
-        @: values[@i,0] = '@Html.Raw(Json.Encode(Model.allIndicators[i].Indicator))';
-        for(var j =0; j < Model.allCoEs.Count()*3; j = j + 3){
-            @: values[@i,@j] = '@Html.Raw(Json.Encode(Model.allCoEs[j/3].CoE))';
-            @: values[@i,@j+1] = '@Html.Raw(Json.Encode(Model.allCoEs[j/3].Indicator_CoE_Map.Contains(Model.allMaps.Where(x=>x.Indicator.Indicator_ID ==Model.allIndicators[i].Indicator_ID).FirstOrDefault(x => x.CoE.CoE_ID == Model.allCoEs[j/3].CoE_ID) ) ))';
+    @foreach (var indicator in Model.allIndicators)
+    {
+        foreach (var coe in Model.allCoEs)
+        {
+            string checkID = indicator.Indicator_ID + "_" + coe.CoE_ID;
+            Indicator_CoE_Maps map = Model.allMaps.FirstOrDefault(x => x.Indicator_ID == indicator.Indicator_ID && x.CoE_ID == coe.CoE_ID);
+            if (map != null) { checkID += "_" + map.Map_ID; }
+            <text>
+            $('#@checkID').change(function () {
+                updateMaps(this.id, this.checked);
+            });
+            </text>
         }
     }
 
-    $example1 .handsontable({
-        Controller: {
-            buttons: ['move', 'add'],
-            ui: 'float'
-        },
-        data: values,
-        startRows: 1,
-        startCols: 1,
-        rowHeaders: true,
-        colHeaders: true,
-        strechH: 'all',
-        strechW: 'all',
-        scrollH: 'auto',
-        scrollV: 'auto',
-        width: function () {
-            if (maxed && availableWidth === void 0) {
-                calculateSize();
+    function updateMaps(name, status){
+        var parameterArray = name.split("_");
+        var indicatorID = parameterArray[0];
+        var coeID = parameterArray[1];
+        var mapID;
+        if (!status) {
+            mapID = parameterArray[2];
+        } else {
+            mapID = null;
+        }
+        var maps = []
+        maps.push({
+            Indicator_ID: indicatorID,
+            CoE_ID: coeID,
+            Map_ID: mapID,
+        })
+        var parameters = []
+        parameters.push({
+            allIndicators:null,
+            allCoEs:null,
+            allMaps: maps,
+        })
+        $.ajax({
+            url: this.action,
+            type: 'POST',
+            data: JSON.stringify(parameters),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+            },
+            error: function (request){
             }
-            return maxed ? availableWidth *0.98 : 300;
-        },
-        height: function () {
-            if (maxed && availableHeight === void 0) {
-                calculateSize();
-            }
-        return maxed ? availableHeight*0.98: 300;
-        },
-        manualColumnResize: true,
-        minSpareRows: 1,
-    });
-
-    maxed = !maxed;
-    $example1.handsontable('render');
-
+        });
+    }
 </script>

@@ -14,7 +14,7 @@ namespace IndInv.Models
         [Key]
         public string Indicator_ID { get; set; }
         public Int16 Area_ID { get; set; }
-        [Display(Name = "Indicator")]
+        [Display(Name = "Objectives/Metrics")]
         public string Indicator { get; set; }
         [Display(Name = "Indicator Type")]
         public string Indicator_Type { get; set; }
@@ -27,19 +27,19 @@ namespace IndInv.Models
         [Display(Name = "FY 12/13")]
         public string FY_12_13 { get; set; }
         public string FY_12_13_Sup { get; set; }
-        [Display(Name = "FY 13/14 Q1")]
+        [Display(Name = "Q1")]
         public string FY_13_14_Q1 { get; set; }
         public string FY_13_14_Q1_Sup { get; set; }
-        [Display(Name = "FY 13/14 Q2")]
+        [Display(Name = "Q2")]
         public string FY_13_14_Q2 { get; set; }
         public string FY_13_14_Q2_Sup { get; set; }
-        [Display(Name = "FY 13/14 Q3")]
+        [Display(Name = "Q3")]
         public string FY_13_14_Q3 { get; set; }
         public string FY_13_14_Q3_Sup { get; set; }
-        [Display(Name = "FY 13/14 Q4")]
+        [Display(Name = "Q4")]
         public string FY_13_14_Q4 { get; set; }
         public string FY_13_14_Q4_Sup { get; set; }
-        [Display(Name = "FY 13/14 YTD")]
+        [Display(Name = "YTD")]
         public string FY_13_14_YTD { get; set; }
         public string FY_13_14_YTD_Sup { get; set; }
         [Display(Name = "Target")]
@@ -59,8 +59,11 @@ namespace IndInv.Models
         public string Custom_Q3 { get; set; }
         public string Custom_Q4 { get; set; }
 
+        [Display(Name = "Definition/Calculation/Notes")]
         public string Definition_Calculation { get; set; }
+        [Display(Name = "Target Rationale")]
         public string Target_Rationale { get; set; }
+        [Display(Name = "Comparator Source")]
         public string Comparator_Source { get; set; }
 
         public string Data_Source_MSH { get; set; }
@@ -83,6 +86,7 @@ namespace IndInv.Models
         [Key]
         public Int16 CoE_ID { get; set; }
         public string CoE { get; set; }
+        public string CoE_Abbr { get; set; }
 
         public virtual ICollection<Indicator_CoE_Maps> Indicator_CoE_Map { get; set; }
         public virtual ICollection<Area_CoE_Maps> Area_CoE_Map { get; set; }
@@ -106,6 +110,7 @@ namespace IndInv.Models
         [Key]
         public Int16 Area_ID { get; set; }
         public string Area { get; set; }
+        public Int16 Sort { get; set; }
 
         public virtual ICollection<Indicators> Indicator { get; set; }
         public virtual ICollection<Area_CoE_Maps> Area_CoE_Map { get; set; }
