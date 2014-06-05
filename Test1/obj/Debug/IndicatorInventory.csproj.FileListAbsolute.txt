@@ -114,7 +114,6 @@ C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\ClosedXML.xml
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\DocumentFormat.OpenXml.dll
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\SpreadsheetLight.dll
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\lib\SpreadsheetLight.xml
-C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\logo.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\logoOPEO.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\monthly.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\na.png
@@ -133,3 +132,4 @@ C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList6.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList7.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList8.png
 C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\Images\orderedList9.png
+C:\Users\mnurvep\Desktop\AspNet\TestPR\Test1\bin\App_Data\logo.png

@@ -609,7 +609,7 @@ namespace IndInv.Controllers
             MemoryStream postImage = new MemoryStream();
             SLDocument postImageWb = new SLDocument(preImage);
 
-            string picPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/logo.png");
+            string picPath = this.HttpContext.ApplicationInstance.Server.MapPath("~/App_Data/logo.png");
             SLPicture picLogo = new SLPicture(picPath);
             string picPathOPEO = this.HttpContext.ApplicationInstance.Server.MapPath("~/Images/logoOPEO.png");
             SLPicture picLogoOPEO = new SLPicture(picPathOPEO);
