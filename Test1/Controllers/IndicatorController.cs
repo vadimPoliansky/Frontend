@@ -571,35 +571,35 @@ namespace IndInv.Controllers
                     footnotes.Clear();
                     indicatorNumber = 1;
 
-                    var totalHeight = 0.0;
-                    foreach (var row in ws.Rows(1, ws.LastRowUsed().RowNumber()))
-                    {
-                        totalHeight += row.Height;
-                    }
-                    var totalWidth = 0.0;
-                    foreach (var col in ws.Columns(1, ws.LastColumnUsed().ColumnNumber()))
-                    {
-                        totalWidth += col.Width;
-                    }
-                    var totalRatio = totalHeight / totalWidth;
-                    if (totalRatio > fitRatio)
-                    {
-                        var fitAddWidthTotal = (totalHeight - fitHeight);
-                        var fitAddWidthPer = fitAddWidthTotal / (ws.LastRowUsed().RowNumber() - 1) / fitAdjust;
-                        foreach (var col in ws.Columns().Skip(1))
-                        {
-                            col.Width += fitAddWidthPer;
-                        }
-                    }
-                    else
-                    {
-                        var fitAddHeightTotal = -(totalHeight - fitHeight);
-                        var fitAddHeightPer = fitAddHeightTotal / ws.LastRowUsed().RowNumber() / fitAdjust;
-                        foreach (var row in ws.Rows().Skip(3))
-                        {
-                            row.Height += fitAddHeightPer;
-                        }
-                    }
+                    //var totalHeight = 0.0;
+                    //foreach (var row in ws.Rows(1, ws.LastRowUsed().RowNumber()))
+                    //{
+                    //    totalHeight += row.Height;
+                    //}
+                    //var totalWidth = 0.0;
+                    //foreach (var col in ws.Columns(1, ws.LastColumnUsed().ColumnNumber()))
+                    //{
+                    //    totalWidth += col.Width;
+                    //}
+                    //var totalRatio = totalHeight / totalWidth;
+                    //if (totalRatio > fitRatio)
+                    //{
+                    //    var fitAddWidthTotal = (totalHeight - fitHeight);
+                    //    var fitAddWidthPer = fitAddWidthTotal / (ws.LastRowUsed().RowNumber() - 1) / fitAdjust;
+                    //    foreach (var col in ws.Columns().Skip(1))
+                    //    {
+                    //        col.Width += fitAddWidthPer;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    var fitAddHeightTotal = -(totalHeight - fitHeight);
+                    //    var fitAddHeightPer = fitAddHeightTotal / ws.LastRowUsed().RowNumber() / fitAdjust;
+                    //    foreach (var row in ws.Rows().Skip(3))
+                    //    {
+                    //        row.Height += fitAddHeightPer;
+                    //    }
+                    //}
                 }
             }
 
