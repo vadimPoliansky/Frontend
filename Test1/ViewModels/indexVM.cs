@@ -12,5 +12,6 @@ namespace IndInv.Models.ViewModels
         public List<Footnotes> allFootnotes { get; set; }
         public List<CoEs> allCoEs { get; set; }
         public List<Areas> allAreas { get; set; }
+        public List<Analysts> allAnalysts { get; set; }
     }
 }

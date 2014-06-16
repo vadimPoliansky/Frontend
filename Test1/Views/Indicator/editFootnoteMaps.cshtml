@@ -7,18 +7,41 @@
 @model IList<IndInv.Models.ViewModels.Indicator_Footnote_MapsViewModel>
 @using IndInv.Models
 @{
-    ViewBag.Title = "editFootnoteMaps";
+    ViewBag.Title = "Edit Footnotes";
+    ViewBag.fiscalYear = @Model.FirstOrDefault().Fiscal_Year;
 }
-<h2>
-    Edit Footnotes
-</h2>     
-
-<div id="dataTable">
+<div class="row">
+<label>Search<input id="searchgrid" type="text" /></label>
 </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<style>.rowLong {padding-left:40px;}</style>
+
+<div class="row">
+    <div class="large-8 columns">
+        <div id="dataTable"></div>
+    </div>
+    <div class="large-4 columns">
+        <table>
+            <thead>
+                <tr>
+                    <th>Footnote</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var footnote in Model.FirstOrDefault().allFootnotes)
+                {
+                    <tr>
+                        <td>@footnote</td>
+                    </tr>
+                }
+                <tr>
+                    <td><div id="editFootnotes" class="btn">Edit</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
 <script type="text/javascript">
 
     $(document).on('input', '#mytxtBox', function () {
@@ -45,13 +68,26 @@
         data: values,
         startRows: 1,
         startCols: 1,
-        rowHeaders: true,
+        rowHeaders: false,
         colHeaders: true,
         strechH: 'all',
         strechW: 'all',
         scrollH: 'auto',
         scrollV: 'auto',
-        colWidths: [50, 600, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+        colWidths: [50, 600, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+        colHeaders: [
+            "ID",
+            "Indicator",
+            " ",
+            " ",
+            " ",
+            " ",
+            " ",
+            " ",
+            " ",
+            " ",
+            " ",
+        ],
         columns: [
             {data:'Indicator_ID', readOnly:true},
             {data:'Indicator', readOnly:true},
@@ -66,18 +102,6 @@
             {data:'Footnote_Symbol_9'},
             {data:'Footnote_Symbol_10'},
         ],
-        width: function () {
-            if (maxed && availableWidth === void 0) {
-                calculateSize();
-            }
-            return maxed ? availableWidth *0.98 : 300;
-        },
-        height: function () {
-            if (maxed && availableHeight === void 0) {
-                calculateSize();
-            }
-        return maxed ? availableHeight*0.98: 300;
-        },
         manualColumnResize: true,
         afterChange: function (change, source) {
             if (source === 'loadData') {
@@ -162,6 +186,7 @@
             Footnote_ID_1: footnoteID,
             Footnote_Symbol_1: footnoteSymbol,
             Indicator_ID: indicatorID,
+            Fiscal_Year: @Model.FirstOrDefault().Fiscal_Year,
         })
         $.ajax({
             url: this.action,
@@ -183,5 +208,30 @@
             }
         });
     }
+
+</script>
+
+    <style>
+
+    th {
+    border-right:none !important;
+    white-space: normal !important;
+font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+font-weight:300;
+font-size:medium!important;
+}
+    td {
+            white-space: normal !important;
+font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+font-weight:300;
+font-size:medium!important;
+    }
+    label {
+        color:lightgray;
+    }
+
+</style>
+
+<script>
 
 </script>

@@ -2,105 +2,56 @@
 <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../../Content/foundation.min.css" />
 <script src="../../Scripts/vendor/modernizr.js"></script>
-<title>@ViewBag.Title</title>
+<title>Indicator Inventory</title>
+<style>.row {min-width:90% !important;}</style>
+
+
 </head>
+
 <body>
-    <!-- Navigation -->
-
-@*<div class="show-for-medium-up">
-<nav class="top-bar docs-bar" data-topbar >
-    <ul class="title-area">
-      <!-- Title Area -->
-      <li class="name">
-
-      </li>
-      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-      <li class="toggle-topbar menu-icon"><a href="">Menu</a></li>
-    </ul>
-
-    <section class="top-bar-section">
-      <ul class="title-area">
-        <li class="name">
-            <h1><a href="#">Inventory</a></h1>
-        </li>
-      </ul>
-      <ul class="right">
-        <li class="has-dropdown"><a href="#">Menu</a>
-      <ul class="dropdown">
-        <li><a href="/indicator">See All Indicators</a></li>
-        <li><a href="/indicator/viewPR">See All PRs</a></li>
-        <li><a href="/indicator/editInventory">Edit Inventory</a></li>
-      </ul>
-    </section>
-</nav>
-</div>*@
-
-@*<div class="show-for-small-only">*@
-<nav class="top-bar docs-bar" data-topbar >
-    <ul class="title-area">
-      <!-- Title Area -->
-      <li class="name"><h5>
-            <div class="show-for-small-only" style="vertical-align:middle">
-                @Html.Partial("_LoginPartial")
-            </div>
-        </h5>
-      </li>
-      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-      <li class="toggle-topbar menu-icon"><a href="">Menu</a></li>
-    </ul>
-
-    <section class="top-bar-section">
-      <ul class="title-area">
-        <li class="name">
-            <h1><a href="/indicator">Search Indicators</a></h1>
-        </li>
-      </ul>
-      <div class="show-for-medium-up">
-        <ul class="right">
-            @Html.Partial("_LoginPartial")
-        </ul>
-      </div>
-    </section>
-</nav>
-@*</div>*@
-
+    <div class="hide-for-small-only">
+    <div class="header">
     <div class="row">
-      <div style="text-align:center">
-    <img src="http://outonbayst.org/wp-content/uploads/2012/07/Mount-Sinai-Logo.png" alt="Mount Sinai" width="400" height="700">
+        <div class="large-3 columns">
+            <h4 style="center; color:#144a82; padding:0px; font-weight:100">@ViewBag.Title </h4>
+            <div id="edit" class="btn">+</div>
+            <div id="viewPR" class="btn">PR</div>
+            <div id="editInventory" class="btn">Table</div>
+            <div id="editFootnoteMaps" class="btn">Footnotes</div>
+        </div>
+        <div class="large-1 columns">
+            <div class="or-spacer-vertical left">
+              <div class="mask"></div>
+            </div>
+        </div>
+        <div class="large-4 columns" style="padding-top:10px">
+            @Html.Raw(ViewBag.Buttons)
+        </div>
+        <div class="large-1 columns">
+            <div class="or-spacer-vertical right">
+              <div class="mask"></div>
+            </div>
+        </div>
+        <div class="large-3 columns">
+            <img src="http://upload.wikimedia.org/wikipedia/en/5/51/MountSinaiLogo.png" alt="Mount Sinai" width="400" height="900">
+        </div>
     </div>
     </div>
-   
-  <br />
-  <!-- End Top Bar -->
- 
-  <div class="rowcollpase" id="wrapper" >
-    <div class="large-12 columns">
- 
-  
-         <div id="body">
+    </div>
+    @*
+    <ul class="right">
+        @Html.Partial("_LoginPartial")
+    </ul>*@
+    <div >
+        <div id="body">
             @RenderSection("scripts", required: false)
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
                 @RenderBody()
             </section>
         </div>
-
- 
-    <!-- Footer -->
-
-      <footer class="row">
-    
-        <p><small>Portal data from the Canadian Institute for Health Information (CIHI) has been used to generate data within this report with acknowledgement to CIHI, the Ministry of Health and Long-Term Care (MOHLTC) and Stats Canada (as applicable). Views are not those of the acknowledged sources. Facility identifiable data other than Mount Sinai Hospital (MSH) is not to be published without the consent of that organization (except where reported at an aggregate level). As this is not a database supported by MSH, please demonstrate caution with use and interpretation of the information. MSH is not responsible for any changes derived from the source data/canned reports. Data may be subject to change.
-        </smal></p>
-
-    </footer>
-
- 
-    <!-- End Footer -->
- 
     </div>
-  </div>
- 
+
     <script src="../../Scripts/jquery-1.11.0.min.js"></script>
     <script src="../../Scripts/foundation.min.js"></script>
     <script>
@@ -110,3 +61,251 @@
 </html>
   <a class="exit-off-canvas"></a>
 <!-- End Footer -->
+
+<style>
+    body {
+        background-image: url("../../Images/backgroupStipe.png");
+    }
+
+    .header {
+background: rgb(242,249,254); /* Old browsers */
+background: -moz-linear-gradient(top, rgb(242,249,254) 0%, rgb(214,240,253) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(242,249,254)), color-stop(100%,rgb(214,240,253))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgb(242,249,254) 0%,rgb(214,240,253) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgb(242,249,254) 0%,rgb(214,240,253) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgb(242,249,254) 0%,rgb(214,240,253) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgb(242,249,254) 0%,rgb(214,240,253) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f9fe', endColorstr='#d6f0fd',GradientType=0 ); /* IE6-9 */
+-webkit-box-shadow: 0px 10px 33px -1px rgba(0,0,0,1);
+-moz-box-shadow: 0px 10px 33px -1px rgba(0,0,0,1);
+box-shadow: 0px 10px 33px -1px rgba(0,0,0,1);
+border-bottom: 2px solid;
+border-bottom-color: darkslategray;
+font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+font-weight:100;
+    }
+
+    .prBlock {
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-linear-gradient(top, rgb(255,255,255) 0%, rgb(229,229,229) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(255,255,255)), color-stop(100%,rgb(229,229,229))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgb(255,255,255) 0%,rgb(229,229,229) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgb(255,255,255) 0%,rgb(229,229,229) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgb(255,255,255) 0%,rgb(229,229,229) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgb(255,255,255) 0%,rgb(229,229,229) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+-webkit-box-shadow: 10px 10px 30px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 30px 0px rgba(0,0,0,0.75);
+box-shadow: 10px 10px 30px 0px rgba(0,0,0,0.75);
+    }
+
+        .btn {
+        -moz-box-shadow: inset 0px 1px 0px 0px #cae3fc;
+        -webkit-box-shadow: inset 0px 1px 0px 0px #cae3fc;
+        box-shadow: inset 0px 1px 0px 0px #cae3fc;
+        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #4197ee) );
+        background: -moz-linear-gradient( center top, #79bbff 5%, #4197ee 100% );
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#4197ee');
+        background-color: #79bbff;
+        text-indent: 0px;
+        border: 1px solid #469df5;
+        display: inline-block;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 11px;
+        font-weight: bold;
+        font-style: normal;
+        height: 32px;
+        line-height: 32px;
+        width: 78px;
+        text-decoration: none;
+        text-align: center;
+        text-shadow: 1px 1px 0px #287ace;
+    }
+
+    .btn:hover {
+        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4197ee), color-stop(1, #79bbff) );
+        background: -moz-linear-gradient( center top, #4197ee 5%, #79bbff 100% );
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4197ee', endColorstr='#79bbff');
+        background-color: #4197ee;
+    }
+
+    .btn:active {
+        position: relative;
+        top: 1px;
+    }
+
+    #btn {
+        -moz-box-shadow: inset 0px 1px 0px 0px #cae3fc;
+        -webkit-box-shadow: inset 0px 1px 0px 0px #cae3fc;
+        box-shadow: inset 0px 1px 0px 0px #cae3fc;
+        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #4197ee) );
+        background: -moz-linear-gradient( center top, #79bbff 5%, #4197ee 100% );
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#4197ee');
+        background-color: #79bbff;
+        text-indent: 0px;
+        border: 1px solid #469df5;
+        display: inline-block;
+        color: #ffffff;
+        font-family: Arial;
+        font-size: 11px;
+        font-weight: bold;
+        font-style: normal;
+        height: 32px;
+        line-height: 32px;
+        width: 78px;
+        text-decoration: none;
+        text-align: center;
+        text-shadow: 1px 1px 0px #287ace;
+    }
+
+    #btn:hover {
+        background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4197ee), color-stop(1, #79bbff) );
+        background: -moz-linear-gradient( center top, #4197ee 5%, #79bbff 100% );
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4197ee', endColorstr='#79bbff');
+        background-color: #4197ee;
+    }
+
+    #btn:active {
+        position: relative;
+        top: 1px;
+    }
+
+.or-spacer {
+  margin-top: 100px;
+  margin-left: 100px;
+  width: 400px;
+  position: relative;
+}
+.or-spacer .mask {
+  overflow: hidden;
+  height: 20px;
+}
+.or-spacer .mask:after {
+  content: '';
+  display: block;
+  margin: -25px auto 0;
+  width: 100%;
+  height: 25px;
+  border-radius: 125px / 12px;
+  box-shadow: 0 0 8px black;
+}
+.or-spacer span {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: -25px;
+  left: 50%;
+  margin-left: -25px;
+  border-radius: 100%;
+  box-shadow: 0 2px 4px #999;
+  background: white;
+}
+.or-spacer span i {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  border-radius: 100%;
+  border: 1px dashed #aaa;
+  text-align: center;
+  line-height: 40px;
+  font-style: normal;
+  color: #999;
+}
+
+.or-spacer-vertical {
+  display: inline-block;
+  margin-top: 0;
+  margin-left: 100px;
+  width: 100px;
+  position: relative;
+}
+.or-spacer-vertical .mask {
+  overflow: hidden;
+  width: 20px;
+  height: 100px;
+}
+.or-spacer-vertical.left .mask:after {
+  content: '';
+  display: block;
+  margin-left: -20px;
+  width: 20px;
+  height: 100%;
+  border-radius: 12px / 125px;
+  box-shadow: 0 0 8px black;
+}
+.or-spacer-vertical.right .mask:before {
+  content: '';
+  display: block;
+  margin-left: 20px;
+  width: 20px;
+  height: 100%;
+  border-radius: 12px / 125px;
+  box-shadow: 0 0 8px black;
+}
+
+    legend {
+        background-color:transparent !important;
+    }
+</style>
+
+<script>
+
+    $(".btnSwitch").click(function (e) {
+        var newURL = document.URL;
+        var newValue = e.target.attributes.getNamedItem('value').value;
+        var parameter = e.target.attributes.getNamedItem('parameter').value;
+        if (newValue != 0) {
+            if (newURL.indexOf(parameter) > -1) {
+                var re = new RegExp("(" + parameter + "=)[^\&]+", "")
+                newURL = newURL.replace(re, '$1' + newValue);
+            } else {
+                newURL = newURL + "&" + parameter + "=" + newValue;
+            }
+        } else if (newURL.indexOf(parameter) > -1) {
+            var re = new RegExp("(" + parameter + "=)[^\&]+", "")
+            newURL = newURL.replace(re, '$1' + "");
+            newURL = newURL.replace("&" + parameter + "=", "");
+        }
+        window.location.href = newURL;
+    });
+
+    function changeParamByName(href, paramName, newVal) {
+        var tmpRegex = new RegExp("(" + paramName + "=)[a-z]+", 'ig');
+        return href.replace(tmpRegex, '$1' + newVal);
+    }
+
+    $(".btnExcel").click(function (e) {
+        var coeID = e.target.attributes.getNamedItem('coeID').value
+        var fiscalYear = e.target.attributes.getNamedItem('fiscalYear').value
+        var coeIDFilter;
+        if (coeID != 0) {
+            coeIDFilter = "&coeID=" + coeID;
+        }
+        window.open("viewPRExcel?fiscalYear=" + fiscalYear + coeIDFilter, "Excel");
+    });
+
+    $('#editFootnotes').click(function () {
+        window.open('editFootnotes', 'Footnotes', "width=400,height=500");
+    });
+
+    $("#viewPR").click(function () {
+        window.location.href = "viewPR?fiscalYear=" + @ViewBag.fiscalYear;
+    });
+
+    $("#editInventory").click(function () {
+        window.location.href = "editInventory?fiscalYear=" + @ViewBag.fiscalYear;
+    });
+
+    $("#editFootnoteMaps").click(function () {
+        window.location.href = "editFootnoteMaps?fiscalYear=" + @ViewBag.fiscalYear;
+    });
+
+    $("#edit").click(function () {
+        window.location.href = "edit?fiscalYear=" + @ViewBag.fiscalYear;
+        });
+
+</script>

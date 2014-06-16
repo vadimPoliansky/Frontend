@@ -4,12 +4,442 @@
 @using System.Globalization
 
 @{
-    ViewBag.Title = "View Performance Reports";
+    ViewBag.Title = "Performance Reports";
+    ViewBag.Buttons = "";
+    foreach (var analyst in Model.allAnalysts)
+    {
+        ViewBag.Buttons += "<div id='btn' class='btnSwitch' value=" + analyst.Analyst_ID + " parameter=analystID >" + analyst.First_Name + "</div>";
+    }
+    ViewBag.Buttons += "<div id='btn' class='btnSwitch' value=" + 0 + " parameter=analystID >" + "All" + "</div>";
+    ViewBag.fiscalYear = Model.Fiscal_Year;
 }
-<h2>@ViewBag.Title</h2>
-<!--
-<button id="clickExcel">Export to excel</button>
--->
+
+<br />
+<br />
+
+@{var properties = ModelMetadataProviders.Current; ;
+  var fiscalYear = Model.Fiscal_Year;}
+@foreach (var coe in Model.allCoEs)
+{
+    var footnotes = new List<Footnotes>();
+    <div class="row">
+    <fieldset class="prBlock">
+    <div class="large-11 columns">
+        <h3>@Html.DisplayFor(modelItem => coe.CoE)</h3>
+    </div>
+    <div class="large-1 columns">
+        <div coeID='@coe.CoE_ID' fiscalYear="@fiscalYear" id='btn' class='btnExcel'>View Excel</div>
+    </div>
+    <table id="tbl" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
+    <tr class="prHeader1">
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
+    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
+    <td rowspan="2", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_3", fiscalYear)).DisplayName</td>
+    <td rowspan="2", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_2", fiscalYear)).DisplayName</td>
+    <td rowspan="2", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_1", fiscalYear)).DisplayName</td>
+    <td rowspan="1", colspan ="5", class="prHeader1">@FiscalYear.FYStrFull("FY_Header", fiscalYear)</td>
+    <td rowspan="2", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_", fiscalYear) + "Target").DisplayName</td>
+    <td rowspan="2", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_", fiscalYear) + "Performance_Threshold").DisplayName</td>
+    <td rowspan="2", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_", fiscalYear) + "Comparator").DisplayName</td>
+    </tr>
+
+    <tr class="prHeader2">
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q1)</td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q2)</td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q3)</td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q4)</td>
+    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_YTD)</td>
+    </tr>
+    @{var numCount = 1;}
+    @foreach (var area_map in coe.Area_CoE_Map.Where(x => Model.allMaps.Where(y => y.Indicator.Area == x.Area).Where(y => y.CoE == coe).Any(y => y.Indicator.Analyst_ID == @Model.Analyst_ID)).Where(x => x.Fiscal_Year == fiscalYear).OrderBy(x => x.Area.Sort))
+    {
+        <tr >
+        <td class="prArea" colspan="100%" mapID="@area_map.Map_ID" area="@Html.DisplayTextFor(modelItem => area_map.Area.Area)">
+            <b>@Html.DisplayFor(modelItem => area_map.Area.Area)</b> <br />    
+            @Html.DisplayFor(modelItem => area_map.Objective)
+        </td>
+        </tr>
+        string[,] oldColumns = null;
+        foreach (var map in Model.allMaps.Where(x => x.Fiscal_Year == fiscalYear).Where(e => e.Indicator.Area.Equals(area_map.Area)).Where(d => d.CoE.CoE.Contains(coe.CoE)).OrderBy(f => f.Number))
+        {
+            var indicatorTitle = ""; int? number = numCount; var skip = false;
+            if (map.Indicator.Indicator.Contains("%SKIP%") == false)
+            {
+                indicatorTitle = Html.DisplayFor(modelItem => map.Indicator.Indicator).ToString();
+                number = numCount;
+            }
+            else
+            {
+                numCount--;
+                number = null;
+                skip = true;
+            }
+            <tr style="background-color:White">
+            <td class="prRowID" style="min-width:1%;" >@number</td>
+            @{numCount++;}
+            <td indicatorID="@map.Indicator_ID" field="Indicator" class="prRowTitle">@indicatorTitle
+            @{int j = 0;}
+            @foreach (var footnote in map.Indicator.Indicator_Footnote_Map.Where(x => x.Fiscal_Year == fiscalYear).Where(e => e.Indicator_ID == map.Indicator_ID).OrderBy(e => e.Indicator_ID))
+            {
+                if (j != 0)
+                { Html.Raw(","); }
+                <sup>@Html.DisplayTextFor(modelItem => footnote.Footnote.Footnote_Symbol)</sup>
+                j++;
+                if (!footnotes.Contains(footnote.Footnote)){
+                    footnotes.Add(footnote.Footnote);}
+            }
+            @{  var indicator = map.Indicator;
+                var indicatorType = indicator.GetType();
+                string[,] columns = new string[,]{
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_3",fiscalYear)).GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_3",fiscalYear) + "_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_3",fiscalYear)},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_2",fiscalYear)).GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_2",fiscalYear) + "_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_2",fiscalYear)},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_1",fiscalYear)).GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_1",fiscalYear) + "_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_1",fiscalYear)},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q1").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q1_Sup").GetValue(indicator,null), 
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q1_Color").GetValue(indicator,null), FiscalYear.FYStrFull("FY_",fiscalYear) + "Q1"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q2").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q2_Sup").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q2_Color").GetValue(indicator,null), FiscalYear.FYStrFull("FY_",fiscalYear) + "Q2"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q3").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q3_Sup").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q3_Color").GetValue(indicator,null), FiscalYear.FYStrFull("FY_",fiscalYear) + "Q3"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q4").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q4_Sup").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Q4_Color").GetValue(indicator,null), FiscalYear.FYStrFull("FY_",fiscalYear) + "Q4"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "YTD").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "YTD_Sup").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "YTD_Color").GetValue(indicator,null), FiscalYear.FYStrFull("FY_",fiscalYear) + "YTD"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Target").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Target_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_",fiscalYear) + "Target"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Performance_Threshold").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Performance_Threshold_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_",fiscalYear) + "Performance_Threshold"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator").GetValue(indicator,null),
+                     (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator"},
+                };
+                if (!skip)
+                {
+                    oldColumns = columns;
+                }
+            }
+            </td>
+            @for (int i = 0; i <= columns.GetUpperBound(0); i++)
+            {
+                int colSpan = 1;
+                if (i != columns.GetUpperBound(0) && columns[i + 1, 0] == "=")
+                {
+                    int k = 1;
+                    while (columns[i + k, 0] == "=")
+                    {
+                        colSpan++;
+                        k++;
+                    }
+                }
+                else { colSpan = 1; };
+                if (columns[i, 0] != "=")
+                {
+                    var tdClass = columns[i, 2];
+                    if (skip) { tdClass = oldColumns[i, 2]; };
+                    <td align="center", indicatorID="@map.Indicator_ID", field="@Html.Raw(columns[i, 3])", colspan="@colSpan", class=@Html.Raw(tdClass)>@Html.Raw(columns[i, 0]) <sup>@Html.Raw(columns[i, 1])</sup></td>
+                }
+            }
+            </tr>
+        }
+    }
+    </table>
+    @foreach(var footnote in footnotes){
+        <small>@footnote.Footnote_Symbol, @footnote.Footnote</small><br />
+    }
+    <br />
+
+    <table id="tbl" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
+    <tr class="prHeader1">
+    <td rowspan="1", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
+    <td rowspan="1", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
+    <td rowspan="1", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_", fiscalYear) + "Definition_Calculation").DisplayName</td>
+    <td rowspan="1", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_", fiscalYear) + "Target_Rationale").DisplayName</td>
+    <td rowspan="1", class="prHeader1">@properties.GetMetadataForProperty(null, typeof(Indicators), FiscalYear.FYStrFull("FY_", fiscalYear) + "Comparator_Source").DisplayName</td>
+    </tr>
+
+    @{numCount = 1;}
+    @foreach (var area_map in coe.Area_CoE_Map.Where(x => Model.allMaps.Where(y => y.Indicator.Area == x.Area).Where(y => y.CoE == coe).Any(y => y.Indicator.Analyst_ID == @Model.Analyst_ID)).Where(x => x.Fiscal_Year == fiscalYear).OrderBy(x => x.Area.Sort))
+    {
+        <tr >
+        <td class="prArea" colspan="100%" mapID="@area_map.Map_ID" area="@Html.DisplayTextFor(modelItem => area_map.Area.Area)">
+            <b>@Html.DisplayFor(modelItem => area_map.Area.Area)</b> <br />    
+            @Html.DisplayFor(modelItem => area_map.Objective)
+        </td>
+        </tr>
+        string[,] oldColumns = null;
+        foreach (var map in Model.allMaps.Where(x => x.Fiscal_Year == fiscalYear).Where(e => e.Indicator.Area.Equals(area_map.Area)).Where(d => d.CoE.CoE.Contains(coe.CoE)).OrderBy(f => f.Number))
+        {
+            var indicatorTitle = ""; int? number = numCount; var skip = false;
+            if (map.Indicator.Indicator.Contains("%SKIP%") == false)
+            {
+                indicatorTitle = Html.DisplayFor(modelItem => map.Indicator.Indicator).ToString();
+                number = numCount;
+            }
+            else
+            {
+                numCount--;
+                number = null;
+                skip = true;
+            }
+            <tr style="background-color:White">
+            <td class="prRowIDDef" style="min-width:1%;" >@number</td>
+            @{numCount++;}
+            <td indicatorID="@map.Indicator_ID" field="Indicator" class="prRowTitleDef">@indicatorTitle
+            <sup>
+            @{int j = 0;}
+            @foreach (var footnote in map.Indicator.Indicator_Footnote_Map.Where(x => x.Fiscal_Year == fiscalYear).Where(e => e.Indicator_ID == map.Indicator_ID).OrderBy(e => e.Indicator_ID))
+            {
+                if (j != 0)
+                { Html.Raw(","); }
+                Html.DisplayFor(modelItem => footnote.Footnote.Footnote_Symbol);
+                j++;
+            }
+            </sup>
+            @{  var indicator = map.Indicator;
+                var indicatorType = indicator.GetType();
+                string[,] columns = new string[,]{
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Definition_Calculation").GetValue(indicator,null),
+                     "", "prRowDef", FiscalYear.FYStrFull("FY_",fiscalYear) + "Definition_Calculation"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Target_Rationale").GetValue(indicator,null),
+                     "", "prRowDef", FiscalYear.FYStrFull("FY_",fiscalYear) + "Target_Rationale"},
+                    {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator_Source").GetValue(indicator,null),
+                     "", "prRowDef", FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator_Source"},
+                };
+                if (!skip)
+                {
+                    oldColumns = columns;
+                }
+            }
+            </td>
+            @for (int i = 0; i <= columns.GetUpperBound(0); i++)
+            {
+                int colSpan = 1;
+                if (i != columns.GetUpperBound(0) && columns[i + 1, 0] == "=")
+                {
+                    int k = 1;
+                    while (columns[i + k, 0] == "=")
+                    {
+                        colSpan++;
+                        k++;
+                    }
+                }
+                else { colSpan = 1; };
+                if (columns[i, 0] != "=")
+                {
+                    var tdClass = columns[i, 2];
+                    if (skip) { tdClass = oldColumns[i, 2]; };
+                    <td align="center", indicatorID="@map.Indicator_ID", field="@Html.Raw(columns[i, 3])", colspan="@colSpan", class=@Html.Raw(tdClass)>@Html.Raw(columns[i, 0]) <sup>@Html.Raw(columns[i, 1])</sup></td>
+                }
+            }
+            </tr>
+        }
+    }
+    </table>
+    </fieldset>
+    </div>
+}
+
+<script src="../../Scripts/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+
+
+        $(".prRow, .prRowTitle, .cssGreen, .cssRed, .cssWhite, .cssYellow").dblclick(function (e) {
+            var indicatorID = e.target.attributes.getNamedItem('indicatorID');
+            var field = e.target.attributes.getNamedItem('field');
+            var currentEle = $(this);
+            e.stopPropagation();
+
+            $.get('getValue', { indicatorID: indicatorID.value, field: field.value, fiscalYear: @Model.Fiscal_Year}, function (data) {
+                var value = data.Value || "";
+                var value2 = data.Value_Sup || "";
+                updateVal(currentEle, value, value2, indicatorID, field);
+            });
+
+        });
+
+        $(".prRowDef").dblclick(function (e) {
+            var indicatorID = e.target.attributes.getNamedItem('indicatorID');
+            var field = e.target.attributes.getNamedItem('field');
+            var currentEle = $(this);
+            e.stopPropagation();
+
+            $.get('getValue', { indicatorID: indicatorID.value, field: field.value, fiscalYear: @Model.Fiscal_Year}, function (data) {
+                var value = data.Value || "";
+                updateDefVal(currentEle, value, indicatorID, field);
+            });
+
+                });
+
+        $(".prArea").dblclick(function (e) {
+            var mapID = e.target.attributes.getNamedItem('mapID');
+            var currentEle = $(this);
+            e.stopPropagation();
+            
+            $.get('getAreaMap', { mapID: mapID.value, fiscalYear: @Model.Fiscal_Year}, function (data) {
+                updateObjVal(currentEle, mapID, data);
+            });
+        });
+
+        function updateVal(currentEle, value, value2, indicatorID, field) {
+            @*$(currentEle).html('<input id="newEdit" indicatorID ="' + indicatorID.value + 
+                                    '" field="' + field.value +
+                                    '" class="thVal" type="text" value="' + value + 
+                                    '" />' +
+                               '<input id="newEdit2" indicatorID ="' + indicatorID.value + 
+                                    '" field="' + field.value +
+                                    '" class="thVal2" type="text" value="' + value2 + '" />' +
+                               '<a class="thButton" id="editFootnotes">Edit Footnotes for this indicator</button>'
+                                );*@
+            $(currentEle).html('<textarea id="newEdit" indicatorID ="' + indicatorID.value + 
+                                    '" field="' + field.value +
+                                    '" value="' + value + 
+                                    '" class="thVal" rows="1">' + value +
+                                    '</textarea>' +
+                                '<textarea id="newEdit" indicatorID ="' + indicatorID.value + 
+                                    '" field="' + field.value +
+                                    '" value="' + value2 + 
+                                    '" class="thVal2" rows="1">' + value2 +
+                                    '</textarea>' +
+                                '<a class="thButton" id="editFootnotes"><h5>Edit Footnotes for this indicator</h5></button>'
+                                );
+            if (field.value === "Indicator"){
+                $('.thVal2').hide();
+                $('.thButton').show();
+            } else {
+                $('.thVal2').show();
+                $('.thButton').hide();
+            }
+            $(".thVal").focus();
+            $(".thVal").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    //$(currentEle).html($(".thVal").val().trim());
+                }
+            });
+
+            $(".thButton").click(function(e){
+                var params = [
+                    'height='+screen.height,
+                    'width='+screen.width,
+                    'fullscreen=yes' // only works in IE, but here for completeness
+                ].join(',');
+                window.open('editFootnoteMaps?fiscalYear=' + @Model.Fiscal_Year + '&indicatorID=' + indicatorID.value,'popup_window',params);
+            });
+
+            $('body').unbind("click").click(function (evt) {
+                if (evt.target.id == "newEdit" || evt.target.id == "newEdit2" || evt.target.id == "editFootnotes") return;
+                var colorElement = $(currentEle);
+                //var indicatorID = document.getElementById('newEdit').getAttribute('indica
+                var parameters = {
+                    indicatorID: $('.thVal').attr('indicatorID'),
+                    updateProperty: $('.thVal').attr('field'),
+                    updateValue: $('.thVal').val().trim(),
+                    updateValueSup: $('.thVal2').val().trim(),
+                    fiscalYear: @Model.Fiscal_Year,
+                };
+                $.ajax({
+                    url: 'setValue',
+                    type: 'POST',
+                    data: JSON.stringify(parameters),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        if (result != ""){
+                            colorElement.attr("class",result);
+                        }
+                    },
+                    error: function (request){
+                    }
+                });
+                $(currentEle).html($(".thVal").val().trim() + "<sup>" + $(".thVal2").val().trim() + "</sup>");
+                currentEle = null;
+            });
+        }
+
+        function updateObjVal(currentEle, mapID, value) {
+            $(currentEle).html('<textarea id="newEdit" mapID ="' + mapID.value + 
+                                    '" value="' + value + 
+                                    '" class="thVal" rows="4">' + value +
+                                    '</textarea>'
+                                );
+            $(".thVal").focus();
+            $(".thVal").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    //$(currentEle).html($(".thVal").val().trim());
+                }
+            });
+
+            $('body').unbind("click").click(function (evt) {
+                if (evt.target.id == "newEdit") return;
+                var area = $(currentEle);
+                //var indicatorID = document.getElementById('newEdit').getAttribute('indica
+                var parameters = {
+                    mapID: mapID.value,
+                    objective:$(".thVal").val().trim(),
+                    fiscalYear: @Model.Fiscal_Year,
+                };
+                $.ajax({
+                    url: 'setAreaMap',
+                    type: 'POST',
+                    data: JSON.stringify(parameters),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                    },
+                    error: function (request){
+                    }
+                });
+                $(currentEle).html("<b>" + area.attr("area") + " </b><br/>" +$(".thVal").val().trim());
+                currentEle = null;
+            });
+        };
+
+        function updateDefVal(currentEle, value, indicatorID, field) {
+            $(currentEle).html('<textarea id="newEdit" indicatorID ="' + indicatorID.value + 
+                                    '" field="' + field.value +
+                                    '" value="' + value + 
+                                    '" class="thVal" rows="1">' + value +
+                                    '</textarea>'
+                              );
+            $(".thVal").focus();
+            $(".thVal").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    //$(currentEle).html($(".thVal").val().trim());
+                }
+            });
+
+            $('body').unbind("click").click(function (evt) {
+                if (evt.target.id == "newEdit") return;
+                var colorElement = $(currentEle);
+                //var indicatorID = document.getElementById('newEdit').getAttribute('indica
+                var parameters = {
+                    indicatorID: $('.thVal').attr('indicatorID'),
+                    updateProperty: $('.thVal').attr('field'),
+                    updateValue: $('.thVal').val().trim(),
+                    updateValueSup: "%NULL%",
+                    fiscalYear: @Model.Fiscal_Year,
+                };
+                $.ajax({
+                    url: 'setValue',
+                    type: 'POST',
+                    data: JSON.stringify(parameters),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                    },
+                    error: function (request){
+                    }
+                });
+                $(currentEle).html($(".thVal").val().trim());
+                currentEle = null;
+            });
+        };
+    });
+</script>
 
 <style>
 .prHeader1
@@ -34,7 +464,7 @@
     background-color:Silver;
     text-align:justify;
     color:Black;
-    padding: 0px;
+    padding: 5px;
 }
 .prRowID
 {
@@ -51,10 +481,43 @@
     background-color:White;
     text-align:justify;
     color:Black;
-    min-width:6.5%;
+    min-width:20% !important;
+    max-width:20% !important;
+    word-wrap: break-word;
+    padding: 0px 2px 0px 2px;
+}
+.prRowIDDef
+{
+    font-size:11px;
+    background-color:White;
+    text-align:center;
+    color:Black;
+    min-width:0.05% !important;
+    max-width:0.05% !important;
+    padding: 0px 2px 0px 2px;
+}
+.prRowTitleDef
+{
+    font-size:11px;
+    background-color:White;
+    text-align:justify;
+    color:Black;
+    min-width:5.5% !important;
+    max-width:5.5% !important;
+    word-wrap: break-word;
     padding: 0px 2px 0px 2px;
 }
 .prRow
+{
+    font-size:11px;
+    background-color:White;
+    text-align:center;
+    color:Black;
+    min-width:6.5%;
+    max-width:15%;
+    padding: 0px;
+}
+.prRowDef
 {
     font-size:11px;
     background-color:White;
@@ -127,102 +590,10 @@ html> .prRow
     background-color:transparent;
     color:inherit;
 }
-</style>
 
-
-@foreach (var coe in Model.allCoEs)
-{
-    <h3>@Html.DisplayFor(modelItem => coe.CoE)</h3>
-    <table id="tbl" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
-    <tr class="prHeader1">
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_10_11) </td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_11_12) </td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_12_13) </td>
-    <td rowspan="1", colspan ="5", class="prHeader1">FY 13/14 Performance</td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Target) </td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Performance_Threshold) </td>
-    <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Comparator) </td>
-    </tr>
-
-    <tr class="prHeader2">
-    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q1) </td>
-    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q2) </td>
-    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q3) </td>
-    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_Q4) </td>
-    <td rowspan="1", class="prHeader2">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.FY_13_14_YTD) </td>
-    </tr>
-    @{var numCount = 1;}
-    @foreach (var area_map in coe.Area_CoE_Map)
-    {
-        <tr >
-        <td class="prArea" colspan="100%">@Html.DisplayFor(modelItem => area_map.Area.Area)     @Html.DisplayFor(modelItem => area_map.Objective)</td>
-        </tr>
-
-        foreach (var map in Model.allMaps.Where(e => e.Indicator.Area.Equals(area_map.Area)).Where(d => d.CoE.CoE.Contains(coe.CoE)).OrderBy(f => f.Number))
-        {
-            <tr style="background-color:White">
-            <td class="prRowID" style="min-width:1%;" >@numCount</td>
-            @{numCount++;}
-            <td style="min-width:29%" class="prRowTitle">@Html.DisplayFor(modelItem => map.Indicator.Indicator)
-            <sup>
-            @{int j = 0;}
-            @foreach (var Footnote in map.Indicator.Indicator_Footnote_Map.Where(e => e.Indicator_ID == map.Indicator_ID).OrderBy(e => e.Indicator_ID))
-            {
-                if (j != 0)
-                { @Html.Raw(",");
-                }
-                @Html.DisplayFor(modelItem => Footnote.Footnote_ID);
-                                                                   j++;
-            }
-            @{string[,] columns = new string[,]{
-                    {map.Indicator.FY_10_11, map.Indicator.FY_10_11_Sup,"prRow"},
-                    {map.Indicator.FY_11_12, map.Indicator.FY_11_12_Sup,"prRow"},
-                    {map.Indicator.FY_12_13, map.Indicator.FY_12_13_Sup,"prRow"},
-                    {map.Indicator.FY_13_14_Q1, map.Indicator.FY_13_14_Q1_Sup,map.Indicator.Q1_Color,},
-                    {map.Indicator.FY_13_14_Q2, map.Indicator.FY_13_14_Q2_Sup,map.Indicator.Q2_Color,},
-                    {map.Indicator.FY_13_14_Q3, map.Indicator.FY_13_14_Q3_Sup,map.Indicator.Q3_Color,},
-                    {map.Indicator.FY_13_14_Q4, map.Indicator.FY_13_14_Q4_Sup,map.Indicator.Q4_Color,},
-                    {map.Indicator.FY_13_14_YTD, map.Indicator.FY_13_14_YTD_Sup,map.Indicator.YTD_Color,},
-                    {map.Indicator.Target, map.Indicator.Target_Sup,"prRow"},
-                    {map.Indicator.Performance_Threshold, map.Indicator.Performance_Threshold_Sup,"prRow"},
-                    {map.Indicator.Comparator, map.Indicator.Comparator_Sup,"prRow"},
-                };
-            }
-            </sup>
-            </td>
-            @for (int i = 0; i <= columns.GetUpperBound(0); i++)
-            {
-                int colSpan = 1;
-                if (i != columns.GetUpperBound(0) && columns[i + 1, 0] == "=")
-                {
-                    int k = 1;
-                    while (columns[i + k, 0] == "=")
-                    {
-                        colSpan++;
-                        k++;
-                    }
-                }
-                else { colSpan = 1; };
-                if (columns[i, 0] != "=")
-                {
-                    <td align="center", colspan="@colSpan", class=@Html.Raw(columns[i, 2])>@Html.Raw(columns[i, 0]) <sup>@Html.Raw(columns[i, 1])</sup></td>
-                }
-            }
-            </tr>
-        }
-    }
-    </table>
-    foreach (var test in Model.allFootnoteMaps.Where(x => coe.Indicator_CoE_Map.Any(y => y.Indicator.Indicator_Footnote_Map == x.Indicator.Indicator_Footnote_Map)).Distinct())
-    {
-        <div class="row"><div class="small">
-        @Html.DisplayFor(modelItem => test.Footnote.Footnote)
-        </div></div>
-    }
-    <br />
-    <br />
-
+table, th, td {
+    border: 1px solid black;
+    white-space: normal;
 }
 
-
+}</style>

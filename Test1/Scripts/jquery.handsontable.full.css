@@ -70,7 +70,7 @@
   line-height: 21px;
   padding: 0 4px 0 4px;
   /* top, bottom padding different than 0 is handled poorly by FF with HTML5 doctype */
-  background-color: #FFF;
+  background-color: transparent;
   vertical-align: top;
   overflow: hidden;
   outline-width: 0;
@@ -81,13 +81,13 @@
 .handsontable td.htInvalid {
   -webkit-transition: background 0.75s ease;
   transition: background 0.75s ease;
-  background-color: #ff4c42;
+  background-color: transparent;
 }
 
 .handsontable th:last-child {
   /*Foundation framework fix*/
-  border-right: 1px solid #CCC;
-  border-bottom: 1px solid #CCC;
+  border-right: 0px solid #CCC;
+  border-bottom: 0px solid #CCC;
 }
 
 .handsontable tr:first-child th.htNoFrame,
@@ -102,24 +102,24 @@
 .handsontable td:first-child,
 .handsontable .htNoFrame + th,
 .handsontable .htNoFrame + td {
-  border-left: 1px solid #CCC;
+  border-left: 0px solid #CCC;
 }
 
 .handsontable tr:first-child th,
 .handsontable tr:first-child td {
-  border-top: 1px solid #CCC;
+  border-top: 0px solid #CCC;
 }
 
 .handsontable thead tr:last-child th {
-  border-bottom-width: 0;
+  border-bottom-width:1;
 }
 
 .handsontable thead tr.lastChild th {
-  border-bottom-width: 0;
+  border-bottom-width: 1;
 }
 
 .handsontable th {
-  background-color: #EEE;
+  background-color: transparent;
   color: #222;
   text-align: center;
   font-weight: normal;
@@ -131,7 +131,7 @@
 }
 
 .handsontable th.active {
-  background-color: #CCC;
+  background-color: transparent;
 }
 
 .handsontable thead th .relative {
@@ -154,7 +154,7 @@
 
 .handsontable th .manualColumnMover:hover,
 .handsontable th .manualColumnMover.active {
-  background-color: #88F;
+  background-color: transparent;
 }
 
 .handsontable .manualColumnResizer {
@@ -171,7 +171,7 @@
 
 .handsontable .manualColumnResizer:hover .manualColumnResizerHandle,
 .handsontable .manualColumnResizer.active .manualColumnResizerHandle {
-  background-color: #AAB;
+  background-color: transparent;
 }
 
 .handsontable .manualColumnResizerLine {
@@ -201,7 +201,7 @@
 }
 
 .handsontable td.area {
-  background-color: #EEF4FF;
+  background-color: transparent;
 }
 
 /* fill handle */
@@ -234,7 +234,7 @@
   display: inline-block;
   color: #000;
   border-radius: 0;
-  background-color: #FFF;
+  background-color: transparent;
   /*overwrite styles potentionally made by a framework*/
 }
 

@@ -118,12 +118,14 @@ input[type=checkbox].css-checkbox {
             Indicator_ID: indicatorID,
             CoE_ID: coeID,
             Map_ID: mapID,
+            Fiscal_Year: @Model.fiscalYear,
         })
         var parameters = []
         parameters.push({
             allIndicators:null,
             allCoEs:null,
             allMaps: maps,
+            fiscalYear: @Model.fiscalYear,
         })
         $.ajax({
             url: this.action,

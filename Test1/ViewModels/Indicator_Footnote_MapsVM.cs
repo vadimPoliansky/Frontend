@@ -10,16 +10,16 @@ namespace IndInv.Models.ViewModels
         public string Indicator_ID { get; set; }
         public string Indicator { get; set; }
         
-        public string Footnote_ID_1 { get; set; }
-        public string Footnote_ID_2 { get; set; }
-        public string Footnote_ID_3 { get; set; }
-        public string Footnote_ID_4 { get; set; }
-        public string Footnote_ID_5 { get; set; }
-        public string Footnote_ID_6 { get; set; }
-        public string Footnote_ID_7 { get; set; }
-        public string Footnote_ID_8 { get; set; }
-        public string Footnote_ID_9 { get; set; }
-        public string Footnote_ID_10 { get; set; }
+        public Int16 Footnote_ID_1 { get; set; }
+        public Int16 Footnote_ID_2 { get; set; }
+        public Int16 Footnote_ID_3 { get; set; }
+        public Int16 Footnote_ID_4 { get; set; }
+        public Int16 Footnote_ID_5 { get; set; }
+        public Int16 Footnote_ID_6 { get; set; }
+        public Int16 Footnote_ID_7 { get; set; }
+        public Int16 Footnote_ID_8 { get; set; }
+        public Int16 Footnote_ID_9 { get; set; }
+        public Int16 Footnote_ID_10 { get; set; }
 
         public string Footnote_Symbol_1 { get; set; }
         public string Footnote_Symbol_2 { get; set; }
@@ -42,5 +42,8 @@ namespace IndInv.Models.ViewModels
         public Int16 Map_ID_8 { get; set; }
         public Int16 Map_ID_9 { get; set; }
         public Int16 Map_ID_10 { get; set; }
+
+        public Int16 Fiscal_Year { get; set; }
+        public List<string> allFootnotes { get; set; }
     }
 }

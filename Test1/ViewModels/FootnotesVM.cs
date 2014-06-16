@@ -7,7 +7,7 @@ namespace IndInv.Models.ViewModels
 {
     public class FootnotesViewModel
     {
-        public string Footnote_ID { get; set; }
+        public Int16 Footnote_ID { get; set; }
         public string Footnote { get; set; }
         public string Footnote_Symbol { get; set; }
     }

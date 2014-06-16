@@ -5,10 +5,10 @@
 <script src="../../Scripts/jquery.handsontable.full.js"></script>
 <script type='text/javascript' src="http://wurfljs.com/wurfl.js"></script>
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.handsontable.full.css" />
-@model IList<IndInv.Models.ViewModels.FootnotesViewModel>
+@model IList<IndInv.Models.ViewModels.AnalystViewModel>
 @using IndInv.Models
 @{
-    ViewBag.Title = "Edit Indicator Inventory";
+    ViewBag.Title = "Edit Analysts";
 }
 
 <br />
@@ -63,45 +63,48 @@
         minSpareRows: 0,
         contextMenu: true,
         colHeaders: [
-            "Footnote",
-            "Footnote Text",
+            "Last_Name",
+            "First_Name",
+            "Position",
         ],
         columns: [
-            {data:"Footnote_Symbol"},
-            {data:"Footnote"},
+            {data:"Last_Name"},
+            {data:"First_Name"},
+            {data:"Position"},
         ],
         afterChange: function (change, source) {
             if (source === 'loadData') {
                 return;
             } else {
                 for (var i = 0; i< change.length; ++i){
-                    if (change[i][1] != "Footnote_ID"){
-                        updateFootnote(change, i);
+                    if (change[i][1] != "Analyst_ID"){
+                        updateAnalyst(change, i);
                     }
                 }
             }
         },
         beforeRemoveRow: function(index, amount){
-            var footnoteID =  this.getDataAtRowProp(index, 'Footnote_ID')
-            deleteFootnote(footnoteID);
+            var analystID =  this.getDataAtRowProp(index, 'Analyst_ID')
+            deleteAnalyst(analystID);
         }
     });
 
     maxed = !maxed;
     $example1.handsontable('render');
 
-    function updateFootnote(change, i){
+    function updateAnalyst(change, i){
         var changedRow = change[i][0];
         var changedParameter = change[i][1];
         var changedValue = change[i][3];
-        $.get('@Url.Action("/editFootnotes")', {Footnote_ID_Filter : $example1.handsontable('getDataAtCell', changedRow,'Footnote_ID')}, function (data) {
+        $.get('@Url.Action("/editAnalysts")', {Analyst_ID_Filter : $example1.handsontable('getDataAtCell', changedRow,'Analyst_ID')}, function (data) {
             var newValue = data;
-            $example1.handsontable('setDataAtRowProp', changedRow,'Footnote_ID', data[0].Footnote_ID)
+            $example1.handsontable('setDataAtRowProp', changedRow,'Analyst_ID', data[0].Analyst_ID)
             var parameters = []
             parameters.push({
-                Footnote: (changedParameter=="Footnote" ?  changedValue : newValue[0].Footnote),
-                Footnote_ID: (changedParameter=="Footnote_ID" ?  changedValue : newValue[0].Footnote_ID),
-                Footnote_Symbol: (changedParameter=="Footnote_Symbol" ?  changedValue : newValue[0].Footnote_Symbol),
+                First_Name: (changedParameter=="First_Name" ?  changedValue : newValue[0].First_Name),
+                Last_Name: (changedParameter=="Last_Name" ?  changedValue : newValue[0].Last_Name),
+                Analyst_ID: (changedParameter=="Analyst_ID" ?  changedValue : newValue[0].Analyst_ID),
+                Position: (changedParameter=="Position" ?  changedValue : newValue[0].Position),
             })
             $.ajax({
                 url: this.action,
@@ -116,10 +119,10 @@
         });
     }
 
-    function deleteFootnote(footnoteID){
-        var parameters = {footnoteID: footnoteID};
+    function deleteAnalyst(analystID){
+        var parameters = {analystID: analystID};
         $.ajax({
-            url:'@Url.Action("/deleteFootnotes")',
+            url:'@Url.Action("/deleteAnalyst")',
             type: 'POST',
             data: JSON.stringify(parameters),
             contentType: 'application/json; charset=utf-8',

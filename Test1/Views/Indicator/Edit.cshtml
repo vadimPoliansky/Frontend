@@ -1,314 +1,424 @@
-﻿@model IndInv.Models.Indicators
+﻿@model IndInv.Models.ViewModels.editViewModel
 
 @{
     ViewBag.Title = "Edit";
+    ViewBag.fiscalYear = 1;
 }
 
-<h2>Edit</h2>
-
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+<br />
+<div class="row">
+<div class="prBlock">
+<form id="updateIndicator">
+    <div class="row">
+        <div class="large-12 columns">
+            <div data-alert class="alert-box">
+                <label><h4>ID:</h4>
+                    <input type="text" id="Indicator_ID" value="@Html.DisplayTextFor(x=>x.Indicator.Indicator_ID)"/>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <fieldset class="checkboxes">
+            <p>@Html.DisplayNameFor(x=>x.Indicator.Indicator_CoE_Map):</p>
+            @foreach (var coe in Model.allCoEs)
+            {
+                if (Model.Indicator.Indicator_CoE_Map != null && Model.Indicator.Indicator_CoE_Map.Any(x => x.CoE_ID == coe.CoE_ID))
+                {
+                    <label><input id="@coe.CoE_ID" type="checkbox" checked>@coe.CoE</label>
+                }else{
+                    <label><input id="@coe.CoE_ID" type="checkbox">@coe.CoE</label>
+                }
+            }
+            </fieldset>
+        </div>
+    </div>
+    <fieldset>
+    <div class="row">
+        <legend> @Html.DisplayNameFor(x => x.Indicator.FY_10_11_YTD)</legend>
+        <div class="large-8 columns">
+            <input type="text" id="FY_10_11_YTD" value="@Html.DisplayTextFor(x=>x.Indicator.FY_10_11_YTD)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_10_11_YTD_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_10_11_YTD_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <legend> @Html.DisplayNameFor(x => x.Indicator.FY_11_12_YTD)</legend>
+        <div class="large-8 columns">
+            <input type="text" id="FY_11_12_YTD" value="@Html.DisplayTextFor(x=>x.Indicator.FY_11_12_YTD)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_11_12_YTD_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_11_12_YTD_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <legend> @Html.DisplayNameFor(x => x.Indicator.FY_12_13_YTD)</legend>
+        <div class="large-8 columns">
+            <input type="text" id="FY_12_13_YTD" value="@Html.DisplayTextFor(x=>x.Indicator.FY_12_13_YTD)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_12_13_YTD_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_12_13_YTD_Sup)"/>
+        </div>
+    </div>
+    </fieldset>
 
     <fieldset>
-        <legend>Indicators</legend>
-
-        @Html.HiddenFor(model => model.Indicator_ID)
-
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Indicator)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Indicator)
-            @Html.ValidationMessageFor(model => model.Indicator)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Area_ID)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Area_ID)
-            @Html.ValidationMessageFor(model => model.Area_ID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_10_11)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_10_11)
-            @Html.ValidationMessageFor(model => model.FY_10_11)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_10_11_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_10_11_Sup)
-            @Html.ValidationMessageFor(model => model.FY_10_11_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_11_12)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_11_12)
-            @Html.ValidationMessageFor(model => model.FY_11_12)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_11_12_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_11_12_Sup)
-            @Html.ValidationMessageFor(model => model.FY_11_12_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_12_13)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_12_13)
-            @Html.ValidationMessageFor(model => model.FY_12_13)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_12_13_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_12_13_Sup)
-            @Html.ValidationMessageFor(model => model.FY_12_13_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q1)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q1)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q1)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q1_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q1_Sup)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q1_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q2)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q2)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q2)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q2_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q2_Sup)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q2_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q3)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q3)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q3)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q3_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q3_Sup)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q3_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q4)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q4)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q4)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_Q4_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_Q4_Sup)
-            @Html.ValidationMessageFor(model => model.FY_13_14_Q4_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_YTD)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_YTD)
-            @Html.ValidationMessageFor(model => model.FY_13_14_YTD)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.FY_13_14_YTD_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.FY_13_14_YTD_Sup)
-            @Html.ValidationMessageFor(model => model.FY_13_14_YTD_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Target)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Target)
-            @Html.ValidationMessageFor(model => model.Target)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Target_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Target_Sup)
-            @Html.ValidationMessageFor(model => model.Target_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Comparator)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Comparator)
-            @Html.ValidationMessageFor(model => model.Comparator)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Comparator_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Comparator_Sup)
-            @Html.ValidationMessageFor(model => model.Comparator_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Performance_Threshold)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Performance_Threshold)
-            @Html.ValidationMessageFor(model => model.Performance_Threshold)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Performance_Threshold_Sup)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Performance_Threshold_Sup)
-            @Html.ValidationMessageFor(model => model.Performance_Threshold_Sup)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Colour_ID)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Colour_ID)
-            @Html.ValidationMessageFor(model => model.Colour_ID)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Custom_YTD)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Custom_YTD)
-            @Html.ValidationMessageFor(model => model.Custom_YTD)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Custom_Q1)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Custom_Q1)
-            @Html.ValidationMessageFor(model => model.Custom_Q1)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Custom_Q2)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Custom_Q2)
-            @Html.ValidationMessageFor(model => model.Custom_Q2)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Custom_Q3)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Custom_Q3)
-            @Html.ValidationMessageFor(model => model.Custom_Q3)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Custom_Q4)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Custom_Q4)
-            @Html.ValidationMessageFor(model => model.Custom_Q4)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Definition_Calculation)
-        </div>
-        <div class="editor-field">
-            @Html.TextAreaFor(model => model.Definition_Calculation, 5, 1, null)
-            @Html.ValidationMessageFor(model => model.Definition_Calculation)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Target_Rationale)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Target_Rationale)
-            @Html.ValidationMessageFor(model => model.Target_Rationale)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Comparator_Source)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Comparator_Source)
-            @Html.ValidationMessageFor(model => model.Comparator_Source)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Data_Source_MSH)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Data_Source_MSH)
-            @Html.ValidationMessageFor(model => model.Data_Source_MSH)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Data_Source_Benchmark)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Data_Source_Benchmark)
-            @Html.ValidationMessageFor(model => model.Data_Source_Benchmark)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OPEO_Lead)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.OPEO_Lead)
-            @Html.ValidationMessageFor(model => model.OPEO_Lead)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
+        <legend>FY 13/14</legend>
+    <div class="row">
+            <div class="large-1 columns">
+                <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Q1)</label>
+            </div>
+            <div class="large-7 columns">
+                <input type="text" id="FY_13_14_Q1" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q1)"/>
+            </div>
+            <div class="large-4 columns">
+                <input type="text" id="FY_13_14_Q1_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q1_Sup)"/>
+            </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Q2)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_Q2" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q2)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_Q2_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q2_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Q3)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_Q3" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q3)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_Q3_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q3_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Q4)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_Q4" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q4)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_Q4_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Q4_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_YTD)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_YTD" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_YTD)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_YTD_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_YTD_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Target)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_Target" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Target)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_YTD_Target_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Target_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Comparator)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_Comparator" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Comparator)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_YTD_Comparator_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Comparator_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Performance_Threshold)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_13_14_Performance_Threshold" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Performance_Threshold)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_13_14_Performance_Threshold_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Performance_Threshold_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Definition_Calculation)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_13_14_Definition_Calculation" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Definition_Calculation)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Target_Rationale)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_13_14_Target_Rationale" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Target_Rationale)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Comparator_Source)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_13_14_Comparator_Source" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Comparator_Source)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Data_Source_MSH)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_13_14_Data_Source_MSH" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Data_Source_MSH)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_Data_Source_Benchmark)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_13_14_Data_Source_Benchmark" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_Data_Source_Benchmark)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_13_14_OPEO_Lead)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_13_14_OPEO_Lead" value="@Html.DisplayTextFor(x=>x.Indicator.FY_13_14_OPEO_Lead)"/>
+        </div>
+    </div>
     </fieldset>
-}
+
+        <fieldset>
+            <legend>FY 14/15</legend>
+    <div class="row">
+            <div class="large-1 columns">
+                <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Q1)</label>
+            </div>
+            <div class="large-7 columns">
+                <input type="text" id="FY_14_15_Q1" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q1)"/>
+            </div>
+            <div class="large-4 columns">
+                <input type="text" id="FY_14_15_Q1_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q1_Sup)"/>
+            </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Q2)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_Q2" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q2)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_Q2_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q2_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Q3)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_Q3" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q3)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_Q3_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q3_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Q4)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_Q4" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q4)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_Q4_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Q4_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_YTD)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_YTD" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_YTD)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_YTD_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_YTD_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Target)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_Target" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Target)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_YTD_Target_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Target_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Comparator)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_Comparator" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Comparator)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_YTD_Comparator_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Comparator_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-1 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Performance_Threshold)</label>
+        </div>
+        <div class="large-7 columns">
+            <input type="text" id="FY_14_15_Performance_Threshold" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Performance_Threshold)"/>
+        </div>
+        <div class="large-4 columns">
+            <input type="text" id="FY_14_15_Performance_Threshold_Sup" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Performance_Threshold_Sup)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Definition_Calculation)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_14_15_Definition_Calculation" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Definition_Calculation)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Target_Rationale)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_14_15_Target_Rationale" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Target_Rationale)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Comparator_Source)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_14_15_Comparator_Source" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Comparator_Source)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Data_Source_MSH)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_14_15_Data_Source_MSH" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Data_Source_MSH)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_Data_Source_Benchmark)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_14_15_Data_Source_Benchmark" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_Data_Source_Benchmark)"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <label>@Html.DisplayNameFor(x=>x.Indicator.FY_14_15_OPEO_Lead)</label>
+        </div>
+        <div class="large-10 columns">
+            <input type="text" id="FY_14_15_OPEO_Lead" value="@Html.DisplayTextFor(x=>x.Indicator.FY_14_15_OPEO_Lead)"/>
+        </div>
+    </div>
+    </fieldset>
+</form>
+</div>
+</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<style>
+
+    div.right{width:598px;}
+
+form#updateIndicator fieldset label{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    float: left;
+    width: 30%;
+    padding-left: 3%;
+    position: relative;
+}
+
+</style>
+
+<script>
+    var fields = document.querySelectorAll('select,input,textarea');
+    for (var i = 0; i < fields.length; i++) {
+        fields[i].addEventListener('change', update, false);
+    }
+
+    function update() {
+        var changedParameter = this.value;
+        if (changedParameter != "Q1_Color" && changedParameter != "Q2_Color" && changedParameter != "Q3_Color" && changedParameter != "Q4_Color" && changedParameter != "YTD_Color") {
+            if (this.value !== "on") {
+                var parameters = {
+                    indicatorID: document.getElementById('Indicator_ID').value,
+                    updateProperty: this.id,
+                    updateValue: this.value,
+                    fiscalYear: 0,
+                };
+                $.ajax({
+                    url: 'editInventory',
+                    type: 'POST',
+                    data: JSON.stringify(parameters),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                    },
+                    error: function (request) {
+                    }
+                });
+            } else {
+            var maps = []
+            maps.push({
+                Indicator_ID: document.getElementById('Indicator_ID').value,
+                CoE_ID: this.id,
+                Map_ID: null,
+                Fiscal_Year: 0,
+            })
+            var parameters = []
+            parameters.push({
+                allIndicators:null,
+                allCoEs:null,
+                allMaps: maps,
+                fiscalYear: 0,
+            })
+            $.ajax({
+                url: 'editCoEMaps',
+                type: 'POST',
+                data: JSON.stringify(parameters),
+                contentType: 'application/json; charset=utf-8',
+                success: function (result) {
+                },
+                error: function (request) {
+                }
+            });
+            }
+        }
+    }
+</script>

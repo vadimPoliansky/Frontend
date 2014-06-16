@@ -22,7 +22,7 @@ namespace IndInv.Models.ViewModels
 
     public class selectedFootnotes
     {
-        public string Footnote_ID { get; set; }
+        public Int16 Footnote_ID { get; set; }
     }
 
     public class searchViewModel

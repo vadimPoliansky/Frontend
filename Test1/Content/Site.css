@@ -556,14 +556,6 @@ input[type="checkbox"].input-validation-error {
     color:Black;
     min-width:6.5%;
 }
-.prRowTitle
-{
-    font-size:11px;
-    background-color:White;
-    text-align:justify;
-    color:Black;
-    min-width:6.5%;
-}
 .prRow
 {
     font-size:11px;

@@ -9,23 +9,24 @@ namespace IndInv.Models.ViewModels
     {
         public string Indicator_ID { get; set; }
         public Int16 Area_ID { get; set; }
+        public string CoE {get; set; }
         public string Indicator { get; set; }
-        public string FY_10_11 { get; set; }
-        public string FY_10_11_Sup { get; set; }
-        public string FY_11_12 { get; set; }
-        public string FY_11_12_Sup { get; set; }
-        public string FY_12_13 { get; set; }
-        public string FY_12_13_Sup { get; set; }
-        public string FY_13_14_Q1 { get; set; }
-        public string FY_13_14_Q1_Sup { get; set; }
-        public string FY_13_14_Q2 { get; set; }
-        public string FY_13_14_Q2_Sup { get; set; }
-        public string FY_13_14_Q3 { get; set; }
-        public string FY_13_14_Q3_Sup { get; set; }
-        public string FY_13_14_Q4 { get; set; }
-        public string FY_13_14_Q4_Sup { get; set; }
-        public string FY_13_14_YTD { get; set; }
-        public string FY_13_14_YTD_Sup { get; set; }
+        public string FY_3 { get; set; }
+        public string FY_3_Sup { get; set; }
+        public string FY_2 { get; set; }
+        public string FY_2_Sup { get; set; }
+        public string FY_1 { get; set; }
+        public string FY_1_Sup { get; set; }
+        public string FY_Q1 { get; set; }
+        public string FY_Q1_Sup { get; set; }
+        public string FY_Q2 { get; set; }
+        public string FY_Q2_Sup { get; set; }
+        public string FY_Q3 { get; set; }
+        public string FY_Q3_Sup { get; set; }
+        public string FY_Q4 { get; set; }
+        public string FY_Q4_Sup { get; set; }
+        public string FY_YTD { get; set; }
+        public string FY_YTD_Sup { get; set; }
         public string Target { get; set; }
         public string Target_Sup { get; set; }
         public string Comparator { get; set; }
@@ -54,5 +55,8 @@ namespace IndInv.Models.ViewModels
         public string Q4_Color { get; set; }
         public string YTD_Color { get; set; }
 
+        public int Fiscal_Year { get; set; }
+
+        public List<Analysts> allAnalysts { get; set; }
     }
 }

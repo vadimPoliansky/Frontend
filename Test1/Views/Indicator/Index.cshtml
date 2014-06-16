@@ -5,178 +5,18 @@
 
 <link rel="stylesheet" href="../../Content/Icons/foundation-icons.css" />
 
-<br />
-<br />
-<br />
-<div class="row">
-    <div class="row" style="padding:10px">
-        <div class="small-10  medium-12 columns" style="padding:0px"> 
-            <input type="text" placeholder="Search Indicators" id="searchString">        
-        </div>
-        <div class="show-for-small-only small-2 columns" style="padding:0px">
-            <a class="button tiny" id="searchButtonSmall" style="font-size:16px"><i class="step fi-magnifying-glass size-12"></i></a>
-        </div>
-    </div>
-    <div class="show-for-small-only row" style="text-align:center">
-        <a class="button" data-dropdown="advancedSearchView">Advanced Search Options &raquo;</a>
-    </div>
-    <div class="show-for-medium-up row" style="padding:10px">
-        <div class="row">
-            <div class="small-4 columns">
-                <a class="button" data-dropdown="advancedSearchView">Advanced Search Options &raquo;</a>
-            </div>
-            <div class="small-7 columns">
-                <a class="button" id="searchButtonBig">Search</a>
-            </div>
-        </div>
-    </div>
+<body>
 
-    <div class="f-dropdown content large" data-options="align:left" data-dropdown-content="" id="advancedSearchView">
     <div class="row">
-        <fieldset>
-            <legend>Areas</legend>
-            @foreach(var area in  Model.allAreas.OrderBy(x => x.Area)){
-                <div class="small-12 large-4 columns">
-                    <li style="list-style:none"><input id="Area_@Html.DisplayTextFor(model => area.Area_ID)" type="checkbox"><label for="Area_@Html.DisplayTextFor(model => area.Area_ID)">@Html.DisplayTextFor(model => area.Area)</label></li>
-                </div>
-            }
-        </fieldset>
-        <fieldset>
-            <legend>CoEs</legend>
-            @foreach (var coe in Model.allCoEs.OrderBy(x => x.CoE))
-            {
-                <div class="small-12 large-4 columns">
-                    <li style="list-style:none"><input id="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)" type="checkbox"><label for="CoE_@Html.DisplayTextFor(model => coe.CoE_ID)">@Html.DisplayTextFor(model => coe.CoE)</label></li>
-                </div>
-            }
-        </fieldset>
-        @*<fieldset>
-            <legend>Indicator Types</legend>
-            foreach (var type in Model.allIndicators.Select(x => x.Indicator_Type).OrderBy(x => x).Distinct())
-            {
-                string typeClean = (type == null) ? null : type.Replace("/", "");
-                typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
-                typeClean = (typeClean == null) ? null : typeClean.Replace(" ", "");
-                typeClean = (typeClean == null) ? null : typeClean.Replace("(", "");
-                typeClean = (typeClean == null) ? null : typeClean.Replace(")", "");
-                <div class="small-12 large-4 columns">
-                    <li style="list-style:none"><input id="Type_@Html.DisplayTextFor(model => typeClean)" type="checkbox"><label for="Type_@Html.DisplayTextFor(model => typeClean)">@Html.DisplayTextFor(model => type)</label></li>
-                </div>
-            }
-        </fieldset>
-        <fieldset>
-            <legend>Indicator</legend>
-            foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
-            {
-                <div class="small-12 large-12 columns">
-                    <input id="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)" type="checkbox"><label for="Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)">@Html.DisplayTextFor(model => footnote.Footnote)</label>
-                </div>
-            }
-        </fieldset>
-        <fieldset>
-            <legend>Objectives</legend>
-            {string[] temp = new string[] {
-              "Improve overall perception of experience for inpatients",
-              "Understand ambulatory patient satisfaction ",
-              "Improve hand hygiene adherence by 5%",
-              "Reduction of c-section surgical site infection rate",
-              "Reduce Length of stay for mom and babies",
-              "Reduce sick time",
-              "Improve overall  Mortality and Morbidity",
-              "Reduce Length of stay",
-             };
-              var i = 0;
-            }
-            foreach (var objective in temp.OrderBy(x=>x))
-            {
-                <div class="small-12 large-12 columns">
-                    <input id="@i" type="checkbox"><label for="@i">@objective</label>
-                </div>
-                i++;
-            }
-        </fieldset>*@
+        <div class="large-12 columsn">
+        @foreach (var analyst in Model.allAnalysts)
+        {
+            @Html.ActionLink("Edit Indicators for:" + analyst.Last_Name +", " + analyst.First_Name,"/editInventory", new { analystID = analyst.Analyst_ID});
+        }
         </div>
     </div>
+
+</body>
+
+<div class="row">
 </div>
-
-<script src="../../Scripts/jquery-1.11.0.min.js"></script>
-<script src="../../Scripts/jquery.tablesorter.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function ($) {
-        $theTable = $('#indicators')
-            .tablesorter();
-
-    });
-
-    $("#searchString").bind("keypress", {}, keypressInBox);
-    
-    function keypressInBox(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) { //Enter keycode                        
-            search();
-        }
-    };
-
-    $("#searchButtonSmall").click(function ($) {
-        search();
-    });
-    $("#searchButtonBig").click(function ($) {
-        search();
-    });
-
-    function search(){
-        var parameters = [];
-        var coes = [];
-        var areas = [];
-        var types = [];
-        var footnotes = [];
-        @foreach (var coe in Model.allCoEs)
-        {
-            @:if(jQuery("#CoE_@Html.DisplayTextFor(model => coe.CoE_ID)").is(':checked')){
-            @:  coes.push({ CoE_ID : @Html.DisplayTextFor(model => coe.CoE_ID) })    
-            @:}
-        }
-        @foreach (var area in Model.allAreas)
-        {
-            @:if(jQuery("#Area_@Html.DisplayTextFor(model => area.Area_ID)").is(':checked')){
-            @:  areas.push({ Area_ID : @Html.DisplayTextFor(model => area.Area_ID) })    
-            @:}
-        }
-        @foreach (var type in Model.allIndicators.Select(x => x.Indicator_Type).OrderBy(x => x).Distinct())
-        {
-            string typeClean = (type == null) ? null : type.Replace("/", "");
-            typeClean = (typeClean == null) ? null : typeClean.Replace("&", "");
-            typeClean = (typeClean == null) ? null : typeClean.Replace(" ", "");
-            typeClean = (typeClean == null) ? null : typeClean.Replace("(", "");
-            typeClean = (typeClean == null) ? null : typeClean.Replace(")", "");
-            @:if(jQuery("#Type_@Html.DisplayTextFor(model => typeClean)").is(':checked')){
-            @:  types.push({ Indicator_Type : "@Html.DisplayTextFor(model => typeClean)" })    
-            @:}
-        }
-        @*foreach (var footnote in Model.allFootnotes.OrderBy(x => x.Footnote))
-          {
-            @:if(jQuery("#Footnote_@Html.DisplayTextFor(model => footnote.Footnote_ID)").is(':checked')){
-            @:  footnotes.push({ Footnote_ID : "@Html.DisplayTextFor(model => footnote.Footnote_ID)" })    
-            @:}
-        }*@
-        parameters.push({
-            searchString: jQuery("#searchString").val(),
-            selectedCoEs: coes,
-            selectedAreas: areas,
-            selectedTypes: types,
-            selectedFootnotes: footnotes,
-        })
-        jQuery.ajax({
-            url: "/indicator/searchAdvanced",
-            type: 'POST',
-            data: JSON.stringify(parameters),
-            contentType: 'application/json; charset=utf-8',
-            success: function(data){
-                window.location.href = data;
-            },
-            error: function (request){
-                alert("search Failed")
-            }
-        });
-    };
-</script>

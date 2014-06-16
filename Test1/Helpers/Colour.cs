@@ -39,17 +39,17 @@ namespace IndInv.Helpers
                 numStr = str.Substring(minPos, maxPos - minPos + 1).Replace(",", "").Replace("$", "").Replace(":", ".");
             }
             //string num = numStr;
-             return numStr;
+            return numStr;
         }
 
-        public static String getColour(String inStr, String inTarget, String inMonth, String inCustom, Boolean isYTD, Indicators inIndicator)
+        public static String getColour(String inStr, String inTarget, String inMonth, String inCustom, Int16 Colour_ID, Boolean isYTD, Indicators inIndicator)
         {
             string str;
             float outScore;
             string Target = inTarget;
 
-//                if (test == "MH&A ED revisits to own facility within 30 days (%)")
-//                    System.Diagnostics.Debugger.Break();
+            //                if (test == "MH&A ED revisits to own facility within 30 days (%)")
+            //                    System.Diagnostics.Debugger.Break();
 
             str = Colour.getNum(inStr);
             if (str == null) { return "cssWhite"; }
@@ -63,9 +63,9 @@ namespace IndInv.Helpers
             else if (str != null && str.Length != 0 && str.IndexOf(":") != -1) { outScore = float.Parse(str.Replace(":", "")); }
             float targetScore = outScore;
 
-            if (inIndicator.Colour_ID == 3){ return inCustom;}
+            if (Colour_ID == 3) { return inCustom; }
 
-            if (inIndicator.Colour_ID == 2)
+            if (Colour_ID == 2)
             {
                 if (isYTD == false)
                 {
@@ -91,7 +91,7 @@ namespace IndInv.Helpers
                     int numMonths = 0;
                     switch (inIndicator.FY_13_14_Q1_Sup)
                     {
-                        case "Apr": numMonths+=1; break;
+                        case "Apr": numMonths += 1; break;
                         case "May": numMonths += 2; break;
                         case "Jun": numMonths += 3; break;
                         default: numMonths += 3; break;
@@ -120,7 +120,7 @@ namespace IndInv.Helpers
                     score *= 12 / numMonths;
                 }
             }
- 
+
             if (Target != null)
             {
                 if (Target.IndexOf("≤") != -1)

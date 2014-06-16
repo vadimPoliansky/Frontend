@@ -189,11 +189,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Colour.cs" />
+    <Compile Include="Helpers\FiscalYear.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\InventoryModels.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="ViewModels\AnalystVM.cs" />
+    <Compile Include="ViewModels\editVM.cs" />
     <Compile Include="ViewModels\FootnotesVM.cs" />
     <Compile Include="ViewModels\searchVM.cs" />
     <Compile Include="ViewModels\indexVM.cs" />
@@ -203,6 +206,7 @@
     <Compile Include="ViewModels\InventoryVM.cs" />
     <Compile Include="ViewModels\PRVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\valueVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\logoOPEO.png">
@@ -220,6 +224,7 @@
     <Content Include="App_Data\target.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\backgroupStipe.png" />
     <Content Include="lib\ClosedXML.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -505,10 +510,10 @@
     <Content Include="Views\Indicator\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Indicator\Create.cshtml" />
+    <Content Include="Views\Indicator\CreateBU.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Indicator\Edit.cshtml" />
+    <Content Include="Views\Indicator\edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Indicator\Delete.cshtml" />
@@ -822,6 +827,7 @@
     <None Include="Content\Icons\svgs\fi-zoom-in.svg" />
     <None Include="Content\Icons\svgs\fi-zoom-out.svg" />
     <Content Include="Views\Indicator\editFootnotes.cshtml" />
+    <Content Include="Views\Indicator\editAnalysts.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

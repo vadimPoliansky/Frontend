@@ -10,5 +10,6 @@ namespace IndInv.Models.ViewModels
         public List<Indicators> allIndicators { get; set; }
         public List<CoEs> allCoEs { get; set; }
         public List<Indicator_CoE_Maps> allMaps { get; set; }
+        public Int16 fiscalYear { get; set; }
     }
 }
