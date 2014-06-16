@@ -507,19 +507,7 @@
     <Content Include="Views\Indicator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Indicator\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Indicator\CreateBU.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Indicator\edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Indicator\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Indicator\IndexPR.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Indicator\viewPR.cshtml" />
