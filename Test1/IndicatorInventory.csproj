@@ -355,6 +355,8 @@
     <Content Include="Scripts\jquery.jqplot.min.css" />
     <Content Include="Scripts\jquery.jqplot.min.js" />
     <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jquery.multilevelpushmenu.css" />
+    <Content Include="Scripts\jquery.multilevelpushmenu.js" />
     <Content Include="Scripts\jquery.sticky.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.uitablefilter.js" />

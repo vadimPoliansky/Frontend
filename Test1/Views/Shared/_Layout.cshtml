@@ -1,113 +1,303 @@
 ﻿<html><head>
 <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="../../Content/foundation.min.css" />
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css" rel="stylesheet">
 <script src="../../Scripts/vendor/modernizr.js"></script>
 <title>Indicator Inventory</title>
-<style>.row {min-width:90% !important;}</style>
-
-
 </head>
 
 <body>
-    <div class="hide-for-small-only">
-    <div class="header">
-    <div class="row">
-        <div class="large-3 columns">
-            <h4 style="color:#144a82; padding:0px; font-weight:100">@ViewBag.Title </h4>
-            <div id="edit" class="btn">+</div>
-            <div id="viewPR" class="btn">PR</div>
-            <div id="editInventory" class="btn">Table</div>
-            <div id="editFootnoteMaps" class="btn">Footnotes</div>
-        </div>
-        <div class="large-6 columns" style="padding-top:10px">
-            @Html.Raw(ViewBag.Buttons)
-        </div>
-        <div class="large-3 columns">
-            <img src="http://upload.wikimedia.org/wikipedia/en/5/51/MountSinaiLogo.png" alt="Mount Sinai" width="400" height="900">
+    @* <div class="hide-for-small-only">
+        <div class="header">
+                    <h4 style="color: #144a82; padding: 0px; font-weight: 100">@ViewBag.Title </h4>
+                    <div id="edit" class="btn">+</div>
+                    <div id="viewPR" class="btn">PR</div>
+                    <div id="editInventory" class="btn">Table</div>
+                    <div id="editFootnoteMaps" class="btn">Footnotes</div>
+                </div>
+                <div class="large-6 columns" style="padding-top: 10px">
+                    @Html.Raw(ViewBag.Buttons)
+                </div>
+                <div class="large-3 columns">
+                    <img src="http://upload.wikimedia.org/wikipedia/en/5/51/MountSinaiLogo.png" alt="Mount Sinai" width="400" height="900">
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-    </div>
-    @*
+
     <ul class="right">
         @Html.Partial("_LoginPartial")
     </ul>*@
-    <div >
-        <div id="body">
-            @RenderSection("scripts", required: false)
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
+
+
+
+    <div id="pushobjLazy">
+                    <nav class="tab-bar">
+                <section class="left-small" id="baseexpand"><a class="left-off-canvas-toggle menu-icon"><span></span></a></section>
+            </nav>
+        @RenderBody()
     </div>
+    <div id="menu">
+        <nav>
+            <h2><i class="fa fa-reorder"></i>All Categories</h2>
+            <ul>
+                <li>
+                    <a href="#"><i class="fa fa-laptop"></i>Devices</a>
+                    <h2><i class="fa fa-laptop"></i>Devices</h2>
+                    <ul>
+                        <li>
+                            <a href="#"><i class="fa fa-phone"></i>Mobile Phones</a>
+                            <h2><i class="fa fa-phone"></i>Mobile Phones</h2>
+                            <ul>
+                                <li>
+                                    <a href="#">Super Smart Phone</a>
+                                </li>
+                                <li>
+                                    <a href="#">Thin Magic Mobile</a>
+                                </li>
+                                <li>
+                                    <a href="#">Performance Crusher</a>
+                                </li>
+                                <li>
+                                    <a href="#">Futuristic Experience</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-desktop"></i>Televisions</a>
+                            <h2><i class="fa fa-desktop"></i>Televisions</h2>
+                            <ul>
+                                <li>
+                                    <a href="#">Flat Super Screen</a>
+                                </li>
+                                <li>
+                                    <a href="#">Gigantic LED</a>
+                                </li>
+                                <li>
+                                    <a href="#">Power Eater</a>
+                                </li>
+                                <li>
+                                    <a href="#">3D Experience</a>
+                                </li>
+                                <li>
+                                    <a href="#">Classic Comfort</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-camera-retro"></i>Cameras</a>
+                            <h2><i class="fa fa-camera-retro"></i>Cameras</h2>
+                            <ul>
+                                <li>
+                                    <a href="#">Smart Shot</a>
+                                </li>
+                                <li>
+                                    <a href="#">Power Shooter</a>
+                                </li>
+                                <li>
+                                    <a href="#">Easy Photo Maker</a>
+                                </li>
+                                <li>
+                                    <a href="#">Super Pixel</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-book"></i>Magazines</a>
+                    <h2><i class="fa fa-book"></i>Magazines</h2>
+                    <ul>
+                        <li>
+                            <a href="#">National Geographics</a>
+                        </li>
+                        <li>
+                            <a href="#">The Spectator</a>
+                        </li>
+                        <li>
+                            <a href="#">Rambler</a>
+                        </li>
+                        <li>
+                            <a href="#">Physics World</a>
+                        </li>
+                        <li>
+                            <a href="#">The New Scientist</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-shopping-cart"></i>Store</a>
+                    <h2><i class="fa fa-shopping-cart"></i>Store</h2>
+                    <ul>
+                        <li>
+                            <a href="#"><i class="fa fa-tags"></i>Clothes</a>
+                            <h2><i class="fa fa-tags"></i>Clothes</h2>
+                            <ul>
+                                <li>
+                                    <a href="#"><i class="fa fa-female"></i>Women's Clothing</a>
+                                    <h2><i class="fa fa-female"></i>Women's Clothing</h2>
+                                    <ul>
+                                        <li>
+                                            <a href="#">Tops</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Dresses</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Trousers</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Shoes</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Sale</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-male"></i>Men's Clothing</a>
+                                    <h2><i class="fa fa-male"></i>Men's Clothing</h2>
+                                    <ul>
+                                        <li>
+                                            <a href="#">Shirts</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Trousers</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Shoes</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Sale</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Jewelry</a>
+                        </li>
+                        <li>
+                            <a href="#">Music</a>
+                        </li>
+                        <li>
+                            <a href="#">Grocery</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Collections</a>
+                </li>
+                <li>
+                    <a href="#">Credits</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+
+
+
 
     <script src="../../Scripts/jquery-1.11.0.min.js"></script>
     <script src="../../Scripts/foundation.min.js"></script>
+    <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
+    <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js"></script>
     <script>
         $(document).foundation();
     </script>
-  </body>
+</body>
 </html>
-  <a class="exit-off-canvas"></a>
-<!-- End Footer -->
-
-
 
 <script>
+    $(document).ready(function () {
 
-    $(".btnSwitch").click(function (e) {
-        var newURL = document.URL;
-        var newValue = e.target.attributes.getNamedItem('value').value;
-        var parameter = e.target.attributes.getNamedItem('parameter').value;
-        if (newValue != 0) {
-            if (newURL.indexOf(parameter) > -1) {
-                var re = new RegExp("(" + parameter + "=)[^\&]+", "")
-                newURL = newURL.replace(re, '$1' + newValue);
-            } else {
-                newURL = newURL + "&" + parameter + "=" + newValue;
-            }
-        } else if (newURL.indexOf(parameter) > -1) {
-            var re = new RegExp("(" + parameter + "=)[^\&]+", "")
-            newURL = newURL.replace(re, '$1' + "");
-            newURL = newURL.replace("&" + parameter + "=", "");
-        }
-        window.location.href = newURL;
-    });
-
-    function changeParamByName(href, paramName, newVal) {
-        var tmpRegex = new RegExp("(" + paramName + "=)[a-z]+", 'ig');
-        return href.replace(tmpRegex, '$1' + newVal);
-    }
-
-    $(".btnExcel").click(function (e) {
-        var coeID = e.target.attributes.getNamedItem('coeID').value
-        var fiscalYear = e.target.attributes.getNamedItem('fiscalYear').value
-        var coeIDFilter;
-        if (coeID != 0) {
-            coeIDFilter = "&coeID=" + coeID;
-        }
-        window.open("viewPRExcel?fiscalYear=" + fiscalYear + coeIDFilter, "Excel");
-    });
-
-    $('#editFootnotes').click(function () {
-        window.open('editFootnotes', 'Footnotes', "width=400,height=500");
-    });
-
-    $("#viewPR").click(function () {
-        window.location.href = "viewPR?fiscalYear=" + @ViewBag.fiscalYear;
-    });
-
-    $("#editInventory").click(function () {
-        window.location.href = "editInventory?fiscalYear=" + @ViewBag.fiscalYear;
-    });
-
-    $("#editFootnoteMaps").click(function () {
-        window.location.href = "editFootnoteMaps?fiscalYear=" + @ViewBag.fiscalYear;
-    });
-
-    $("#edit").click(function () {
-        window.location.href = "edit?fiscalYear=" + @ViewBag.fiscalYear;
+        $( '#menu' ).multilevelpushmenu({
+            containersToPush: [$( '#pushobj' )],
+            fullCollapse: true,
+            collapsed: true,
         });
 
+        $( '#baseexpand' ).click(function(){
+            $( '#menu' ).multilevelpushmenu( 'expand' );
+        }); 
+
+        $('#menu').multilevelpushmenu( 'redraw' );
+
+        $(".btnSwitch").click(function (e) {
+            var newURL = document.URL;
+            var newValue = e.target.attributes.getNamedItem('value').value;
+            var parameter = e.target.attributes.getNamedItem('parameter').value;
+            if (newValue != 0) {
+                if (newURL.indexOf(parameter) > -1) {
+                    var re = new RegExp("(" + parameter + "=)[^\&]+", "")
+                    newURL = newURL.replace(re, '$1' + newValue);
+                } else {
+                    newURL = newURL + "&" + parameter + "=" + newValue;
+                }
+            } else if (newURL.indexOf(parameter) > -1) {
+                var re = new RegExp("(" + parameter + "=)[^\&]+", "")
+                newURL = newURL.replace(re, '$1' + "");
+                newURL = newURL.replace("&" + parameter + "=", "");
+            }
+            window.location.href = newURL;
+        });
+
+        function changeParamByName(href, paramName, newVal) {
+            var tmpRegex = new RegExp("(" + paramName + "=)[a-z]+", 'ig');
+            return href.replace(tmpRegex, '$1' + newVal);
+        }
+
+        $(".btnExcel").click(function (e) {
+            var coeID = e.target.attributes.getNamedItem('coeID').value
+            var fiscalYear = e.target.attributes.getNamedItem('fiscalYear').value
+            var coeIDFilter;
+            if (coeID != 0) {
+                coeIDFilter = "&coeID=" + coeID;
+            }
+            window.open("viewPRExcel?fiscalYear=" + fiscalYear + coeIDFilter, "Excel");
+        });
+
+        $('#editFootnotes').click(function () {
+            window.open('editFootnotes', 'Footnotes', "width=400,height=500");
+        });
+
+        $("#viewPR").click(function () {
+            window.location.href = "viewPR?fiscalYear=" + @ViewBag.fiscalYear;
+        });
+
+        $("#editInventory").click(function () {
+            window.location.href = "editInventory?fiscalYear=" + @ViewBag.fiscalYear;
+        });
+
+        $("#editFootnoteMaps").click(function () {
+            window.location.href = "editFootnoteMaps?fiscalYear=" + @ViewBag.fiscalYear;
+        });
+
+        $("#edit").click(function () {
+            window.location.href = "edit?fiscalYear=" + @ViewBag.fiscalYear;
+        });
+    });
 </script>
+
+<style>
+
+    
+#pushobjLazy {
+    font-family: 'Open Sans Condensed',sans-serif;
+    font-size: 2em;
+    left: 0px;
+    position: absolute;
+    width:100%;
+}
+
+body {
+
+    margin: 0;
+    padding: 0;
+}
+
+    #menu_multilevelpushmenu {
+        min-width:0px;
+    }
+</style>
