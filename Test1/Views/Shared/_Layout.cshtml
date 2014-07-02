@@ -32,9 +32,9 @@
 
 
     <div id="pushobjLazy">
-                    <nav class="tab-bar">
-                <section class="left-small" id="baseexpand"><a class="left-off-canvas-toggle menu-icon"><span></span></a></section>
-            </nav>
+        <nav class="tab-bar">
+            <section class="left-small" id="baseexpand"><a class="left-off-canvas-toggle menu-icon"><span></span></a></section>
+        </nav>
         @RenderBody()
     </div>
     <div id="menu">
@@ -195,10 +195,6 @@
         </nav>
     </div>
 
-
-
-
-
     <script src="../../Scripts/jquery-1.11.0.min.js"></script>
     <script src="../../Scripts/foundation.min.js"></script>
     <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
@@ -281,23 +277,21 @@
 </script>
 
 <style>
+    #pushobjLazy {
+        font-family: 'Open Sans Condensed',sans-serif;
+        font-size: 2em;
+        left: 0px;
+        position: absolute;
+        width: 100%;
+    }
 
-    
-#pushobjLazy {
-    font-family: 'Open Sans Condensed',sans-serif;
-    font-size: 2em;
-    left: 0px;
-    position: absolute;
-    width:100%;
-}
-
-body {
-
-    margin: 0;
-    padding: 0;
-}
+    body {
+        margin: 0;
+        padding: 0;
+    }
 
     #menu_multilevelpushmenu {
-        min-width:0px;
+        min-width: 0px;
     }
+
 </style>

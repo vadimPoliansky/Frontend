@@ -22,7 +22,7 @@
 @foreach (var coe in Model.allCoEs)
 {
     var footnotes = new List<Footnotes>();
-    <div class="row">
+    <div class="row" style="min-width:98%">
     <fieldset class="prBlock">
     <div class="large-11 columns">
         <h3>@Html.DisplayFor(modelItem => coe.CoE)</h3>
@@ -75,7 +75,7 @@
                 skip = true;
             }
             <tr style="background-color:White">
-            <td class="prRowID" style="min-width:1%;" >@number</td>
+            <td class="prRowID" mapID="@map.Map_ID" style="min-width:1%;" >@number</td>
             @{numCount++;}
             <td indicatorID="@map.Indicator_ID" field="Indicator" class="prRowTitle">@indicatorTitle
             @{int j = 0;}
@@ -276,7 +276,19 @@
                 updateDefVal(currentEle, value, indicatorID, field);
             });
 
-                });
+        });
+
+        $(".prRowID").dblclick(function (e) {
+            var mapID = e.target.attributes.getNamedItem('mapID');
+            var currentEle = $(this);
+            e.stopPropagation();
+
+            $.get('getIndicatorNumber', { mapID: mapID.value, fiscalYear: @Model.Fiscal_Year}, function (data) {
+                var value = data.Value || "";
+                updateNumVal(currentEle, value, mapID);
+            });
+
+        });
 
         $(".prArea").dblclick(function (e) {
             var mapID = e.target.attributes.getNamedItem('mapID');
