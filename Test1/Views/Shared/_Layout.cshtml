@@ -300,13 +300,21 @@
                 },
                 "insB": {name: "Insert Indicator Below",
                     callback: function(key, options){
-                        @{var html = "<tr class='newRow'>";
-                          html += "<td class='newRowTd'><input class='newRowText' type='text' value='Number'></td>";
-                          html += "<td class='newRowTd'><input class='newRowText' type='text' value='InidcatorName'></td>";
-                            for(var i=0; i < ViewBag.PRCols.GetLength(0); ++i){
-                            html+="<td class='newRowTd'><input class='newRowText' type='text' value='" + ViewBag.PRCols[i,3] + "'></td>";
-                        }}
-                        $(this).closest( "tr" ).after("@Html.Raw(html)");
+                        var coeID = $(this).closest( "tr" ).attr("coeID");
+                        var areaID = $(this).closest( "tr" ).attr("areaID");
+                        var num = $(this).closest( "tr" ).attr("num");
+                        console.log(coeID);
+                        $.post('newIndicatorAtPR', { fiscalYear: @ViewBag.fiscalYear, areaID: areaID, coeID: coeID, number: num}, 
+                            function(returnedData){
+                                @{var html = "";
+                                html += "<td class='newRowTd'><input class='newRowText' type='text' value='Number'></td>";
+                                html += "<td class='newRowTd'><input class='newRowText' type='text' value='InidcatorName'></td>";
+                                for(var i=0; i < ViewBag.PRCols.GetLength(0); ++i){
+                                    html += "<td class='newRowTd'><input class='newRowText' field='" + ViewBag.PRCols[i, 3] + "' type='text'></td>";
+                                }}
+                                $(this).closest( "tr" ).after("<tr class='newRow'>" + "@Html.Raw(html)");
+                        });
+
                     }
                 },
             }

@@ -1334,6 +1334,27 @@ namespace IndInv.Controllers
         //
         // GET: /Indicator/Details/5
 
+        [HttpPost]
+        public JsonResult newIndicatorAtPR(Int16 fiscalYear, Int16 areaID, Int16 coeID, Int16 number)
+        {
+            var newIndicator = new Indicators();
+            newIndicator.Area_ID = areaID;
+            var coeNumLow = (coeID * 100).ToString();
+            var coeNumHigh = (coeID * 100 + 100).ToString();
+            var id = db.Indicators.Where(x => x.Indicator_ID >= coeNum && Int32.Parse(x.Indicator_ID) <= coeNum + 100).Max(x => x.Indicator_ID);
+            newIndicator.Indicator_ID = id;
+            db.Indicators.Add(newIndicator);
+            db.SaveChanges();
+            var newMap = new Indicator_CoE_Maps();
+            newMap.Indicator_ID = newIndicator.Indicator_ID;
+            newMap.CoE_ID = coeID;
+            newMap.Fiscal_Year = fiscalYear;
+            db.Indicator_CoE_Maps.Add(newMap);
+            db.SaveChanges();
+
+            return Json(newMap.Map_ID, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Details(string Indicator_ID)
         {
             Indicators indicators = db.Indicators.Find(Indicator_ID);
