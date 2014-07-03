@@ -30,7 +30,7 @@
     <div class="large-1 columns">
         <div coeID='@coe.CoE_ID' fiscalYear="@fiscalYear" id='btn' class='btnExcel'>View Excel</div>
     </div>
-    <table id="tbl" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
+    <table id="tbl_@coe.CoE_Abbr" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
     <tr class="prHeader1">
     <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
     <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
@@ -119,6 +119,7 @@
                     {(string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator").GetValue(indicator,null),
                      (string)indicatorType.GetProperty(FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator_Sup").GetValue(indicator,null), "prRow", FiscalYear.FYStrFull("FY_",fiscalYear) + "Comparator"},
                 };
+                ViewBag.PRCols = columns;
                 if (!skip)
                 {
                     oldColumns = columns;
@@ -215,6 +216,7 @@
                 {
                     oldColumns = columns;
                 }
+                ViewBag.PRColsDefs = columns;
             }
             </td>
             @for (int i = 0; i <= columns.GetUpperBound(0); i++)
@@ -607,5 +609,26 @@ table, th, td {
     border: 1px solid black;
     white-space: normal;
 }
+
+table tr:nth-of-type(2n) {
+    background: none;
+}
+
+input[type="text"] {
+     width: 100%; 
+     box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}
+
+    .newRow, .newRowTd{
+        padding: 0 0 0 0 !important;
+        margin: 0 0 0 0 !important; 
+    }
+
+    .newRowText {
+        margin: 0 0 0 0 !important; 
+    }
+
 
 }</style>

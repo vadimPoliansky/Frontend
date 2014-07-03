@@ -199,6 +199,8 @@
     <script src="../../Scripts/foundation.min.js"></script>
     <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
     <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js"></script>
+    <link href="~/Scripts/jquery.contextMenu.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../Scripts/jquery.contextMenu.js"></script>
     <script>
         $(document).foundation();
     </script>
@@ -274,6 +276,44 @@
             window.location.href = "edit?fiscalYear=" + @ViewBag.fiscalYear;
         });
     });
+</script>
+
+<!-- viewPR -->
+<script>
+
+    $(function(){
+        $('#the-node').contextMenu({
+            selector: 'td', 
+            callback: function(key, options) {
+
+            },
+            items: {
+                "insA": {name: "Insert Indicator Above",
+                    callback: function(key, options){
+                        html = "<tr class='newRow'>";
+                        tdCount = $(this).closest( "tr" ).children('td').length;
+                        for(i=1;i<=tdCount;i++){
+                            html+='<td class="newRowTd"><input class="newRowText" type="text" value=""></td>';
+                        }
+                        $(this).closest( "tr" ).before(html);
+                    }
+                },
+                "insB": {name: "Insert Indicator Below",
+                    callback: function(key, options){
+                        @{var html = "<tr class='newRow'>";
+                          html += "<td class='newRowTd'><input class='newRowText' type='text' value='Number'></td>";
+                          html += "<td class='newRowTd'><input class='newRowText' type='text' value='InidcatorName'></td>";
+                            for(var i=0; i < ViewBag.PRCols.GetLength(0); ++i){
+                            html+="<td class='newRowTd'><input class='newRowText' type='text' value='" + ViewBag.PRCols[i,3] + "'></td>";
+                        }}
+                        $(this).closest( "tr" ).after("@Html.Raw(html)");
+                    }
+                },
+            }
+        });
+    });
+    
+
 </script>
 
 <style>
