@@ -7,7 +7,7 @@ namespace IndInv.Models.ViewModels
 {
     public class Indicator_Footnote_MapsViewModel
     {
-        public string Indicator_ID { get; set; }
+        public Int16 Indicator_ID { get; set; }
         public string Indicator { get; set; }
         
         public Int16 Footnote_ID_1 { get; set; }
