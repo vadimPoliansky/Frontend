@@ -278,6 +278,52 @@
     });
 </script>
 
+<!-- viewPR -->
+<script>
+
+    $(function(){
+        $('#the-node').contextMenu({
+            selector: 'td', 
+            callback: function(key, options) {
+
+            },
+            items: {
+                "insA": {name: "Insert Indicator Above",
+                    callback: function(key, options){
+                        html = "<tr class='newRow'>";
+                        tdCount = $(this).closest( "tr" ).children('td').length;
+                        for(i=1;i<=tdCount;i++){
+                            html+='<td class="newRowTd"><input class="newRowText" type="text" value=""></td>';
+                        }
+                        $(this).closest( "tr" ).before(html);
+                    }
+                },
+                "insB": {name: "Insert Indicator Below",
+                    callback: function(key, options){
+                        var coeID = $(this).closest( "tr" ).attr("coeID");
+                        var areaID = $(this).closest( "tr" ).attr("areaID");
+                        var num = $(this).closest( "tr" ).attr("num");
+                        console.log(coeID);
+                        $.post('newIndicatorAtPR', { fiscalYear: @ViewBag.fiscalYear, areaID: areaID, coeID: coeID, number: num}, 
+                            function(returnedData){
+                                @{var html = "";
+                                html += "<td class='newRowTd'><input class='newRowText' type='text' value='Number'></td>";
+                                html += "<td class='newRowTd'><input class='newRowText' type='text' value='InidcatorName'></td>";
+                                for(var i=0; i < ViewBag.PRCols.GetLength(0); ++i){
+                                    html += "<td class='newRowTd'><input class='newRowText' field='" + ViewBag.PRCols[i, 3] + "' type='text'></td>";
+                                }}
+                                $(this).closest( "tr" ).after("<tr class='newRow'>" + "@Html.Raw(html)");
+                        });
+
+                    }
+                },
+            }
+        });
+    });
+    
+
+</script>
+
 <style>
     #pushobjLazy {
         font-family: 'Open Sans Condensed',sans-serif;

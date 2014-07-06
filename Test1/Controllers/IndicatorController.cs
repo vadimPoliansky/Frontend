@@ -714,51 +714,6 @@ namespace IndInv.Controllers
             return View(viewModel);
         }
 
-        public void deleteCoEMaps(Int16 mapID)
-        {
-            var delMap = db.Indicator_CoE_Maps.FirstOrDefault(x => x.Map_ID == mapID);
-            db.Entry(delMap).State = EntityState.Deleted;
-            db.SaveChanges();
-        }
-
-        public void moveCoEMapUp(Int16 mapID, Int16 fiscalYear)
-        {
-            var moveMap = db.Indicator_CoE_Maps.FirstOrDefault(x => x.Map_ID == mapID);
-            var currNum = moveMap.Number;
-            var newNum = db.Indicator_CoE_Maps.Where(x => x.Number < currNum && 
-                                                     x.CoE_ID == moveMap.CoE_ID && 
-                                                     x.Fiscal_Year == fiscalYear &&
-                                                     x.Indicator.Area_ID == moveMap.Indicator.Area_ID).Max(x => x.Number);
-            var replaceMap = db.Indicator_CoE_Maps.Where(x=> x.CoE_ID == moveMap.CoE_ID &&
-                                                         x.Fiscal_Year == fiscalYear &&
-                                                         x.Indicator.Area_ID == moveMap.Indicator.Area_ID).FirstOrDefault(x => x.Number == newNum);
-
-            moveMap.Number = newNum;
-            replaceMap.Number = currNum;
-            db.Entry(moveMap).State = EntityState.Modified;
-            db.Entry(replaceMap).State = EntityState.Modified;
-            db.SaveChanges();
-        }
-
-        public void moveCoEMapDown(Int16 mapID, Int16 fiscalYear)
-        {
-            var moveMap = db.Indicator_CoE_Maps.FirstOrDefault(x => x.Map_ID == mapID);
-            var currNum = moveMap.Number;
-            var newNum = db.Indicator_CoE_Maps.Where(x => x.Number > currNum &&
-                                                     x.CoE_ID == moveMap.CoE_ID &&
-                                                     x.Fiscal_Year == fiscalYear &&
-                                                     x.Indicator.Area_ID == moveMap.Indicator.Area_ID).Min(x => x.Number);
-            var replaceMap = db.Indicator_CoE_Maps.Where(x => x.CoE_ID == moveMap.CoE_ID &&
-                                                         x.Fiscal_Year == fiscalYear &&
-                                                         x.Indicator.Area_ID == moveMap.Indicator.Area_ID).FirstOrDefault(x => x.Number == newNum);
-
-            moveMap.Number = newNum;
-            replaceMap.Number = currNum;
-            db.Entry(moveMap).State = EntityState.Modified;
-            db.Entry(replaceMap).State = EntityState.Modified;
-            db.SaveChanges();
-        }
-
         public ActionResult editCoEMaps(Int16 fiscalYear)
         {
             var viewModel = new Indicator_CoE_MapsViewModel
@@ -977,7 +932,7 @@ namespace IndInv.Controllers
             }
         }
 
-        public ActionResult editFootnoteMaps(Int16 fiscalYear,  Int16 indicatorID)
+        public ActionResult editFootnoteMaps(Int16 fiscalYear,  string indicatorID)
         {
             List<Indicator_Footnote_Maps> footnoteMaps = new List<Indicator_Footnote_Maps>();
             foreach (var footnote in db.Indicator_Footnote_Maps.Where(x=>x.Fiscal_Year == fiscalYear).OrderBy(e => e.Map_ID).ToList())
@@ -1155,7 +1110,7 @@ namespace IndInv.Controllers
         }
 
         [HttpGet]
-        public ActionResult getValue(Int16 indicatorID, string field, Int16 fiscalYear)
+        public ActionResult getValue(string indicatorID, string field, Int16 fiscalYear)
         {
             var indicator = db.Indicators.FirstOrDefault(x => x.Indicator_ID == indicatorID);
 
@@ -1191,7 +1146,7 @@ namespace IndInv.Controllers
         }
 
         [HttpPost]
-        public JsonResult setValue(Int16 indicatorID, string updateProperty, string updateValue, string updateValueSup, int fiscalYear)
+        public JsonResult setValue(string indicatorID, string updateProperty, string updateValue, string updateValueSup, int fiscalYear)
         {
             var indicator = db.Indicators.FirstOrDefault(x => x.Indicator_ID == indicatorID);
 
@@ -1330,7 +1285,7 @@ namespace IndInv.Controllers
         }
 
         [HttpPost]
-        public void editInventory(Int16 indicatorID, string updateProperty, string updateValue, int fiscalYear)
+        public void editInventory(string indicatorID, string updateProperty, string updateValue, int fiscalYear)
         {
             var updatePropertyFull = updateProperty;
             if (fiscalYear != 0)
@@ -1343,7 +1298,7 @@ namespace IndInv.Controllers
             if (indicator == null)
             {
                 indicator = db.Indicators.Create();
-                //indicator.Indicator_ID = updateValue;
+                indicator.Indicator_ID = updateValue;
                 db.Indicators.Add(indicator);
                 db.SaveChanges();
             } else{
@@ -1380,39 +1335,27 @@ namespace IndInv.Controllers
         // GET: /Indicator/Details/5
 
         [HttpPost]
-        public JsonResult newIndicatorAtPR(Int16 fiscalYear, Int16 areaID, Int16 coeID, Int16 indicatorID)
+        public JsonResult newIndicatorAtPR(Int16 fiscalYear, Int16 areaID, Int16 coeID, Int16 number)
         {
             var newIndicator = new Indicators();
             newIndicator.Area_ID = areaID;
-            newIndicator.Indicator = "";
+            var coeNumLow = (coeID * 100).ToString();
+            var coeNumHigh = (coeID * 100 + 100).ToString();
+            var id = db.Indicators.Where(x => x.Indicator_ID >= coeNum && Int32.Parse(x.Indicator_ID) <= coeNum + 100).Max(x => x.Indicator_ID);
+            newIndicator.Indicator_ID = id;
             db.Indicators.Add(newIndicator);
             db.SaveChanges();
             var newMap = new Indicator_CoE_Maps();
             newMap.Indicator_ID = newIndicator.Indicator_ID;
-
-            int number = 0;
-            if (indicatorID != 0)
-            {
-                number = db.Indicator_CoE_Maps.Where(x => x.CoE_ID == coeID && x.Fiscal_Year == x.Fiscal_Year).FirstOrDefault(x => x.Indicator_ID == indicatorID).Number + 1;
-            }
-            newMap.Number = (Int16)number;
-
-            var allMaps = db.Indicator_CoE_Maps.ToList();
-            foreach (var map in allMaps.OrderBy(x => x.Number).Where(x => x.CoE_ID == coeID && x.Fiscal_Year == x.Fiscal_Year && x.Number >= number))
-            {
-                map.Number++;
-                db.Entry(map).State = EntityState.Modified;
-                db.SaveChanges();
-            }
             newMap.CoE_ID = coeID;
             newMap.Fiscal_Year = fiscalYear;
             db.Indicator_CoE_Maps.Add(newMap);
             db.SaveChanges();
 
-            return Json(new {indicatorID = newIndicator.Indicator_ID, mapID = newMap.Map_ID}, JsonRequestBehavior.AllowGet);
+            return Json(newMap.Map_ID, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Details(Int16 Indicator_ID)
+        public ActionResult Details(string Indicator_ID)
         {
             Indicators indicators = db.Indicators.Find(Indicator_ID);
             if (indicators == null)
@@ -1499,7 +1442,7 @@ namespace IndInv.Controllers
         // POST: /Indicator/Delete/5
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(Int16 Indicator_ID)
+        public ActionResult DeleteConfirmed(string Indicator_ID)
         {
             Indicators indicators = db.Indicators.Find(Indicator_ID);
             db.Indicators.Remove(indicators);
