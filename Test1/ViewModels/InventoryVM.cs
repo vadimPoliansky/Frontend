@@ -7,7 +7,7 @@ namespace IndInv.Models.ViewModels
 {
     public class InventoryViewModel
     {
-        public string Indicator_ID { get; set; }
+        public Int16 Indicator_ID { get; set; }
         public Int16 Area_ID { get; set; }
         public string CoE {get; set; }
         public string Indicator { get; set; }

@@ -12,7 +12,7 @@ namespace IndInv.Models
     {
 
         [Key]
-        public string Indicator_ID { get; set; }
+        public Int16 Indicator_ID { get; set; }
         public Int16 Area_ID { get; set; }
         public Int16? Analyst_ID { get; set; }
         [Display(Name = "Objectives/Metrics")]
@@ -150,7 +150,7 @@ namespace IndInv.Models
         [Key]
         public Int16 Map_ID { get; set; }
         public Int16 CoE_ID { get; set; }
-        public string Indicator_ID { get; set; }
+        public Int16 Indicator_ID { get; set; }
         [Display(Name = "#")]
         public Int16 Number { get; set; }
         public Int16 Fiscal_Year { get; set; }
@@ -197,7 +197,7 @@ namespace IndInv.Models
         [Key]
         public Int16 Map_ID { get; set; }
         public Int16 Footnote_ID { get; set; }
-        public string Indicator_ID { get; set; }
+        public Int16 Indicator_ID { get; set; }
         public Int16 Fiscal_Year { get; set; }
 
         public virtual Footnotes Footnote { get; set; }

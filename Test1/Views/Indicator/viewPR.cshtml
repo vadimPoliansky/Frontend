@@ -30,7 +30,7 @@
     <div class="large-1 columns">
         <div coeID='@coe.CoE_ID' fiscalYear="@fiscalYear" id='btn' class='btnExcel'>View Excel</div>
     </div>
-    <table id="tbl_@coe.CoE_Abbr" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
+    <table id="tbl_@coe.CoE_Abbr" class="PR" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
     <tr class="prHeader1">
     <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
     <td rowspan="2", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
@@ -53,7 +53,7 @@
     @{var numCount = 1;}
     @foreach (var area_map in coe.Area_CoE_Map.Where(x => Model.allMaps.Where(y => y.Indicator.Area == x.Area).Where(y => y.CoE == coe).Any(y => y.Indicator.Analyst_ID == @Model.Analyst_ID)).Where(x => x.Fiscal_Year == fiscalYear).OrderBy(x => x.Area.Sort))
     {
-        <tr >
+        <tr areaID="@area_map.Area_ID" coeID="@coe.CoE_ID">
         <td class="prArea" colspan="100%" mapID="@area_map.Map_ID" area="@Html.DisplayTextFor(modelItem => area_map.Area.Area)">
             <b>@Html.DisplayFor(modelItem => area_map.Area.Area)</b> <br />    
             @Html.DisplayFor(modelItem => area_map.Objective)
@@ -63,7 +63,7 @@
         foreach (var map in Model.allMaps.Where(x => x.Fiscal_Year == fiscalYear).Where(e => e.Indicator.Area.Equals(area_map.Area)).Where(d => d.CoE.CoE.Contains(coe.CoE)).OrderBy(f => f.Number))
         {
             var indicatorTitle = ""; int? number = numCount; var skip = false;
-            if (map.Indicator.Indicator.Contains("%SKIP%") == false)
+            if (map.Indicator.Indicator != null && map.Indicator.Indicator.Contains("%SKIP%") == false)
             {
                 indicatorTitle = Html.DisplayFor(modelItem => map.Indicator.Indicator).ToString();
                 number = numCount;
@@ -74,8 +74,12 @@
                 number = null;
                 skip = true;
             }
-            <tr areaID="@area_map.Area_ID" coeID="@coe.CoE_ID" num="@map.Number" style="background-color:White">
-            <td class="prRowID" mapID="@map.Map_ID" style="min-width:1%;" >@number</td>
+            <tr areaID="@area_map.Area_ID" coeID="@coe.CoE_ID" mapID="@map.Map_ID" style="background-color:White">
+            <td class="prRowID" mapID="@map.Map_ID" style="min-width:1%;" >                
+                    <a class="rowUp"><i class="fa fa-sort-desc"></i></a>
+                    @number
+                    <a class="rowDown"><i class="fa fa-sort-asc"></i></a>
+                </td>
             @{numCount++;}
             <td indicatorID="@map.Indicator_ID" field="Indicator" class="prRowTitle">@indicatorTitle
             @{int j = 0;}
@@ -155,7 +159,7 @@
     }
     <br />
 
-    <table id="tbl" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
+    <table id="tbl" class="PRDef" border="1" style="border-collapse:collapse; table-layout:fixed" runat="server" >
     <tr class="prHeader1">
     <td rowspan="1", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Number) </td>
     <td rowspan="1", class="prHeader1">@Html.DisplayNameFor(modelItem => Model.allMaps.First().Indicator.Indicator) </td>
@@ -167,7 +171,7 @@
     @{numCount = 1;}
     @foreach (var area_map in coe.Area_CoE_Map.Where(x => Model.allMaps.Where(y => y.Indicator.Area == x.Area).Where(y => y.CoE == coe).Any(y => y.Indicator.Analyst_ID == @Model.Analyst_ID)).Where(x => x.Fiscal_Year == fiscalYear).OrderBy(x => x.Area.Sort))
     {
-        <tr >
+        <tr areaID="@area_map.Area_ID" coeID="@coe.CoE_ID">
         <td class="prArea" colspan="100%" mapID="@area_map.Map_ID" area="@Html.DisplayTextFor(modelItem => area_map.Area.Area)">
             <b>@Html.DisplayFor(modelItem => area_map.Area.Area)</b> <br />    
             @Html.DisplayFor(modelItem => area_map.Objective)
@@ -177,7 +181,7 @@
         foreach (var map in Model.allMaps.Where(x => x.Fiscal_Year == fiscalYear).Where(e => e.Indicator.Area.Equals(area_map.Area)).Where(d => d.CoE.CoE.Contains(coe.CoE)).OrderBy(f => f.Number))
         {
             var indicatorTitle = ""; int? number = numCount; var skip = false;
-            if (map.Indicator.Indicator.Contains("%SKIP%") == false)
+            if (map.Indicator.Indicator != null && map.Indicator.Indicator.Contains("%SKIP%") == false)
             {
                 indicatorTitle = Html.DisplayFor(modelItem => map.Indicator.Indicator).ToString();
                 number = numCount;
@@ -188,7 +192,7 @@
                 number = null;
                 skip = true;
             }
-            <tr style="background-color:White">
+            <tr areaID="@area_map.Area_ID" coeID="@coe.CoE_ID" mapID="@map.Map_ID" style="background-color:White">
             <td class="prRowIDDef" style="min-width:1%;" >@number</td>
             @{numCount++;}
             <td indicatorID="@map.Indicator_ID" field="Indicator" class="prRowTitleDef">@indicatorTitle
@@ -455,6 +459,102 @@
     });
 </script>
 
+
+<script>
+
+    $(function(){
+        $('#the-node').contextMenu({
+            selector: 'td', 
+            callback: function(key, options) {
+            },
+            items: {
+                "insB": {name: "Insert Indicator Below",
+                    callback: function(key, options){
+                        var coeID = $(this).closest( "tr" ).attr("coeID");
+                        var areaID = $(this).closest( "tr" ).attr("areaID");
+                        var indicatorID = $(this).attr("indicatorID") || 0;
+                        var clickedRow = $(this).closest( "tr" );
+                        var definitions = $(this).closest( "table" ).hasClass("PRDef");
+                        console.log(definitions);
+                        $.post('newIndicatorAtPR', { fiscalYear: @ViewBag.fiscalYear, areaID: areaID, coeID: coeID, indicatorID: indicatorID}, 
+                            function(returnedData){
+                                @{var html = "";
+                                html += "<td></td>";
+                                html += "<td class='newRowTd'><input class='newRowText' field='Indicator' type='text'></td>";
+                                for(var i=0; i < ViewBag.PRCols.GetLength(0); ++i){
+                                    html += "<td class='newRowTd'><input class='newRowText' field='" + ViewBag.PRCols[i, 3] + "' type='text'>";
+                                    html += "<input class='newRowText' field='" + ViewBag.PRCols[i, 3] + "_Sup" + "' type='text'></td>";
+                                }}
+                                @{var htmlDef = "";
+                                htmlDef += "<td></td>";
+                                htmlDef += "<td class='newRowTd'><input class='newRowText' field='Indicator' type='text'></td>";
+                                for(var i=0; i < ViewBag.PRColsDefs.GetLength(0); ++i){
+                                    htmlDef += "<td class='newRowTd'><input class='newRowText' field='" + ViewBag.PRColsDefs[i, 3] + "' type='text'>";
+                                }}
+                                htmlColumns = "@Html.Raw(html)";
+                                htmlColumnsDef = "@Html.Raw(htmlDef)";
+                                clickedRow.after("<tr class='newRow' indicatorID='" + returnedData.indicatorID + "' mapID = '" + returnedData.mapID + "'>" + (!definitions ? htmlColumns : htmlColumnsDef));
+                                $(".newRowText").on('change keyup paste',function(e){
+                                    var indicatorID = $(this).closest( "tr" ).attr("indicatorID");
+                                    var field = $(this).attr("field");
+                                    var parameters = {
+                                        indicatorID: indicatorID,
+                                        updateProperty: field,
+                                        updateValue: $( this ).val(),
+                                        updateValueSup: "%NULL%",
+                                        fiscalYear: @Model.Fiscal_Year,
+                                    };
+                                    $.ajax({
+                                        url: 'setValue',
+                                        type: 'POST',
+                                        data: JSON.stringify(parameters),
+                                        contentType: 'application/json; charset=utf-8',
+                                        success: function (result) {
+                                        },
+                                        error: function (request){
+                                        }
+                                    }); 
+                                });
+                            });
+
+                    }
+                },
+                "foldDelete": {
+                    "name": "Remove Indicator",
+                    "items": {
+                        "foldDelete": {"name": "Remove",
+                            callback: function(key, options){
+                                var mapID = $(this).closest( "tr" ).attr("mapID");
+                                //$(this).closest( "tr" ).remove();
+                                $('tr[mapID="' + mapID + '"]').remove();
+                                $.post('deleteCoEMaps', { mapID : mapID});
+                            },
+                        }
+                    }
+                }
+            }
+        });
+
+        $(".rowUp,.rowDown").click(function(){
+            var row = $(this).parents("tr:first");
+            var mapID = row.attr("mapID");
+            if ($(this).is(".rowUp")) {
+                if (row.prev().attr("mapID")){
+                    row.insertBefore(row.prev());
+                    $.post("moveCoEMapUp",{mapID: mapID, fiscalYear: @ViewBag.fiscalYear});
+                }
+            } else {
+                if (row.next().attr("mapID")){
+                    row.insertAfter(row.next());
+                    $.post("moveCoEMapDown",{mapID: mapID, fiscalYear: @ViewBag.fiscalYear});
+                }
+            }
+        });
+    });
+    
+
+</script>
+
 <style>
 .prHeader1
 {
@@ -614,21 +714,22 @@ table tr:nth-of-type(2n) {
     background: none;
 }
 
-input[type="text"] {
+input[type="text"], textarea {
      width: 100%; 
      box-sizing: border-box;
      -webkit-box-sizing:border-box;
      -moz-box-sizing: border-box;
+     background-color:lightgray;
 }
 
-    .newRow, .newRowTd{
-        padding: 0 0 0 0 !important;
-        margin: 0 0 0 0 !important; 
-    }
+.newRow, .newRowTd,  .thVal, .thVal2 {
+    padding: 0 0 0 0 !important;
+    margin: 0 0 0 0 !important; 
+}
 
-    .newRowText {
-        margin: 0 0 0 0 !important; 
-    }
+.newRowText {
+    margin: 0 0 0 0 !important; 
+}
 
 
 }</style>
