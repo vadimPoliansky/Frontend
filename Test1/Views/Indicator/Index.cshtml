@@ -45,7 +45,7 @@
                 <ul>
                     <li>
                         <a href="#"><i class="fa fa-filter"></i>CoE</a>
-                        <h2><i class="fa fa-filter backBtn"></i>Filter by CoE</h2>
+                        <h2 class="backBtn"><i class="fa fa-filter"></i>Filter by CoE</h2>
                         <ul class="doubleList">
                             @foreach (var coe in Model.allCoEs)
                             {
@@ -94,7 +94,7 @@
         });
 
         $('.backBtn').on('click', function () {
-            $('#menuFilter').multilevelpushmenu('collapse', 1)
+            $('#menuFilter').multilevelpushmenu('collapse', 0)
         });
 
         $('.filterExpand').click(function () {
