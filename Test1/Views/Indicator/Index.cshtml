@@ -1,22 +1,304 @@
 ﻿@model IndInv.Models.ViewModels.indexViewModel
 @{
-    ViewBag.Title = "Indicator Inventory";
+    ViewBag.Title = "Search Results";
+    ViewBag.fiscalYear = Model.Fiscal_Year;
 }
 
-<link rel="stylesheet" href="../../Content/Icons/foundation-icons.css" />
+        <div id="pushList">
+            <input class="search" name="Search" type="search" placeholder="Search" />
+            <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
 
-<body>
+            <br />
+            <div class="inner-wrap">
 
-    <div class="row">
-        <div class="large-12 columsn">
-        @foreach (var analyst in Model.allAnalysts)
-        {
-            @Html.ActionLink("Edit Indicators for:" + analyst.Last_Name +", " + analyst.First_Name,"/editInventory", new { analystID = analyst.Analyst_ID});
-        }
+                <ul id="myTags">
+                </ul>
+
+                <ul class="list" style="list-style: none">
+                    @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
+                    {
+                        var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
+                        var areaID = (int?)item.Area_ID ?? 0;
+                        <div class="block" coeID="@coeID" areaID="@item.Area_ID">
+                            <li>
+                                <div class="row collapse">
+                                    <div class="small-3 columns" style="font-size: small">
+                                        <strong class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</strong>
+                                        <br />
+                                        <em class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</em>
+                                    </div>
+                                    <div class="small-8 columns">
+                                        <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                }
+                </ul>
+            </div>
+
         </div>
-    </div>
 
-</body>
+        <div id="menuFilter">
+            <nav>
+                <h2 ><i class="fa fa-times"></i>Filter by:</h2>
+                <ul>
+                    <li>
+                        <a href="#"><i class="fa fa-filter"></i>CoE</a>
+                        <h2><i class="fa fa-filter backBtn"></i>Filter by CoE</h2>
+                        <ul class="doubleList">
+                            @foreach (var coe in Model.allCoEs)
+                            {
+                                <li>
+                                    <small><a href="#" class="filterCoE" id="@coe.CoE_ID" coe="@coe.CoE">@coe.CoE_Abbr</a></small>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
-<div class="row">
-</div>
+<div class="overlay"></div>
+
+<script type="text/javascript" src="../../Scripts/jquery-1.11.0.min.js" ></script>
+<script type="text/javascript" src="/../../Scripts/jquery-ui-1.8.20.min.js" ></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
+<script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js" ></script>
+
+<script type="text/javascript" src="../../Scripts/foundation.min.js" ></script>
+<script type="text/javascript" src="../../Scripts/rem.min.js" ></script>
+<script type="text/javascript" src="/../../Scripts/tag-it.min.js" ></script>
+<script type="text/javascript" src="/../../Scripts/list.min.js" ></script>
+<script type="text/javascript" src="/../../Scripts/list.fuzzysearch.min.js" ></script>
+
+<script type="text/javascript">
+    $(document).ready(function ($) {
+
+        $(".overlay").hide()
+
+        $('#menuFilter').multilevelpushmenu({
+            fullCollapse: true,
+            collapsed: true,
+            mode: 'cover',
+            menuWidth: '90%',
+            onExpandMenuStart: function () {
+                $(".overlay").fadeIn("fast");
+            },
+            onCollapseMenuStart: function () {
+                $(".overlay").fadeOut("fast");
+            },
+            backItemIcon: 'fa fa-times',
+        });
+
+        $('.backBtn').on('click', function () {
+            $('#menuFilter').multilevelpushmenu('collapse', 1)
+        });
+
+        $('.filterExpand').click(function () {
+            $('#menuFilter').multilevelpushmenu('expand');
+        });
+
+        $('#menuFilter').multilevelpushmenu('redraw');
+
+        var hidden = false;
+
+        var fuzzyOptions = {
+            searchClass: "fuzzy-search",
+            location: 0,
+            distance: 100,
+            threshold: 0.4,
+            multiSearch: true
+        };
+
+        var options = {
+            valueNames: ['coe', 'area', 'title'],
+            plugins: [ListFuzzySearch()]
+        };
+
+        var hackerList = new List('indicatorList', options);
+
+
+        $('#buttonTest').on('click', function (e) {
+
+        });
+
+        $("#myTags").tagit({
+            onTagClicked: function (event, ui) {
+                $("#myTags").tagit("removeTagByLabel", ui.tagLabel);
+            },
+            beforeTagRemoved: function (event, ui) {
+                var field = ui.tag.attr('field');
+                var id = ui.tag.attr('id');
+                updateFilterHide(id, field);
+            },
+            afterTagRemoved: function (event, ui) {
+                if ($("#myTags").tagit("assignedTags").length === 0) {
+                    hidden = false;
+                    $('.block').show();
+                }
+            },
+        });
+
+        $(".filterCoE").on("click", function () {
+            var coe = $(this).attr('coe');
+            var coeID = $(this).attr('id');
+            var tags = $("#myTags").tagit("assignedTags");
+            if ($.inArray(coe, tags) === -1) {
+                $(this).parent().parent().addClass('filterCheck');
+                $(this).addClass('filterCheck');
+                $("#myTags").tagit("createTag", coe);
+                $('ul li:nth-last-child(2)').attr('id', coeID);
+                $('ul li:nth-last-child(2)').attr('field', 'coeID');
+                updateFilter(coeID, "coeID");
+            } else {
+                $(this).parent().parent().removeClass('filterCheck');
+                $(this).removeClass('filterCheck');
+                $("#myTags").tagit("removeTagByLabel", coe);
+                updateFilterHide(coeID, "coeID");
+            }
+        });
+
+        function updateFilter(id, field) {
+            if (!hidden) {
+                $('.block').hide();
+                hidden = true;
+            }
+            $('.list div[' + field + "=" + id + ']').show();
+            $('.list div[' + field + "=" + id + ']').attr("filtered", false);
+        }
+        function updateFilterHide(id, field) {
+            $('.list div[' + field + "=" + id + ']').hide();
+            $('.list div[' + field + "=" + id + ']').attr("filtered", true);
+        }
+    });
+</script>
+
+<style>
+    .left-off-canvas-menu {
+        height: 100%;
+    }
+
+    .block {
+        border-top: 1px solid lightgray;
+        padding-bottom: 5%;
+    }
+
+
+    .doubleList {
+        -moz-column-count: 2;
+        -moz-column-gap: 0px;
+        -webkit-column-count: 2;
+        -webkit-column-gap: 0px;
+        column-count: 2;
+        column-gap: 0px;
+    }
+
+    .search {
+        float:left;
+        background-image: url(http://www.levenmetwater.nl/static/global/images/icon-search.png);
+        background-position: 10px center;
+        background-repeat: no-repeat;
+        margin: 0px !important;
+        width: 100%;
+        height: 40px;
+        padding: 10px 45px 10px 10px !important;
+        text-indent: 20px;
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 2s;
+        transition: all 0.2s;
+        border:none;
+    }
+        .search:focus {
+            background-position: -20px center;
+            text-indent: 20px;
+        }
+
+        .search::-webkit-search-cancel-button{
+            position:relative;
+            right:40px;
+  
+            -webkit-appearance: none;
+            height: 25px;
+            width: 20px;
+            border-radius:0px;
+        }
+            .search::-webkit-search-cancel-button::before {
+                font-family: FontAwesome;
+                font-size:x-large;
+                content: "\f057";
+                color:red;
+            }
+
+    .filterExpand {
+        color:white;
+        position:relative;
+        top:-37px;
+        padding: 5px 0 0px 15px;
+        float: right;
+        width: 50px;
+        margin: 0px !important;
+        font-size: small;
+        height: 37px !important;
+        overflow: hidden !important;
+        vertical-align: middle;
+        background-color: #0094ff;
+    }
+
+
+    #menuFilter .multilevelpushmenu_wrapper h2 {
+	font-size: medium !important;
+	line-height: 1em;
+	font-weight: lighter;
+    margin-top:0;
+	color: white;
+    height:50px;
+	padding: 1em .4em .4em .4em;
+    background-color: #0094ff;
+    font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+}
+
+    #menuFilter .levelHolderClass {
+        background-color:white !important;
+        color:white;
+    }
+
+    #menuFilter li:hover {
+        background-color:#54c5ff !important;
+        border:0 !important;
+    }
+
+    #menuFilter li {
+        border:0;
+        padding:0;
+    }
+
+    #menuFilter .multilevelpushmenu_wrapper a {
+        color:#0094ff !important;
+        border:0 !important;
+        padding:9px;
+    }
+
+    .backItemClass {
+        background-color:white !important;
+        color:#0094ff !important;
+        border:0px !important;
+    }
+        .backItemClass a {
+            font-size: medium !important;
+        }
+        .backItemClass:hover {
+            background-color:#54c5ff !important;
+        }
+
+    #menuFilter .filterCheck {
+        background-color:#4cff00 !important;
+        color:white !important; 
+    }
+
+    #menuFilter .filterCheck:hover {
+        background-color:#a3ff7c !important;
+    }
+</style>

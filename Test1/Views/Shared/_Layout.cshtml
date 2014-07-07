@@ -214,6 +214,12 @@
             containersToPush: [$( '#pushobj' )],
             fullCollapse: true,
             collapsed: true,
+            onExpandMenuStart: function () {
+                $(".overlay").fadeIn("fast");
+            },
+            onCollapseMenuStart: function () {
+                $(".overlay").fadeOut("fast");
+            },
         });
 
         $( '#baseexpand' ).click(function(){
@@ -287,13 +293,42 @@
         width: 100%;
     }
 
+     #pushList {
+        font-family: 'Open Sans Condensed',sans-serif;
+        font-size: 2em;
+        left: 0px;
+        position: absolute;
+        width: 100%;
+    }
+
     body {
         margin: 0;
         padding: 0;
+        font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
     }
 
     #menu_multilevelpushmenu {
         min-width: 0px;
+        position: fixed;
+                z-index:2001;
+    }
+
+    #menuFilter_multilevelpushmenu {
+        min-width: 0px;
+        position:absolute;
+        top:0px;
+        z-index:2001;
+    }
+
+    .overlay {
+        position:fixed;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        background-color:#fff;
+        opacity:0.8;
+        z-index:1001;
     }
 
 </style>

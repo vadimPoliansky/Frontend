@@ -26,9 +26,23 @@ namespace IndInv.Controllers
         // GET: /Indicator/
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(Int16? fiscalYear)
         {
-            return RedirectToAction("viewPR", "Indicator", new { fiscalYear = 1 });
+            if (!fiscalYear.HasValue)
+            {
+                fiscalYear = 2;
+            }
+            var indexViewModel = new indexViewModel(){
+                allIndicators = db.Indicators.ToList(),
+                allAnalysts = db.Analysts.ToList(),
+                allAreas = db.Areas.ToList(),
+                allCoEs = db.CoEs.ToList(),
+                allFootnotes =db.Footnotes.ToList(),
+
+                Fiscal_Year = fiscalYear.Value,
+            };
+
+            return View(indexViewModel);
         }
 
         [HttpPost]
