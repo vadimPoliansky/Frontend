@@ -8,10 +8,9 @@
             <input class="search" name="Search" type="search" placeholder="Search" />
             <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
 
-            <br />
             <div class="inner-wrap">
 
-                <ul id="myTags">
+                <ul id="myTags" class="tagList">
                 </ul>
 
                 <ul class="list" style="list-style: none">
@@ -186,6 +185,25 @@
         padding-bottom: 5%;
     }
 
+    #myTags {
+        width:100%;
+    }
+
+    .tagit-choice {
+        background-color:#c8ffc2;
+        padding:15px;
+        width:100%;
+        border-bottom:1px solid lightgray;
+    }
+    .tagit-label {
+        color:black;
+        font-weight:bold;
+    }
+    .text-icon {
+        float:right;
+        top:-5px;
+        font-size:xx-large;
+    }
 
     .doubleList {
         -moz-column-count: 2;
@@ -194,6 +212,16 @@
         -webkit-column-gap: 0px;
         column-count: 2;
         column-gap: 0px;
+    }
+    .tagList {
+        -moz-column-count: 1;
+        -moz-column-gap: 0px;
+        -webkit-column-count: 1;
+        -webkit-column-gap: 0px;
+        column-count: 1;
+        column-gap: 0px;
+        list-style-type: none;
+        padding:0; margin:0;
     }
 
     .search {
@@ -301,4 +329,14 @@
     #menuFilter .filterCheck:hover {
         background-color:#a3ff7c !important;
     }
+
+    .ui-autocomplete-input {
+        visibility:hidden !important;
+    }
+
+    .inner-wrap {
+        position:absolute;
+        top:37px;
+    }
+
 </style>
