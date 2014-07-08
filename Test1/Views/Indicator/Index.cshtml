@@ -5,7 +5,7 @@
 }
 
         <div id="pushList">
-            <input class="search" name="Search" type="search" placeholder="Search" />
+            <input class="search" id="search_input" name="Search" type="search" placeholder="Search" />
             <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
 
             <div class="inner-wrap">
@@ -26,7 +26,7 @@
                                         <br />
                                         <em class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</em>
                                     </div>
-                                    <div class="small-8 columns">
+                                    <div class="small-8 columns titleColumn">
                                         <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
                                     </div>
                                 </div>
@@ -67,6 +67,7 @@
 <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
 <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js" ></script>
 
+<script type="text/javascript" src="~/Scripts/jquery.fastLiveFilter.js"></script>
 <script type="text/javascript" src="../../Scripts/foundation.min.js" ></script>
 <script type="text/javascript" src="../../Scripts/rem.min.js" ></script>
 <script type="text/javascript" src="/../../Scripts/tag-it.min.js" ></script>
@@ -104,25 +105,20 @@
 
         var hidden = false;
 
-        var fuzzyOptions = {
-            searchClass: "fuzzy-search",
-            location: 0,
-            distance: 100,
-            threshold: 0.4,
-            multiSearch: true
-        };
 
-        var options = {
-            valueNames: ['coe', 'area', 'title'],
-            plugins: [ListFuzzySearch()]
-        };
-
-        var hackerList = new List('indicatorList', options);
-
-
-        $('#buttonTest').on('click', function (e) {
-
+        $('#search_input').on('keyup change search', function () {
+            var valThis = $(this).val().toLowerCase();
+            if (valThis == "") {
+                $('.block > li > .row > .titleColumn > .title').closest(".block").show();
+            } else {
+                $('.block > li > .row > .titleColumn > .title').each(function () {
+                    var text = $(this).text().toLowerCase();
+                    var listItems;
+                    (text.indexOf(valThis) >= 0) ? $(this).closest(".block").show() : $(this).closest(".block").hide();
+                });
+            };
         });
+
 
         $("#myTags").tagit({
             onTagClicked: function (event, ui) {
@@ -201,7 +197,8 @@
     }
     .text-icon {
         float:right;
-        top:-5px;
+        position:relative;
+        top:-10px;
         font-size:xx-large;
     }
 
@@ -246,18 +243,19 @@
 
         .search::-webkit-search-cancel-button{
             position:relative;
-            right:40px;
+            right:25px;
   
             -webkit-appearance: none;
-            height: 25px;
+            height: 20px;
             width: 20px;
             border-radius:0px;
         }
             .search::-webkit-search-cancel-button::before {
                 font-family: FontAwesome;
-                font-size:x-large;
+                font-size:large;
                 content: "\f057";
-                color:red;
+                color:black;
+
             }
 
     .filterExpand {

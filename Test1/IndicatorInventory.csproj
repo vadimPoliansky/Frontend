@@ -349,6 +349,7 @@
     <Content Include="Scripts\jquery.btechco.excelexport.js" />
     <Content Include="Scripts\jquery.contextMenu.css" />
     <Content Include="Scripts\jquery.contextMenu.js" />
+    <Content Include="Scripts\jquery.fastLiveFilter.js" />
     <Content Include="Scripts\jquery.floatThead.min.js" />
     <Content Include="Scripts\jquery.handsontable.css" />
     <Content Include="Scripts\jquery.handsontable.full.css" />
