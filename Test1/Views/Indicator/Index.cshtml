@@ -3,60 +3,59 @@
     ViewBag.Title = "Search Results";
     ViewBag.fiscalYear = Model.Fiscal_Year;
 }
+<div id="pushList">
+    <input class="search" id="search_input" name="Search" type="search" placeholder="Search" />
+    <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
 
-        <div id="pushList">
-            <input class="search" id="search_input" name="Search" type="search" placeholder="Search" />
-            <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
+    <div class="inner-wrap">
 
-            <div class="inner-wrap">
+        <ul id="myTags" class="tagList">
+        </ul>
 
-                <ul id="myTags" class="tagList">
-                </ul>
-
-                <ul class="list" style="list-style: none">
-                    @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
-                    {
-                        var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
-                        var areaID = (int?)item.Area_ID ?? 0;
-                        <div class="block" coeID="@coeID" areaID="@item.Area_ID">
-                            <li>
-                                <div class="row collapse">
-                                    <div class="small-3 columns" style="font-size: small">
-                                        <strong class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</strong>
-                                        <br />
-                                        <em class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</em>
-                                    </div>
-                                    <div class="small-8 columns titleColumn">
-                                        <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </div>
-                }
-                </ul>
-            </div>
-
-        </div>
-
-        <div id="menuFilter">
-            <nav>
-                <h2 ><i class="fa fa-times"></i>Filter by:</h2>
-                <ul>
+        <ul class="list" style="list-style: none">
+            @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
+            {
+                var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
+                var areaID = (int?)item.Area_ID ?? 0;
+                <div class="block" coeID="@coeID" areaID="@item.Area_ID" filtered="false">
                     <li>
-                        <a href="#"><i class="fa fa-filter"></i>CoE</a>
-                        <h2 class="backBtn"><i class="fa fa-filter"></i>Filter by CoE</h2>
-                        <ul class="doubleList">
-                            @foreach (var coe in Model.allCoEs)
-                            {
-                                <li>
-                                    <small><a href="#" class="filterCoE" id="@coe.CoE_ID" coe="@coe.CoE">@coe.CoE_Abbr</a></small>
-                                </li>
-                            }
-                        </ul>
+                        <div class="row collapse">
+                            <div class="small-3 columns" style="font-size: small">
+                                <strong class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</strong>
+                                <br />
+                                <em class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</em>
+                            </div>
+                            <div class="small-8 columns titleColumn">
+                                <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
+                            </div>
+                        </div>
                     </li>
+                </div>
+            }
+        </ul>
+    </div>
+
+</div>
+
+<div id="menuFilter">
+    <nav>
+        <h2 class="backBtnMain"><i class="fa fa-times backBtnMain"></i>Filter by:</h2>
+        <ul>
+            <li>
+                <a href="#"><i class="fa fa-filter"></i>CoE</a>
+                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by CoE:</h2>
+                <ul class="doubleList">
+                    @foreach (var coe in Model.allCoEs)
+                    {
+                        <li>
+                            <small><a href="#" class="filterCoEID" id="@coe.CoE_ID" coe="@coe.CoE">@coe.CoE_Abbr</a></small>
+                        </li>
+                    }
                 </ul>
-            </nav>
-        </div>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 <div class="overlay"></div>
 
@@ -82,19 +81,27 @@
         $('#menuFilter').multilevelpushmenu({
             fullCollapse: true,
             collapsed: true,
-            mode: 'cover',
-            menuWidth: '90%',
+            menuWidth: '80%',
             onExpandMenuStart: function () {
                 $(".overlay").fadeIn("fast");
             },
             onCollapseMenuStart: function () {
-                $(".overlay").fadeOut("fast");
+                if($('#menuFilter').multilevelpushmenu('activemenu').attr('data-level') == 0 ){
+                    $(".overlay").fadeOut("fast");
+                }
             },
             backItemIcon: 'fa fa-times',
         });
 
+        $('.backItemClass').remove();
+
         $('.backBtn').on('click', function () {
             $('#menuFilter').multilevelpushmenu('collapse', 0)
+        });
+
+        $('.backBtnMain').on('click', function () {
+            $('#menuFilter').multilevelpushmenu('collapse')
+            $(".overlay").fadeOut("fast");
         });
 
         $('.filterExpand').click(function () {
@@ -105,16 +112,23 @@
 
         var hidden = false;
 
-
         $('#search_input').on('keyup change search', function () {
             var valThis = $(this).val().toLowerCase();
             if (valThis == "") {
-                $('.block > li > .row > .titleColumn > .title').closest(".block").show();
+                $('.block > li > .row > .titleColumn > .title[filtered="false"]').closest(".block").show()
             } else {
                 $('.block > li > .row > .titleColumn > .title').each(function () {
-                    var text = $(this).text().toLowerCase();
-                    var listItems;
-                    (text.indexOf(valThis) >= 0) ? $(this).closest(".block").show() : $(this).closest(".block").hide();
+                    if ($(this).closest(".block").attr('filtered') == "false") {
+                        var text = $(this).text().toLowerCase();
+                        var listItems;
+                        if (text.indexOf(valThis) >= 0) {
+                            $(this).closest(".block").show()
+                            $(this).closest(".block").attr('textFiltered', false);
+                        } else {
+                            $(this).closest(".block").hide();
+                            $(this).closest(".block").attr('textFiltered', true);
+                        }
+                    }
                 });
             };
         });
@@ -128,6 +142,8 @@
                 var field = ui.tag.attr('field');
                 var id = ui.tag.attr('id');
                 updateFilterHide(id, field);
+                $('.filter' + field + "[id='" + id + "']").closest('li').removeClass('filterCheck');
+                //$('.filter' + field + "[id='" + id + "']").removeClass('filterCheck');
             },
             afterTagRemoved: function (event, ui) {
                 if ($("#myTags").tagit("assignedTags").length === 0) {
@@ -137,13 +153,13 @@
             },
         });
 
-        $(".filterCoE").on("click", function () {
+        $(".filterCoEID").on("click", function () {
             var coe = $(this).attr('coe');
             var coeID = $(this).attr('id');
             var tags = $("#myTags").tagit("assignedTags");
             if ($.inArray(coe, tags) === -1) {
-                $(this).parent().parent().addClass('filterCheck');
-                $(this).addClass('filterCheck');
+                $(this).closest('li').addClass('filterCheck');
+                //$(this).addClass('filterCheck');
                 $("#myTags").tagit("createTag", coe);
                 $('ul li:nth-last-child(2)').attr('id', coeID);
                 $('ul li:nth-last-child(2)').attr('field', 'coeID');
@@ -161,6 +177,7 @@
                 $('.block').hide();
                 hidden = true;
             }
+            $('.block').attr("filtered", true);
             $('.list div[' + field + "=" + id + ']').show();
             $('.list div[' + field + "=" + id + ']').attr("filtered", false);
         }
@@ -318,6 +335,15 @@
         .backItemClass:hover {
             background-color:#54c5ff !important;
         }
+
+     #menuFilter .filterCheck::before {
+        float:right;
+        font-family: FontAwesome;
+        font-size:large;
+        content: "\f00c";
+        color:white;
+        padding-right:5px;
+    }
 
     #menuFilter .filterCheck {
         background-color:#4cff00 !important;
