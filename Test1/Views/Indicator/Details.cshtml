@@ -74,15 +74,19 @@
 <style type="text/css">
     .jqplot-point-label 
     {
-        color:fff;
-        font-size:medium;
-        background-color:rgba(32,92,144,0.8);
-        font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+        font-family: Geneva, Tahoma, Verdana, sans-serif;
+        font-size:xx-small !important;
+        font-weight:700;
+        color:#fff;
+        /*background-color:rgba(32,92,144,0.8);*/
+        
     }
 
     .jqplot-axis {
-        font-size:small !important;
-        background:none;
+        font-family: Geneva, Tahoma, Verdana, sans-serif;
+        font-size:xx-small !important;
+        font-weight:700;
+        color:#fff;
     }
 
     .jqplot-target {
@@ -90,8 +94,16 @@
     }
 
     .jqplot-yaxis {
-        padding-left:50px;
+        margin-left:5px;
     }
+
+    .jqplot-grid-canvas {
+        background-color:#0094ff;
+        z-index:-100;
+        border:none !important;
+        padding-bottom:5px;
+    }
+
 
 </style>
 
@@ -215,9 +227,10 @@
 
         var plot1 = $.jqplot('chart1', [s1], {
             series: [
-                { color: '#205c90' },
+                { color: '#0068b3' },
             ],
             seriesDefaults: {
+                shadow:false,
                 renderer: $.jqplot.BarRenderer,
                 useNegativeColors : false,
                 pointLabels: {
@@ -233,8 +246,10 @@
             grid: {
                 drawGridlines: false,
                 shadow : false,
-                backgroundColor: '#fff',
-                borderWidth: 0,
+                backgroundColor: 'transparent',
+                drawBorder: false,
+                borderColor: 'transparent',
+                shadowColor: 'transparent',
             },
             canvasOverlay: {
                 show: true,
@@ -244,7 +259,7 @@
                         y: comparator_FY,
                         lineWidthInt: 3,
                         xOffset: 0,
-                        color: '#9dbbd9',
+                        color: '#fff',
                         shadow: false
                     }
                     },
@@ -253,7 +268,7 @@
                         y: target_FY,
                         lineWidth: lineWidthInt,
                         xOffset: 0,
-                        color: '#205c90',
+                        color: '#000',
                         shadow: false
                     }
                     },
@@ -261,13 +276,29 @@
             },
             axes: {
                 xaxis: {
+                    rendererOptions: {
+                        tickRenderer: $.jqplot.AxisTickRenderer,
+                        tickOptions: {
+                            mark: null,
+                        },
+                        borderWidth: 0,
+                        drawBorder: false,
+                        borderColor: 'transparent',
+                    },
                     renderer: $.jqplot.CategoryAxisRenderer,
                     ticks: ticks1,
-                    borderWidth: 5,
+                    borderWidth: 0,
+                    drawBorder: false,
+                    borderColor: 'transparent',
                 },
                 yaxis: {
-                    borderWidth: 5,
-                    borderColor: '#205c90',
+                    rendererOptions: {
+                        drawBaseline: false,
+                        tickRenderer: $.jqplot.AxisTickRenderer,
+                        tickOptions: {
+                            mark: null,
+                        },
+                    },
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
                     tickInterval: tickInterval,
@@ -310,7 +341,12 @@
                 },
             ],
             grid: {
-                backgroundColor: '#fff'
+                drawGridlines: false,
+                shadow: false,
+                backgroundColor: 'transparent',
+                drawBorder: false,
+                borderColor: 'transparent',
+                shadowColor: 'transparent',
             },
             canvasOverlay: {
                 show: true,
@@ -339,15 +375,34 @@
             },
             axes: {
                 xaxis: {
+                    rendererOptions: {
+                        tickRenderer: $.jqplot.AxisTickRenderer,
+                        tickOptions: {
+                            mark: null,
+                        },
+                        borderWidth: 0,
+                        drawBorder: false,
+                        borderColor: 'transparent',
+                    },
                     renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks2
+                    ticks: ticks1,
+                    borderWidth: 0,
+                    drawBorder: false,
+                    borderColor: 'transparent',
                 },
                 yaxis: {
+                    rendererOptions: {
+                        drawBaseline: false,
+                        tickRenderer: $.jqplot.AxisTickRenderer,
+                        tickOptions: {
+                            mark: null,
+                        },
+                    },
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
                     tickInterval: tickInterval,
-                    tickOptions: (currency)? { formatString: "$%'d" }   :
-                                 (time)?     { formatString: '%.' + 2 + 'f' }  :
+                    tickOptions: (currency) ? { formatString: "$%'d" } :
+                                 (time) ? { formatString: '%.' + 2 + 'f' } :
                                              { formatString: '%.' + precision + 'f' }
                 }
             }
