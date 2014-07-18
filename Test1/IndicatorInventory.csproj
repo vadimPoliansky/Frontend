@@ -340,6 +340,7 @@
     <Content Include="Scripts\foundation\foundation.tab.js" />
     <Content Include="Scripts\foundation\foundation.tooltip.js" />
     <Content Include="Scripts\foundation\foundation.topbar.js" />
+    <Content Include="Scripts\modalGraph.js" />
     <Content Include="Scripts\jqplot.json2.min.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
     <Content Include="Scripts\jquery-migrate.min.js" />
@@ -360,6 +361,7 @@
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.multilevelpushmenu.css" />
     <Content Include="Scripts\jquery.multilevelpushmenu.js" />
+    <Content Include="Scripts\jquery.simplemodal.1.4.4.min.js" />
     <Content Include="Scripts\jquery.sticky.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.uitablefilter.js" />
@@ -825,6 +827,9 @@
     <None Include="Content\Icons\svgs\fi-zoom-out.svg" />
     <Content Include="Views\Indicator\editFootnotes.cshtml" />
     <Content Include="Views\Indicator\editAnalysts.cshtml" />
+    <Content Include="Views\Indicator\Details.cshtml">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -19,7 +19,7 @@
                 var areaID = (int?)item.Area_ID ?? 0;
                 <div class="block" coeID="@coeID" areaID="@item.Area_ID" filtered="false">
                     <li>
-                        <div class="row collapse">
+                        <div class="row collapse blockContent">
                             <div class="small-3 columns" style="font-size: small">
                                 <strong class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</strong>
                                 <br />
@@ -66,6 +66,8 @@
 <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
 <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js" ></script>
 
+<script type="text/javascript" src="~/Scripts/jquery.simplemodal.1.4.4.min.js"></script>
+
 <script type="text/javascript" src="~/Scripts/jquery.fastLiveFilter.js"></script>
 <script type="text/javascript" src="../../Scripts/foundation.min.js" ></script>
 <script type="text/javascript" src="../../Scripts/rem.min.js" ></script>
@@ -77,6 +79,23 @@
     $(document).ready(function ($) {
 
         $(".overlay").hide()
+
+        $(".block").on("click", function () {
+            //$.get("Indicator/editInventory?indicatorID=1001&fiscalYear=1", function (result) {
+            //});
+            var src = "Indicator/details?indicatorID=1001&fiscalYear=1";
+            $.modal('<iframe src="' + src + '" height="450" width="830" style="border:0">', {
+                closeHTML: "",
+                containerCss: {
+                    backgroundColor: "#fff",
+                    borderColor: "#fff",
+                    height: $(window).height(),
+                    padding: 0,
+                    width: $(window).width(),
+                },
+                overlayClose: true
+            });
+        });
 
         $('#menuFilter').multilevelpushmenu({
             fullCollapse: true,
@@ -122,15 +141,16 @@
                         var text = $(this).text().toLowerCase();
                         var listItems;
                         if (text.indexOf(valThis) >= 0) {
-                            $(this).closest(".block").show()
+                            //$(this).closest(".block").show()
                             $(this).closest(".block").attr('textFiltered', false);
                         } else {
-                            $(this).closest(".block").hide();
+                            //$(this).closest(".block").hide();
                             $(this).closest(".block").attr('textFiltered', true);
                         }
                     }
                 });
             };
+            refreshView();
         });
 
 
@@ -147,8 +167,8 @@
             },
             afterTagRemoved: function (event, ui) {
                 if ($("#myTags").tagit("assignedTags").length === 0) {
-                    hidden = false;
-                    $('.block').show();
+                    $('.block').attr("filtered", false);
+                    refreshView();
                 }
             },
         });
@@ -170,32 +190,54 @@
                 $("#myTags").tagit("removeTagByLabel", coe);
                 updateFilterHide(coeID, "coeID");
             }
+            refreshView();
         });
 
         function updateFilter(id, field) {
-            if (!hidden) {
-                $('.block').hide();
-                hidden = true;
-            }
+            //if (!hidden) {
+            //    $('.block').hide();
+            //    hidden = true;
+            //}
             $('.block').attr("filtered", true);
-            $('.list div[' + field + "=" + id + ']').show();
+            //$('.list div[' + field + "=" + id + ']').show();
             $('.list div[' + field + "=" + id + ']').attr("filtered", false);
         }
         function updateFilterHide(id, field) {
-            $('.list div[' + field + "=" + id + ']').hide();
+            //$('.list div[' + field + "=" + id + ']').hide();
+            $('.block').attr("filtered", false);
             $('.list div[' + field + "=" + id + ']').attr("filtered", true);
+        }
+
+        function refreshView() {
+            console.log("asdf");
+            $('.block').show();
+            $('.block[filtered="true"]').hide();
+            $('.block[textFiltered="true"]').hide();
         }
     });
 </script>
 
 <style>
+
     .left-off-canvas-menu {
         height: 100%;
     }
 
+    .list {
+        margin:0px;
+    }
+
     .block {
+        background-color:none !important;
         border-top: 1px solid lightgray;
         padding-bottom: 5%;
+    }
+        .block:hover {
+            background-color:lightblue !important;
+        }
+
+    .blockContent {
+        padding:5px;
     }
 
     #myTags {

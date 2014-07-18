@@ -1,39 +1,13 @@
-﻿@model IndInv.Models.Indicators
+﻿@model IndInv.Models.ViewModels.InventoryViewModel
 @using IndInv.Helpers;
 @{
     ViewBag.Title = "Details";
+    ViewBag.fiscalYear = Model.Fiscal_Year;
 }
-<div class="row">
-    <a class="button" href="searchResults">Back</a>
-</div>
 
-    <div class="row">
-        <h1>@Html.DisplayTextFor(model => model.Indicator) </h1>
-    </div>
-    <div class="row">
-    @{var i = 1;}
-    @foreach (var footnote in Model.Indicator_Footnote_Map.Where(x => x.Indicator_ID == Model.Indicator_ID))
-    {
-        <sup>
-        @i.
-        <span>  </span>@Html.DisplayTextFor(model => footnote.Footnote.Footnote)
-        </sup>
-        i++;
-    }
-    </div>
-    <br />
-    <div class="row">
-    @foreach(var map in Model.Indicator_CoE_Map.Where(x => x.Indicator_ID == Model.Indicator_ID)){
-        <div class="round alert label"><h6 class="subheader" style="color:White">
-       @Html.DisplayTextFor(model => map.CoE.CoE)
-        </h6></div>
-    }
 
-    </div>
-<div class="row">
-<div id="chart1" style="margin-top:20px; margin-left:20px; width:300px; height:400px;"></div>
+<div id="chart1" style="margin-top:20px; margin-left:20px; width:100%; height:100%;"></div>
 <pre class="code brush:js"></pre>
-</div> 
 <div class="row">
 <br />
 <div class="small-offset-1">
@@ -50,10 +24,8 @@
 </div>
 </div>
 
-<div class="row">
-<div id="chart2" style="margin-top:20px; margin-left:20px; width:300px; height:400px;"></div>
+<div id="chart2" style="margin-top:20px; margin-left:20px; width:100%; height:400px;"></div>
 <pre class="code brush:js"></pre>
-</div> 
 <div class="row">
 <br />
 <div class="small-offset-1">
@@ -87,158 +59,6 @@
 </div>
 </div>
 
-<div class="row">
-<fieldset>
-    <legend>Details</legend>
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Indicator)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Indicator)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-            @Html.DisplayNameFor(model => model.Area_ID)
-        </h5></b>
-        @Html.DisplayTextFor(model => model.Area_ID)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_10_11)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_10_11)
-        <sup>@Html.DisplayTextFor(model => model.FY_10_11_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_11_12)
-         </b></h5>
-        @Html.DisplayTextFor(model => model.FY_11_12)
-        <sup>@Html.DisplayTextFor(model => model.FY_11_12_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_12_13)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_12_13)
-        <sup>@Html.DisplayTextFor(model => model.FY_12_13_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_13_14_Q1)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_13_14_Q1)
-        <sup>@Html.DisplayTextFor(model => model.FY_13_14_Q1_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_13_14_Q2)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_13_14_Q2)
-        <sup>@Html.DisplayTextFor(model => model.FY_13_14_Q2_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_13_14_Q3)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_13_14_Q3)
-        <sup>@Html.DisplayTextFor(model => model.FY_13_14_Q3_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_13_14_Q4)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_13_14_Q4)
-        <sup>@Html.DisplayTextFor(model => model.FY_13_14_Q4_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.FY_13_14_YTD)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.FY_13_14_YTD)
-        <sup>@Html.DisplayTextFor(model => model.FY_13_14_YTD_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Target)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Target)
-        <sup>@Html.DisplayTextFor(model => model.Target_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Comparator)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Comparator)
-        <sup>@Html.DisplayTextFor(model => model.Comparator_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Performance_Threshold)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Performance_Threshold)
-        <sup>@Html.DisplayTextFor(model => model.Performance_Threshold_Sup)</sup>
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Definition_Calculation)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Definition_Calculation)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Target_Rationale)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Target_Rationale)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Comparator_Source)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Comparator_Source)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Data_Source_MSH)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Data_Source_MSH)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.Data_Source_Benchmark)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.Data_Source_Benchmark)
-    </div>
-    <br />
-    <div class="panel">
-        <h5><b>
-         @Html.DisplayNameFor(model => model.OPEO_Lead)
-         </h5></b>
-        @Html.DisplayTextFor(model => model.OPEO_Lead)
-    </div>
-    <br />
-</fieldset>
-</div>
-<div class="row">
-    <a class="button" href="searchResults">Back</a>
-</div>
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <script src="../../Scripts/jquery.jqplot.min.js"></script>
@@ -252,26 +72,29 @@
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.jqplot.min.css" />
 
 <style type="text/css">
-#chart1 .jqplot-point-label 
-{
-    color:fff;
-    font-size:12;
-    font-weight:bold;
-    background-color:rgba(32,92,144,0.8);
-    
-}
-#chart2 .jqplot-point-label 
-{
-    color:fff;
-    font-size:12;
-    font-weight:bold;
-    background-color:rgba(32,92,144,0.8);
-}
-#chart2 .jqplot-table-legend-label
-{
+    .jqplot-point-label 
+    {
+        color:fff;
+        font-size:medium;
+        background-color:rgba(32,92,144,0.8);
+        font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+    }
 
-}
+    .jqplot-axis {
+        font-size:small !important;
+        background:none;
+    }
+
+    .jqplot-target {
+        margin:0px !important;
+    }
+
+    .jqplot-yaxis {
+        padding-left:50px;
+    }
+
 </style>
+
 
 <script>
     $(document).ready(function ($) {
@@ -283,15 +106,15 @@
         var precision;
 
         var valuesArrayString = [
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_10_11)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_10_11)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_11_12)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_12_13)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q1)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q2)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q3)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q4)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_2)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_1)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_YTD)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.Target)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.Comparator)).ToString())",
         ];
@@ -321,22 +144,22 @@
         var chartWidth = 300 - 20 - 20;
 
         var valuesArray = [
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q1)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q2)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q3)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_Q4)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_10_11)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_10_11)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_11_12)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_11_12)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_12_13)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_12_13)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_13_14_YTD)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q1)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q1)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q2)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q2)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString())", 10),
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10)) ?
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10),
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)) ?
@@ -408,7 +231,10 @@
                 fillToZero: true,
             },
             grid: {
-                backgroundColor: '#fff'
+                drawGridlines: false,
+                shadow : false,
+                backgroundColor: '#fff',
+                borderWidth: 0,
             },
             canvasOverlay: {
                 show: true,
@@ -436,9 +262,12 @@
             axes: {
                 xaxis: {
                     renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks1
+                    ticks: ticks1,
+                    borderWidth: 5,
                 },
                 yaxis: {
+                    borderWidth: 5,
+                    borderColor: '#205c90',
                     min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
                     max: maxY,//* maxBufferMutliplier,
                     tickInterval: tickInterval,
@@ -523,5 +352,6 @@
                 }
             }
         });
+
     });
 </script>
