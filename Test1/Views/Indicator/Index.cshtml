@@ -17,7 +17,8 @@
             {
                 var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
                 var areaID = (int?)item.Area_ID ?? 0;
-                <div class="block" coeID="@coeID" areaID="@item.Area_ID" filtered="false">
+                <div class="block coeID-@coeID areaID-@areaID @foreach(var footnote in item.Indicator_Footnote_Map){ @:footnoteID-@footnote.Footnote_ID 
+                }" indicatorId="@item.Indicator_ID">
                     <li>
                         <div class="row collapse blockContent">
                             <div class="small-3 columns" style="font-size: small">
@@ -48,7 +49,31 @@
                     @foreach (var coe in Model.allCoEs)
                     {
                         <li>
-                            <small><a href="#" class="filterCoEID" id="@coe.CoE_ID" coe="@coe.CoE">@coe.CoE_Abbr</a></small>
+                            <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i> @coe.CoE_Abbr </a></small>
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-filter"></i>Area</a>
+                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Area:</h2>
+                <ul>
+                    @foreach (var area in Model.allAreas)
+                    {
+                        <li>
+                            <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i> @area.Area</a></small>
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-filter"></i>Type</a>
+                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Type:</h2>
+                <ul>
+                    @foreach (var footnote in Model.allFootnotes)
+                    {
+                        <li>
+                            <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i> @footnote.Footnote</a></small>
                         </li>
                     }
                 </ul>
@@ -58,6 +83,8 @@
 </div>
 
 <div class="overlay"></div>
+
+<div class="backToTop"><i class="fa fa-arrow-up"></i></div>
 
 <script type="text/javascript" src="../../Scripts/jquery-1.11.0.min.js" ></script>
 <script type="text/javascript" src="/../../Scripts/jquery-ui-1.8.20.min.js" ></script>
@@ -81,20 +108,10 @@
         $(".overlay").hide()
 
         $(".block").on("click", function () {
-            //$.get("Indicator/editInventory?indicatorID=1001&fiscalYear=1", function (result) {
-            //});
-            var src = "Indicator/details?indicatorID=1001&fiscalYear=1";
-            $.modal('<iframe src="' + src + '" height="450" width="830" style="border:0">', {
-                closeHTML: "",
-                containerCss: {
-                    backgroundColor: "#fff",
-                    borderColor: "#fff",
-                    height: $(window).height(),
-                    padding: 0,
-                    width: $(window).width(),
-                },
-                overlayClose: true
-            });
+            console.log("DFGF");
+            var indicatorID = $(this).attr("indicatorID");
+            console.log(indicatorID);
+            window.location.href = "details?indicatorID=" + indicatorID + "&fiscalYear=" + @Model.Fiscal_Year;
         });
 
         $('#menuFilter').multilevelpushmenu({
@@ -131,23 +148,24 @@
 
         var hidden = false;
 
-        $('#search_input').on('keyup change search', function () {
+        $('#search_input').on('keyup change search click', function () {
             var valThis = $(this).val().toLowerCase();
             if (valThis == "") {
-                $('.block > li > .row > .titleColumn > .title[filtered="false"]').closest(".block").show()
+                //$(".block").attr('textFiltered', false);
+                $(".block").removeClass('textFiltered');
             } else {
                 $('.block > li > .row > .titleColumn > .title').each(function () {
-                    if ($(this).closest(".block").attr('filtered') == "false") {
+//                    if ($(this).closest(".block").attr('filtered') == "false") {
                         var text = $(this).text().toLowerCase();
                         var listItems;
                         if (text.indexOf(valThis) >= 0) {
                             //$(this).closest(".block").show()
-                            $(this).closest(".block").attr('textFiltered', false);
+                            $(this).closest(".block").removeClass('textFiltered');
                         } else {
                             //$(this).closest(".block").hide();
-                            $(this).closest(".block").attr('textFiltered', true);
+                            $(this).closest(".block").addClass('textFiltered');
                         }
-                    }
+//                    }
                 });
             };
             refreshView();
@@ -162,62 +180,115 @@
                 var field = ui.tag.attr('field');
                 var id = ui.tag.attr('id');
                 updateFilterHide(id, field);
-                $('.filter' + field + "[id='" + id + "']").closest('li').removeClass('filterCheck');
+                $(".filterMenuItem[id='" + id + "'][field='" + field + "']").closest('li').removeClass('filterCheck');
+                refreshView();
                 //$('.filter' + field + "[id='" + id + "']").removeClass('filterCheck');
             },
             afterTagRemoved: function (event, ui) {
                 if ($("#myTags").tagit("assignedTags").length === 0) {
-                    $('.block').attr("filtered", false);
+//                    $('.block').attr("filteredCoEID", false);
+//                    $('.block').attr("filteredAreaID", false);
+                    $.each(filterClassList, function(index, value){
+                        $("." + value).removeClass(value);
+                    });
+                    hidden=false;
                     refreshView();
                 }
             },
         });
 
-        $(".filterCoEID").on("click", function () {
-            var coe = $(this).attr('coe');
-            var coeID = $(this).attr('id');
+        $(".filterMenuItem").on("click", function () {
+            var field = $(this).attr('field')
+            var name = $(this).attr('name');
+            var id = $(this).attr('id');
             var tags = $("#myTags").tagit("assignedTags");
-            if ($.inArray(coe, tags) === -1) {
+            if ($.inArray(name, tags) === -1) {
                 $(this).closest('li').addClass('filterCheck');
                 //$(this).addClass('filterCheck');
-                $("#myTags").tagit("createTag", coe);
-                $('ul li:nth-last-child(2)').attr('id', coeID);
-                $('ul li:nth-last-child(2)').attr('field', 'coeID');
-                updateFilter(coeID, "coeID");
+                $("#myTags").tagit("createTag", name);
+                $('ul li:nth-last-child(2)').attr('id', id);
+                $('ul li:nth-last-child(2)').attr('field', field);
+                updateFilter(id, field);
             } else {
                 $(this).parent().parent().removeClass('filterCheck');
                 $(this).removeClass('filterCheck');
-                $("#myTags").tagit("removeTagByLabel", coe);
-                updateFilterHide(coeID, "coeID");
+                $("#myTags").tagit("removeTagByLabel", name);
+                updateFilterHide(id, field);
             }
             refreshView();
         });
 
+        var filterClassList = [];
         function updateFilter(id, field) {
-            //if (!hidden) {
-            //    $('.block').hide();
-            //    hidden = true;
-            //}
-            $('.block').attr("filtered", true);
+            var filterClass = "filtered-" + field;
+//            if (!hidden) {
+//                $('.block').hide();
+//                hidden = true;
+//                $('.block').addClass(filterClass);
+            //            }
+            if( $("." + filterClass).length == 0 ){
+                $('.block').addClass(filterClass);
+            }
             //$('.list div[' + field + "=" + id + ']').show();
-            $('.list div[' + field + "=" + id + ']').attr("filtered", false);
+            //$('.list div[' + field + "=" + id + ']').attr("filtered" + field, false);
+            $('.' + field + "-" + id).removeClass(filterClass);
+            if ($.inArray(filterClass, filterClassList) === -1) {
+                filterClassList.push(filterClass);
+            };
         }
         function updateFilterHide(id, field) {
+            var filterClass = "filtered-" + field;
             //$('.list div[' + field + "=" + id + ']').hide();
-            $('.block').attr("filtered", false);
-            $('.list div[' + field + "=" + id + ']').attr("filtered", true);
+//            $('.block').attr("filtered", false);
+            $('.' + field + "-" + id).addClass(filterClass);
+            if($('.block').length == $('.' + filterClass).length){
+                $('.block').removeClass(filterClass);
+            }
         }
 
         function refreshView() {
-            console.log("asdf");
             $('.block').show();
-            $('.block[filtered="true"]').hide();
-            $('.block[textFiltered="true"]').hide();
+            $.each(filterClassList, function(index, value){
+                $("." + value).hide();
+            });
+            $('.textFiltered').hide();
         }
+
+        var offset = 220;
+        var duration = 500;
+        jQuery(window).scroll(function() {
+            if (jQuery(this).scrollTop() > offset) {
+                jQuery('.backToTop').fadeIn(duration);
+            } else {
+                jQuery('.backToTop').fadeOut(duration);
+            }
+        });
+    
+        jQuery('.backToTop').click(function(event) {
+            event.preventDefault();
+            jQuery('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
     });
 </script>
 
 <style>
+
+    .backToTop {
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        text-decoration: none;
+        color: #000000;
+        background-color: rgba(135, 135, 135, 0.50);
+        font-size: 12px;
+        padding: 1em;
+        display: none;
+    }
+
+    .backToTop:hover {    
+        background-color: rgba(135, 135, 135, 0.50);
+    }
 
     .left-off-canvas-menu {
         height: 100%;
