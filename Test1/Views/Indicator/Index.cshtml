@@ -22,9 +22,9 @@
                     <li>
                         <div class="row collapse blockContent">
                             <div class="small-3 columns" style="font-size: small">
-                                <strong class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</strong>
+                                <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</span>
                                 <br />
-                                <em class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</em>
+                                <span class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</span>
                             </div>
                             <div class="small-8 columns titleColumn">
                                 <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
@@ -93,14 +93,9 @@
 <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
 <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js" ></script>
 
-<script type="text/javascript" src="~/Scripts/jquery.simplemodal.1.4.4.min.js"></script>
-
-<script type="text/javascript" src="~/Scripts/jquery.fastLiveFilter.js"></script>
 <script type="text/javascript" src="../../Scripts/foundation.min.js" ></script>
 <script type="text/javascript" src="../../Scripts/rem.min.js" ></script>
 <script type="text/javascript" src="/../../Scripts/tag-it.min.js" ></script>
-<script type="text/javascript" src="/../../Scripts/list.min.js" ></script>
-<script type="text/javascript" src="/../../Scripts/list.fuzzysearch.min.js" ></script>
 
 <script type="text/javascript">
     $(document).ready(function ($) {
@@ -116,6 +111,7 @@
 
         $('#menuFilter').multilevelpushmenu({
             fullCollapse: true,
+            menuHeight: $( window ).height(),
             collapsed: true,
             menuWidth: '80%',
             onExpandMenuStart: function () {
@@ -273,6 +269,15 @@
 </script>
 
 <style>
+
+    .area {
+        font-weight:300;
+        color:rgb(128, 128, 128);
+    }
+    .coe {
+        font-weight:800;
+        color:black;
+    }
 
     .backToTop {
         position: fixed;
