@@ -82,7 +82,7 @@
     </nav>
 </div>
 
-<div class="overlay"></div>
+<!--div class="overlay"></div-->
 
 <div class="backToTop"><i class="fa fa-arrow-up"></i></div>
 
@@ -265,6 +265,10 @@
             jQuery('html, body').animate({scrollTop: 0}, duration);
             return false;
         })
+    });
+
+    $(window).resize(function () {
+        $( '#menuFilter' ).multilevelpushmenu( 'redraw' );
     });
 </script>
 
