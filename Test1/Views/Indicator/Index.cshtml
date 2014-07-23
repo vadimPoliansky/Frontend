@@ -3,86 +3,112 @@
     ViewBag.Title = "Search Results";
     ViewBag.fiscalYear = Model.Fiscal_Year;
 }
-<div id="pushList">
-    <input class="search" id="search_input" name="Search" type="search" placeholder="Search" />
-    <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
 
-    <div class="inner-wrap">
 
-        <ul id="myTags" class="tagList">
-        </ul>
 
-        <ul class="list" style="list-style: none">
-            @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
-            {
-                var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
-                var areaID = (int?)item.Area_ID ?? 0;
-                <div class="block coeID-@coeID areaID-@areaID @foreach(var footnote in item.Indicator_Footnote_Map){ @:footnoteID-@footnote.Footnote_ID 
+
+<div class="container">
+    <!-- Push Wrapper -->
+    <div class="mp-pusher" id="mp-pusher">
+
+        <!-- mp-menu -->
+        <nav id="mp-menu" class="mp-menu">
+            <h2 class="backBtnMain"><i class="fa fa-times backBtnMain"></i>Filter by:</h2>
+            <ul>
+                <li>
+                    <a href="#"><i class="fa fa-filter"></i>CoE</a>
+                    <div class="mp-level">
+                        <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by CoE:</h2>
+                        <ul class="doubleList">
+                            @foreach (var coe in Model.allCoEs)
+                            {
+                                <li>
+                                    <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i>@coe.CoE_Abbr </a></small>
+                                </li>
+                    }
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-filter"></i>Area</a>
+                    <div class="mp-level">
+                        <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Area:</h2>
+                        <ul>
+                            @foreach (var area in Model.allAreas)
+                            {
+                                <li>
+                                    <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i>@area.Area</a></small>
+                                </li>
+                    }
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <div class="mp-level">
+                        <a href="#"><i class="fa fa-filter"></i>Type</a>
+                        <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Type:</h2>
+                        <ul>
+                            @foreach (var footnote in Model.allFootnotes)
+                            {
+                                <li>
+                                    <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i>@footnote.Footnote</a></small>
+                                </li>
+                    }
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /mp-menu -->
+
+        <div class="scroller">
+            <!-- this is for emulating position fixed of the nav -->
+            <div class="scroller-inner">
+                <div id="pushList">
+                    <input class="search" id="search_input" name="Search" type="search" placeholder="Search" />
+                    <span class="filterExpand"><i class="fa fa-filter fa-2x"></i></span>
+
+                    <div class="inner-wrap">
+
+                        <ul id="myTags" class="tagList">
+                        </ul>
+
+                        <ul class="list" style="list-style: none">
+                            @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
+                            {
+                                var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
+                                var areaID = (int?)item.Area_ID ?? 0;
+                                <div class="block coeID-@coeID areaID-@areaID @foreach (var footnote in item.Indicator_Footnote_Map)
+                                                                              { @:footnoteID-@footnote.Footnote_ID 
                 }" indicatorId="@item.Indicator_ID">
-                    <li>
-                        <div class="row collapse blockContent">
-                            <div class="small-3 columns" style="font-size: small">
-                                <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</span>
-                                <br />
-                                <span class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</span>
-                            </div>
-                            <div class="small-8 columns titleColumn">
-                                <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
-                            </div>
-                        </div>
-                    </li>
-                </div>
+                                    <li>
+                                        <div class="row collapse blockContent">
+                                            <div class="small-4 columns" style="font-size: small">
+                                                <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE).ToString().Trim()</span>
+                                                <br />
+                                                <span class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</span>
+                                            </div>
+                                            <div class="small-8 columns titleColumn">
+                                                <span class="title" style="font-size: small">@Html.DisplayTextFor(modelItem => item.Indicator).ToString().Trim()</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </div>
             }
-        </ul>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /scroller-inner -->
+        </div>
+        <!-- /scroller -->
+
     </div>
+    <!-- /pusher -->
+</div><!-- /container -->
 
-</div>
-
-<div id="menuFilter">
-    <nav>
-        <h2 class="backBtnMain"><i class="fa fa-times backBtnMain"></i>Filter by:</h2>
-        <ul>
-            <li>
-                <a href="#"><i class="fa fa-filter"></i>CoE</a>
-                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by CoE:</h2>
-                <ul class="doubleList">
-                    @foreach (var coe in Model.allCoEs)
-                    {
-                        <li>
-                            <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i> @coe.CoE_Abbr </a></small>
-                        </li>
-                    }
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-filter"></i>Area</a>
-                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Area:</h2>
-                <ul>
-                    @foreach (var area in Model.allAreas)
-                    {
-                        <li>
-                            <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i> @area.Area</a></small>
-                        </li>
-                    }
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-filter"></i>Type</a>
-                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Type:</h2>
-                <ul>
-                    @foreach (var footnote in Model.allFootnotes)
-                    {
-                        <li>
-                            <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i> @footnote.Footnote</a></small>
-                        </li>
-                    }
-                </ul>
-            </li>
-        </ul>
-    </nav>
-</div>
-
-<div class="overlay"></div>
 
 <div class="backToTop"><i class="fa fa-arrow-up"></i></div>
 
@@ -93,11 +119,17 @@
 <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
 <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js" ></script>
 
+<script type="text/javascript" src="~/Scripts/classie.js"></script>
+<script type="text/javascript" src="~/Scripts/mlpushmenu.js"></script>
+
 <script type="text/javascript" src="../../Scripts/foundation.min.js" ></script>
 <script type="text/javascript" src="../../Scripts/rem.min.js" ></script>
 <script type="text/javascript" src="/../../Scripts/tag-it.min.js" ></script>
 
 <script type="text/javascript">
+
+    new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+
     $(document).ready(function ($) {
 
         $(".overlay").hide()
@@ -271,6 +303,11 @@
 
 <style>
 
+    .title {
+        background-color:white;
+        font-size:1em !important;
+    }
+
     .area {
         font-weight:300;
         color:rgb(128, 128, 128);
@@ -306,7 +343,7 @@
 
     .block {
         background-color:none !important;
-        border-top: 1px solid lightgray;
+        border-top: 0px solid lightgray;
         padding-bottom: 5%;
     }
         /*.block:hover {

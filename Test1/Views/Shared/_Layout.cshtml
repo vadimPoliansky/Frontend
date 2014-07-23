@@ -4,6 +4,7 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <script src="../../Scripts/vendor/modernizr.js"></script>
+<script type="text/javascript" src="~/Scripts/modernizr.custom.js"></script>
 <title>Indicator Inventory</title>
 </head>
 
@@ -333,4 +334,26 @@
         z-index:1001;
     }
 
+
+    html, 
+body, 
+.container,
+.scroller {
+    height: 100%;
+}
+ 
+.scroller {
+    overflow-y: scroll;
+}
+ 
+.scroller,
+.scroller-inner {
+    position: relative;
+}
+ 
+.container {
+    position: relative;
+    overflow: hidden;
+    background: #34495e;
+}
 </style>
