@@ -12,18 +12,19 @@
     <div class="mp-pusher" id="mp-pusher">
 
         <!-- mp-menu -->
-        <nav id="mp-menu" class="mp-menu">
-            <h2 class="backBtnMain"><i class="fa fa-times backBtnMain"></i>Filter by:</h2>
+        <nav id="menuFilter3D" class="mp-menu">
+            <div class="mp-level">
+            <h2 class="backBtnMain mp-back"><i class="fa fa-times backBtnMain mp-back"></i>Filter by:</h2>
             <ul>
                 <li>
                     <a href="#"><i class="fa fa-filter"></i>CoE</a>
                     <div class="mp-level">
-                        <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by CoE:</h2>
+                        <h2 class="backBtn mp-back"><i class="fa fa-times backBtn mp-back"></i>Filter by CoE:</h2>
                         <ul class="doubleList">
                             @foreach (var coe in Model.allCoEs)
                             {
                                 <li>
-                                    <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i>@coe.CoE_Abbr </a></small>
+                                    <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i> @coe.CoE_Abbr </a></small>
                                 </li>
                     }
                         </ul>
@@ -32,12 +33,12 @@
                 <li>
                     <a href="#"><i class="fa fa-filter"></i>Area</a>
                     <div class="mp-level">
-                        <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Area:</h2>
+                        <h2 class="backBtn mp-back"><i class="fa fa-times backBtn mp-back"></i>Filter by Area:</h2>
                         <ul>
                             @foreach (var area in Model.allAreas)
                             {
                                 <li>
-                                    <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i>@area.Area</a></small>
+                                    <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i> @area.Area</a></small>
                                 </li>
                     }
                         </ul>
@@ -46,18 +47,19 @@
                 <li>
                     <div class="mp-level">
                         <a href="#"><i class="fa fa-filter"></i>Type</a>
-                        <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Type:</h2>
+                        <h2 class="backBtn mp-back"><i class="fa fa-times backBtn mp-back"></i>Filter by Type:</h2>
                         <ul>
                             @foreach (var footnote in Model.allFootnotes)
                             {
                                 <li>
-                                    <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i>@footnote.Footnote</a></small>
+                                    <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i> @footnote.Footnote</a></small>
                                 </li>
                     }
                         </ul>
                     </div>
                 </li>
             </ul>
+                </div>
         </nav>
         <!-- /mp-menu -->
 
@@ -80,11 +82,11 @@
                                 var areaID = (int?)item.Area_ID ?? 0;
                                 <div class="block coeID-@coeID areaID-@areaID @foreach (var footnote in item.Indicator_Footnote_Map)
                                                                               { @:footnoteID-@footnote.Footnote_ID 
-                }" indicatorId="@item.Indicator_ID">
+                                }" indicatorId="@item.Indicator_ID">
                                     <li>
                                         <div class="row collapse blockContent">
                                             <div class="small-4 columns" style="font-size: small">
-                                                <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE).ToString().Trim()</span>
+                                                <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</span>
                                                 <br />
                                                 <span class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</span>
                                             </div>
@@ -94,12 +96,10 @@
                                         </div>
                                     </li>
                                 </div>
-            }
+                            }   
                         </ul>
                     </div>
-
                 </div>
-
             </div>
             <!-- /scroller-inner -->
         </div>
@@ -128,7 +128,7 @@
 
 <script type="text/javascript">
 
-    new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
+    new mlPushMenu(document.getElementById('menuFilter3D'), document.getElementById('trigger'));
 
     $(document).ready(function ($) {
 
@@ -303,10 +303,33 @@
 
 <style>
 
-    .title {
-        background-color:white;
-        font-size:1em !important;
+    .mp-menu ul li > a {
+        padding:9px;
+        font-size:1.5em;
+        font-family:'Open Sans Condensed', sans-serif;
+        color:#0094ff;
+        line-height:1em;
     }
+        .mp-menu ul li > a::after {
+            font-size:1em;
+            padding-right:9.6px;
+            color:#0094ff;
+            float:left;
+            font-family: FontAwesome;
+            content: "\f104";
+            font-weight:normal;
+            font-style:normal;
+        }
+
+    .mp-menu a{
+        font-size: 1.5em;
+        padding: 9px;
+    }
+
+    h2 > .fa-times, a > .fa-filter {
+        float:right;
+    }
+
 
     .area {
         font-weight:300;
@@ -352,6 +375,7 @@
 
     .blockContent {
         padding:5px;
+        border-top:1px solid lightgray;
     }
 
     #myTags {
@@ -447,19 +471,19 @@
     }
 
 
-    #menuFilter .multilevelpushmenu_wrapper h2 {
-	font-size: medium !important;
-	line-height: 1em;
-	font-weight: lighter;
-    margin-top:0;
-	color: white;
-    height:50px;
-	padding: 1em .4em .4em .4em;
-    background-color: #0094ff;
-    font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
-}
+    #menuFilter .multilevelpushmenu_wrapper h2, #menuFilter3D h2 {
+	    font-size: medium !important;
+	    line-height: 1em;
+	    font-weight: lighter;
+        margin-top:0;
+	    color: white;
+        height:50px;
+	    padding: 1em .4em .4em .4em;
+        background-color: #0094ff;
+        font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;
+    }
 
-    #menuFilter .levelHolderClass {
+    #menuFilter .levelHolderClass, .mp-level {
         background-color:white !important;
         color:white;
     }
@@ -474,7 +498,7 @@
     }
 
     #menuFilter li {
-        border:0;
+        border:0 !important;
         padding:0;
     }
 

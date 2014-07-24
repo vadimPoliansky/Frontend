@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="../../Content/foundation.min.css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href="~/Scripts/mlpushmenu.css" rel="stylesheet" />
 <script src="../../Scripts/vendor/modernizr.js"></script>
 <script type="text/javascript" src="~/Scripts/modernizr.custom.js"></script>
 <title>Indicator Inventory</title>
@@ -33,7 +34,7 @@
 
 
 
-    <div id="pushobjLazy">
+    <div id="pushobjLazy" style="height:100%">
         <nav class="tab-bar">
             <section class="left-small" id="baseexpand"><a class="left-off-canvas-toggle menu-icon"><span></span></a></section>
         </nav>
@@ -334,26 +335,4 @@
         z-index:1001;
     }
 
-
-    html, 
-body, 
-.container,
-.scroller {
-    height: 100%;
-}
- 
-.scroller {
-    overflow-y: scroll;
-}
- 
-.scroller,
-.scroller-inner {
-    position: relative;
-}
- 
-.container {
-    position: relative;
-    overflow: hidden;
-    background: #34495e;
-}
 </style>
