@@ -75,7 +75,7 @@
                         <ul id="myTags" class="tagList">
                         </ul>
 
-                        <ul class="list" style="list-style: none">
+                        <ul class="list">
                             @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
                             {
                                 var coeID = item.Indicator_CoE_Map.Count > 0 ? item.Indicator_CoE_Map.FirstOrDefault().CoE_ID : 0;
@@ -86,6 +86,7 @@
                                     <li>
                                         <div class="row collapse blockContent">
                                             <div class="small-4 columns" style="font-size: small">
+                                                <i class="fa fa-sort-desc fa-rotate-90"></i>
                                                 <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</span>
                                                 <br />
                                                 <span class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</span>
@@ -317,10 +318,14 @@
     .area {
         font-weight:300;
         color:rgb(128, 128, 128);
+        display:block;
+        margin-left:9px;
     }
     .coe {
         font-weight:800;
         color:black;
+    }
+    .title {
     }
 
     .backToTop {
@@ -345,31 +350,33 @@
 
     .list {
         margin:0px;
+        font-size:0;
     }
 
     .block {
-        background-color:none !important;
         border-top: 0px solid lightgray;
-        padding-bottom: 5%;
+        margin:5px;
+        background-color:#C8FCAF;
+        fill-opacity:0.99;
+        z-index:-5;
     }
-        /*.block:hover {
-            background-color:lightblue !important;
-        }*/
 
     .blockContent {
         padding:5px;
         border-top:1px solid lightgray;
     }
+        .blockContent:hover {
+            background-color:#0094ff !important;
+        }
 
     #myTags {
         width:100%;
     }
 
     .tagit-choice {
-        background-color:#c8ffc2;
+        background-color:#FFF0B3;
         padding:15px;
         width:100%;
-        border-bottom:1px solid lightgray;
     }
     .tagit-label {
         color:black;
@@ -380,6 +387,7 @@
         position:relative;
         top:-10px;
         font-size:xx-large;
+        color:black;
     }
 
     .doubleList {
