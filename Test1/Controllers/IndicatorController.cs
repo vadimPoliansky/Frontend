@@ -33,10 +33,10 @@ namespace IndInv.Controllers
                 fiscalYear = 2;
             }
             var indexViewModel = new indexViewModel(){
-                allIndicators = db.Indicators.ToList(),
+                allIndicators = db.Indicators.Where(x => x.Indicator_CoE_Map.FirstOrDefault().CoE_ID > 10 && x.Indicator_CoE_Map.FirstOrDefault().CoE_ID < 20).ToList(),
                 allAnalysts = db.Analysts.ToList(),
                 allAreas = db.Areas.ToList(),
-                allCoEs = db.CoEs.ToList(),
+                allCoEs = db.CoEs.Where(x => x.CoE_ID > 10 && x.CoE_ID < 20).ToList(),
                 allFootnotes =db.Footnotes.ToList(),
 
                 Fiscal_Year = fiscalYear.Value,
