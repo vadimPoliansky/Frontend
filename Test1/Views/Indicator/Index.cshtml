@@ -179,21 +179,16 @@
         $('#search_input').on('keyup change search click', function () {
             var valThis = $(this).val().toLowerCase();
             if (valThis == "") {
-                //$(".block").attr('textFiltered', false);
                 $(".block").removeClass('textFiltered');
             } else {
                 $('.block > li > .row > .titleColumn > .title').each(function () {
-//                    if ($(this).closest(".block").attr('filtered') == "false") {
                         var text = $(this).text().toLowerCase();
                         var listItems;
                         if (text.indexOf(valThis) >= 0) {
-                            //$(this).closest(".block").show()
                             $(this).closest(".block").removeClass('textFiltered');
                         } else {
-                            //$(this).closest(".block").hide();
                             $(this).closest(".block").addClass('textFiltered');
                         }
-//                    }
                 });
             };
             refreshView();
@@ -210,12 +205,9 @@
                 updateFilterHide(id, field);
                 $(".filterMenuItem[id='" + id + "'][field='" + field + "']").closest('li').removeClass('filterCheck');
                 refreshView();
-                //$('.filter' + field + "[id='" + id + "']").removeClass('filterCheck');
             },
             afterTagRemoved: function (event, ui) {
                 if ($("#myTags").tagit("assignedTags").length === 0) {
-//                    $('.block').attr("filteredCoEID", false);
-//                    $('.block').attr("filteredAreaID", false);
                     $.each(filterClassList, function(index, value){
                         $("." + value).removeClass(value);
                     });
@@ -232,7 +224,6 @@
             var tags = $("#myTags").tagit("assignedTags");
             if ($.inArray(name, tags) === -1) {
                 $(this).closest('li').addClass('filterCheck');
-                //$(this).addClass('filterCheck');
                 $("#myTags").tagit("createTag", name);
                 $('ul li:nth-last-child(2)').attr('id', id);
                 $('ul li:nth-last-child(2)').attr('field', field);
@@ -241,7 +232,7 @@
                 $(this).parent().parent().removeClass('filterCheck');
                 $(this).removeClass('filterCheck');
                 $("#myTags").tagit("removeTagByLabel", name);
-                updateFilterHide(id, field);
+                //updateFilterHide(id, field);
             }
             refreshView();
         });
@@ -249,16 +240,9 @@
         var filterClassList = [];
         function updateFilter(id, field) {
             var filterClass = "filtered-" + field;
-//            if (!hidden) {
-//                $('.block').hide();
-//                hidden = true;
-//                $('.block').addClass(filterClass);
-            //            }
             if( $("." + filterClass).length == 0 ){
                 $('.block').addClass(filterClass);
             }
-            //$('.list div[' + field + "=" + id + ']').show();
-            //$('.list div[' + field + "=" + id + ']').attr("filtered" + field, false);
             $('.' + field + "-" + id).removeClass(filterClass);
             if ($.inArray(filterClass, filterClassList) === -1) {
                 filterClassList.push(filterClass);
@@ -266,10 +250,8 @@
         }
         function updateFilterHide(id, field) {
             var filterClass = "filtered-" + field;
-            //$('.list div[' + field + "=" + id + ']').hide();
-//            $('.block').attr("filtered", false);
             $('.' + field + "-" + id).addClass(filterClass);
-            if($('.block').length == $('.' + filterClass).length){
+            if ($('.block').length == $('.' + filterClass).length) {
                 $('.block').removeClass(filterClass);
             }
         }
