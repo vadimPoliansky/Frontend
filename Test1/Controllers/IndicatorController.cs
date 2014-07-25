@@ -35,7 +35,7 @@ namespace IndInv.Controllers
             var indexViewModel = new indexViewModel(){
                 allIndicators = db.Indicators.Where(x => x.Indicator_CoE_Map.FirstOrDefault().CoE_ID > 10 && x.Indicator_CoE_Map.FirstOrDefault().CoE_ID < 20).ToList(),
                 allAnalysts = db.Analysts.ToList(),
-                allAreas = db.Areas.ToList(),
+                allAreas = db.Areas.Where(x => x.Area_ID == 1 || x.Area_ID == 3 || x.Area_ID == 4 || x.Area_ID == 5).ToList(),
                 allCoEs = db.CoEs.Where(x => x.CoE_ID > 10 && x.CoE_ID < 20).ToList(),
                 allFootnotes =db.Footnotes.ToList(),
 
