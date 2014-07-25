@@ -219,7 +219,7 @@
 
         $(".filterMenuItem").on("click", function () {
             var field = $(this).attr('field')
-            var name = $(this).attr('name');
+            var name = $(this).attr('name').trim();
             var id = $(this).attr('id');
             var tags = $("#myTags").tagit("assignedTags");
             if ($.inArray(name, tags) === -1) {
