@@ -323,6 +323,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\classie.js" />
+    <Content Include="Scripts\excanvas.js" />
     <Content Include="Scripts\mlpushmenu.css" />
     <Content Include="Scripts\foundation.min.js" />
     <Content Include="Scripts\foundation\foundation.abide.js" />

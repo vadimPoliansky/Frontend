@@ -11,7 +11,6 @@
     <!-- Push Wrapper -->
     <div class="mp-pusher" id="mp-pusher">
 
-        <!-- mp-menu -->
         <nav id="menuFilter3D" class="mp-menu">
             <div class="mp-level">
             <h2 class="backBtnMain mp-back"><i class="fa fa-times backBtnMain mp-back"></i>Filter by:</h2>
@@ -61,10 +60,9 @@
             </ul>
                 </div>
         </nav>
-        <!-- /mp-menu -->
+
 
         <div class="scroller">
-            <!-- this is for emulating position fixed of the nav -->
             <div class="scroller-inner">
                 <div id="pushList">
                     <input class="search" id="search_input" name="Search" type="search" placeholder="Search" />
@@ -102,20 +100,63 @@
                     </div>
                 </div>
             </div>
-            <!-- /scroller-inner -->
         </div>
-        <!-- /scroller -->
 
     </div>
     <!-- /pusher -->
 </div><!-- /container -->
 
+<div id="menuFilter">
+    <nav>
+        <h2 class="backBtnMain"><i class="fa fa-times backBtnMain"></i>Filter by:</h2>
+        <ul>
+            <li>
+                <a href="#"><i class="fa fa-filter"></i>CoE</a>
+                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by CoE:</h2>
+                <ul class="doubleList">
+                    @foreach (var coe in Model.allCoEs)
+                    {
+                        <li>
+                            <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i> @coe.CoE_Abbr </a></small>
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-filter"></i>Area</a>
+                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Area:</h2>
+                <ul>
+                    @foreach (var area in Model.allAreas)
+                    {
+                        <li>
+                            <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i> @area.Area</a></small>
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-filter"></i>Type</a>
+                <h2 class="backBtn"><i class="fa fa-times backBtn"></i>Filter by Type:</h2>
+                <ul>
+                    @foreach (var footnote in Model.allFootnotes)
+                    {
+                        <li>
+                            <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i> @footnote.Footnote</a></small>
+                        </li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
 
+<div class="overlay"></div>
 <div class="backToTop"><i class="fa fa-arrow-up"></i></div>
 
 <script type="text/javascript" src="../../Scripts/jquery-1.11.0.min.js" ></script>
 <script type="text/javascript" src="/../../Scripts/jquery-ui-1.8.20.min.js" ></script>
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.min.css">
+<script src="~/Scripts/tag-it.min.js"></script>
 
 <link rel="stylesheet" href="../../Scripts/jquery.multilevelpushmenu.css" />
 <script type="text/javascript" src="../../Scripts/jquery.multilevelpushmenu.js" ></script>
@@ -123,40 +164,38 @@
 <script type="text/javascript" src="~/Scripts/classie.js"></script>
 <script type="text/javascript" src="~/Scripts/mlpushmenu.js"></script>
 
-<script type="text/javascript" src="../../Scripts/foundation.min.js" ></script>
-<script type="text/javascript" src="../../Scripts/rem.min.js" ></script>
-<script type="text/javascript" src="/../../Scripts/tag-it.min.js" ></script>
-
 <script type="text/javascript">
 
-    new mlPushMenu(document.getElementById('menuFilter3D'), document.getElementById('trigger'));
+    if (!$("html").hasClass("lt-ie9")) {
+        new mlPushMenu(document.getElementById('menuFilter3D'), document.getElementById('trigger'));
+    }
 
     $(document).ready(function ($) {
 
         $(".overlay").hide()
 
         $(".block").on("click", function () {
-            console.log("DFGF");
             var indicatorID = $(this).attr("indicatorID");
-            console.log(indicatorID);
             window.location.href = "indicator/details?indicatorID=" + indicatorID + "&fiscalYear=" + 1;
         });
 
-        $('#menuFilter').multilevelpushmenu({
-            fullCollapse: true,
-            menuHeight: $( window ).height(),
-            collapsed: true,
-            menuWidth: '80%',
-            onExpandMenuStart: function () {
-                $(".overlay").fadeIn("fast");
-            },
-            onCollapseMenuStart: function () {
-                if($('#menuFilter').multilevelpushmenu('activemenu').attr('data-level') == 0 ){
-                    $(".overlay").fadeOut("fast");
-                }
-            },
-            backItemIcon: 'fa fa-times',
-        });
+        if ($("html").hasClass("lt-ie9")) {
+            $('#menuFilter').multilevelpushmenu({
+                fullCollapse: true,
+                menuHeight: $(window).height(),
+                collapsed: true,
+                menuWidth: '80%',
+                onExpandMenuStart: function () {
+                    $(".overlay").fadeIn("fast");
+                },
+                onCollapseMenuStart: function () {
+                    if ($('#menuFilter').multilevelpushmenu('activemenu').attr('data-level') == 0) {
+                        $(".overlay").fadeOut("fast");
+                    }
+                },
+                backItemIcon: 'fa fa-times',
+            });
+        }
 
         $('.backItemClass').remove();
 
@@ -220,7 +259,7 @@
 
         $(".filterMenuItem").on("click", function () {
             var field = $(this).attr('field')
-            var name = $(this).attr('name').trim();
+            var name = $.trim($(this).attr('name'));
             var id = $(this).attr('id');
             var tags = $("#myTags").tagit("assignedTags");
             if ($.inArray(name, tags) === -1) {
@@ -285,6 +324,14 @@
 </script>
 
 <style>
+
+    .lt-ie9 .mp-menu {
+        visibility:hidden;
+        width:0px;
+    }
+    .lt-ie9 .scroller {
+        margin-left:-300px;
+    }
 
     .mp-menu ul li > a {
         padding:9px;

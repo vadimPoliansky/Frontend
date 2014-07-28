@@ -59,6 +59,7 @@
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <script src="../../Scripts/jquery.jqplot.min.js"></script>
+<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../../Scripts/excanvas.js"></script><![endif]-->
 <script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.categoryAxisRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.pointLabels.min.js"></script>
@@ -168,15 +169,16 @@
             if (valuesArrayString[i] != null) {
                 precision = valuesArrayString[i].indexOf('.') != -1 ? valuesArrayString[i].split('.')[1].length : 0;
             }
-
-            if(valuesArrayString[i].indexOf("$") != -1){
+            /*
+            //if(valuesArrayString[i].indexOf("$") != -1){
+            if ($.inArray("$", valuesArrayString[i]) != -1) {
                 currency=true;
                 i = valuesArrayString.length;
             }
-            if(valuesArrayString[i].indexOf(":") != -1){
+            if ($.inArray(":", valuesArrayString[i]) != -1) {
                 time=true;
                 i = valuesArrayString.length;
-            }
+            }*/
         }
 
         @*var valuesArrayLengthString = [
@@ -211,6 +213,32 @@
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)) ?
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)
         ];
+
+        if (!Array.prototype.filter) {
+            Array.prototype.filter = function (fun /*, thisp */) {
+                "use strict";
+
+                if (this === void 0 || this === null)
+                    throw new TypeError();
+
+                var t = Object(this);
+                var len = t.length >>> 0;
+                if (typeof fun !== "function")
+                    throw new TypeError();
+
+                var res = [];
+                var thisp = arguments[1];
+                for (var i = 0; i < len; i++) {
+                    if (i in t) {
+                        var val = t[i]; // in case fun mutates this
+                        if (fun.call(thisp, val, i, t))
+                            res.push(val);
+                    }
+                }
+
+                return res;
+            };
+        }
 
         function remove(arrOriginal, elementToRemove) {
             return arrOriginal.filter(function (el) { return el !== elementToRemove });
