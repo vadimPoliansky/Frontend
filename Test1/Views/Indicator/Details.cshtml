@@ -5,60 +5,73 @@
     ViewBag.fiscalYear = Model.Fiscal_Year;
 }
 
-<div class="indicatorTitle">@Html.DisplayTextFor(model => model.Indicator)</div>
+<div class="container">
+    @*<div class="indicatorTitle">@Html.DisplayTextFor(model => model.Indicator)</div>*@
+    <div class="chartBackground">
+        <div class="row">
 
-<div id="chart1" style="margin-top:20px; margin-left:20px; width:100%; height:100%;"></div>
-<pre class="code brush:js"></pre>
-<div class="row">
-<br />
-<div class="small-6 columns">
-        <span class="target">@Html.DisplayTextFor(model => model.Target)</span>
-        <span class="targetLabel">Target</span>
-</div>
-<div class="small-6 columns">
-        <span class="target">@Html.DisplayTextFor(model => model.Comparator)</span>
-        <span class="targetLabel">Comparator</span>
-</div>
-</div>
-<br />
+            <!--div id="chart1" style="margin-top: 20px; margin-left: 20px; width: 100%; height: 100%;"></div-->
+            <div id="chartTest" style="width:100%; height:400px;"></div>
 
-<div id="chart2" style="margin-top:20px; margin-left:20px; width:100%; height:400px;"></div>
-<pre class="code brush:js"></pre>
-<div class="row">
+            <pre class="code brush:js"></pre>
+        </div>
+    </div>
+    <div class="row">
 
-<div class="small-12 columns">
-<table class="targetTable">
-    <tr>
-        <td></td>
-        <td style="color:#111; text-align:center">Target</td>
-        <td style="color:#111; text-align:center">Comparator</td>
-    </tr>
-    <tr>
-        <td>2010</td>
-        <td style="color:#111; text-align:center"></td>
-        <td style="color:#111; text-align:center"></td>
-    </tr>
-    <tr>
-        <td>2011</td>
-        <td style="color:#111; text-align:center"></td>
-        <td style="color:#111; text-align:center"></td>
-    </tr>
-    <tr>
-        <td>2012</td>
-        <td style="color:#111; text-align:center"></td>
-        <td style="color:#111; text-align:center"></td>
-    </tr>
-    <tr>
-        <td>2013</td>
-        <td style="color:#111; text-align:center">@Html.DisplayTextFor(model => model.Target)</td>
-        <td style="color:#111; text-align:center">@Html.DisplayTextFor(model => model.Comparator)</td>
-    </tr>
-</table>
-</div>
+        <br />
+        <div class="small-6 columns">
+            <span class="target">@Html.DisplayTextFor(model => model.Target)</span>
+            <span class="targetLabel">Target</span>
+        </div>
+        <div class="small-6 columns">
+            <span class="target">@Html.DisplayTextFor(model => model.Comparator)</span>
+            <span class="targetLabel">Comparator</span>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <!--div id="chart2" style="margin-top: 20px; margin-left: 20px; width: 100%; height: 400px;"></div-->
+        <pre class="code brush:js"></pre>
+
+
+        <div class="small-12 columns">
+            <table class="targetTable">
+                <tr>
+                    <td></td>
+                    <td style="color: #111; text-align: center">Target</td>
+                    <td style="color: #111; text-align: center">Comparator</td>
+                </tr>
+                <tr>
+                    <td>2010</td>
+                    <td style="color: #111; text-align: center"></td>
+                    <td style="color: #111; text-align: center"></td>
+                </tr>
+                <tr>
+                    <td>2011</td>
+                    <td style="color: #111; text-align: center"></td>
+                    <td style="color: #111; text-align: center"></td>
+                </tr>
+                <tr>
+                    <td>2012</td>
+                    <td style="color: #111; text-align: center"></td>
+                    <td style="color: #111; text-align: center"></td>
+                </tr>
+                <tr>
+                    <td>2013</td>
+                    <td style="color: #111; text-align: center">@Html.DisplayTextFor(model => model.Target)</td>
+                    <td style="color: #111; text-align: center">@Html.DisplayTextFor(model => model.Comparator)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <script src="../../Scripts/jquery.jqplot.min.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../../Scripts/excanvas.js"></script><![endif]-->
 <script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.categoryAxisRenderer.min.js"></script>
@@ -71,12 +84,22 @@
 
 <style type="text/css">
 
+    .container {
+        overflow:visible;
+    }
+
     .indicatorTitle {
         font-size:large;
         color:white;
         background:#0094ff;
         padding:20px 10px 20px 10px;
         font-weight:300;
+    }
+
+    .chartBackground {
+        background-color:#0094ff;
+        width:100%;
+       padding-bottom:50px;
     }
 
     .target {
@@ -145,11 +168,10 @@
 
 <script>
     $(document).ready(function ($) {
-
-        var lineWidthInt = 2;
-
-        var currency=false;
-        var time=false;
+        
+        
+        var currency = false;
+        var time = false;
         var precision;
 
         var valuesArrayString = [
@@ -165,7 +187,7 @@
             "@Colour.getNum((Html.DisplayTextFor(model => model.Target)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.Comparator)).ToString())",
         ];
-        for(i=0;i<valuesArrayString.length;i++){
+        for (i = 0; i < valuesArrayString.length; i++) {
             if (valuesArrayString[i] != null) {
                 precision = valuesArrayString[i].indexOf('.') != -1 ? valuesArrayString[i].split('.')[1].length : 0;
             }
@@ -244,41 +266,41 @@
             return arrOriginal.filter(function (el) { return el !== elementToRemove });
         }
 
-        var maxYarray = Math.max.apply(Math, valuesArray)+0.01;
+        var maxYarray = Math.max.apply(Math, valuesArray) + 0.01;
         var maxY = maxYarray;
-        var maxLog = Math.pow(10,Math.floor(Math.log(maxY / 2)/Math.log(10)))/2
-        if (maxY == 1){ precision = 1 }
-        maxY = Math.abs(maxYarray) > 1 ? Math.ceil(maxYarray/maxLog)*maxLog : maxYarray;
+        var maxLog = Math.pow(10, Math.floor(Math.log(maxY / 2) / Math.log(10))) / 2
+        if (maxY == 1) { precision = 1 }
+        maxY = Math.abs(maxYarray) > 1 ? Math.ceil(maxYarray / maxLog) * maxLog : maxYarray;
 
         var minY = Math.min.apply(Math, remove(valuesArray, 0));
-        minY = Math.abs(minY) > 1 ? Math.floor(minY/10)*10 : minY
+        minY = Math.abs(minY) > 1 ? Math.floor(minY / 10) * 10 : minY
         minY = minY < 0 ? minY : 0;
 
-        var tickInterval = Math.pow(10,Math.floor(Math.log(maxY/2 - 0.01)/Math.log(10)));
+        var tickInterval = Math.pow(10, Math.floor(Math.log(maxY / 2 - 0.01) / Math.log(10)));
         tickInterval = maxY / tickInterval > 10 ? tickInterval * 2 : tickInterval;
         tickInterval = maxY / tickInterval < 5 ? tickInterval / 2 : tickInterval;
-        maxY = maxY % tickInterval === 0 ? maxY : maxY + tickInterval/2;
+        maxY = maxY % tickInterval === 0 ? maxY : maxY + tickInterval / 2;
         maxY = maxY / maxYarray > 2 ? maxY / 2 : maxY;
-        
+
         var s1 = [
                 valuesArray[0],
                 valuesArray[1],
                 valuesArray[2],
                 valuesArray[3],
-            ];
+        ];
         var s2 = [
                 valuesArray[4],
                 valuesArray[5],
                 valuesArray[6],
                 valuesArray[7],
-            ];
+        ];
         var sComparator = [
             0,
             0,
             0,
             valuesArray[9],
         ];
-        
+
         var comparator_FY = valuesArray[9]
         var target_FY = valuesArray[8]
 
@@ -287,189 +309,36 @@
         var ticks1 = ['Q1', 'Q2', 'Q3', 'Q4'];
         var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
 
-        var plot1 = $.jqplot('chart1', [s1], {
-            series: [
-                { color: '#0068b3' },
-            ],
-            seriesDefaults: {
-                shadow:false,
-                renderer: $.jqplot.BarRenderer,
-                useNegativeColors : false,
-                pointLabels: {
-                    location: "s",
-                    show: true,
-                    formatString: (currency)?"$%'d" :
-                                  (time)?'%.' + (2 ) + 'f':
-                                  '%.' + (precision ) + 'f',
-                    hideZeros : true,
+        $(function () {
+            $('#chartTest').highcharts({
+                colors: [ '#fff'],
+                chart: {
+                    type: 'column',
+                    backgroundColor: "#0094ff"
                 },
-                fillToZero: true,
-            },
-            grid: {
-                drawGridlines: false,
-                shadow : false,
-                backgroundColor: 'transparent',
-                drawBorder: false,
-                borderColor: 'transparent',
-                shadowColor: 'transparent',
-            },
-            canvasOverlay: {
-                show: true,
-                objects: [
-                    { horizontalLine: {
-                        name: 'comparator',
-                        y: comparator_FY,
-                        lineWidthInt: 3,
-                        xOffset: 0,
-                        color: '#fff',
-                        shadow: false
-                    }
-                    },
-                    { horizontalLine: {
-                        name: 'target',
-                        y: target_FY,
-                        lineWidth: lineWidthInt,
-                        xOffset: 0,
-                        color: '#000',
-                        shadow: false
-                    }
-                    },
-                ],
-            },
-            axes: {
-                xaxis: {
-                    rendererOptions: {
-                        tickRenderer: $.jqplot.AxisTickRenderer,
-                        tickOptions: {
-                            mark: null,
-                        },
-                        borderWidth: 0,
-                        drawBorder: false,
-                        borderColor: 'transparent',
-                    },
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks1,
-                    borderWidth: 0,
-                    drawBorder: false,
-                    borderColor: 'transparent',
+                title: {
+                    text: '@Html.DisplayTextFor(model => model.Indicator)'
                 },
-                yaxis: {
-                    rendererOptions: {
-                        drawBaseline: false,
-                        tickRenderer: $.jqplot.AxisTickRenderer,
-                        tickOptions: {
-                            mark: null,
-                        },
-                    },
-                    min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
-                    max: maxY,//* maxBufferMutliplier,
-                    tickInterval: tickInterval,
-                    tickOptions: (currency)? { formatString: "$%'d" }   :
-                                 (time)?     { formatString: '%.' + 2 + 'f' }  :
-                                             { formatString: '%.' + precision + 'f' }
-                }
-            }
+                xAxis: {
+                    categories: ticks1,
+                    tickLength: 0
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                series: [{
+                    name: '@Html.DisplayTextFor(model => model.Indicator)',
+                    data: s1,
+                }],
+                legend: [{
+                    enabled:'false'
+                }],
+                credits: [{
+                    enabled: 'false'
+                }]
+            });
         });
-
-        var plot2 = $.jqplot('chart2', [s2, sComparator], {
-            seriesDefaults: {
-                shadow: false,
-                useNegativeColors : false,
-                renderer: $.jqplot.BarRenderer, 
-                rendererOptions: {
-                    barPadding:15,
-                },
-                fillToZero: true,
-            },
-            series: [
-                { color: '#205c90',
-                  pointLabels: {
-                    location: "s",
-                    show: true,
-                    formatString: (currency)?"$%'d" :
-                                  (time)?'%.' + (2 ) + 'f':
-                                  '%.' + (precision ) + 'f',
-                    hideZeros : true,
-                    },
-                },
-                { color: '#00375e',
-                  pointLabels: {
-                    location: "s",
-                    show: true,
-                    formatString: (currency)?"$%'d" :
-                                  (time)?'%' + (2 ) + 'f':
-                                  '%.' + (precision ) + 'f',
-                    hideZeros : true,
-                    },
-                },
-            ],
-            grid: {
-                drawGridlines: false,
-                shadow: false,
-                backgroundColor: 'transparent',
-                drawBorder: false,
-                borderColor: 'transparent',
-                shadowColor: 'transparent',
-            },
-            canvasOverlay: {
-                show: true,
-                objects: [
-                    { horizontalLine: {
-                        name: 'target_4',
-                        y: target_4,
-                        lineWidth: lineWidthInt,
-                        xminOffset: chartWidth/4 *3 + 'px',
-                        xmaxOffset: '0px',
-                        color: '#205c90',
-                        shadow: false
-                    }
-                    },
-                    /*{ horizontalLine: {
-                        name: 'comparator_4',
-                        y: comparator_4,
-                        lineWidth: 3,
-                        xminOffset: chartWidth/4 *3 + 'px',
-                        xmaxOffset: '0px',
-                        color: '#9dbbd9',
-                        shadow: false
-                    }
-                    },*/
-                ],
-            },
-            axes: {
-                xaxis: {
-                    rendererOptions: {
-                        tickRenderer: $.jqplot.AxisTickRenderer,
-                        tickOptions: {
-                            mark: null,
-                        },
-                        borderWidth: 0,
-                        drawBorder: false,
-                        borderColor: 'transparent',
-                    },
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks2,
-                    borderWidth: 0,
-                    drawBorder: false,
-                    borderColor: 'transparent',
-                },
-                yaxis: {
-                    rendererOptions: {
-                        drawBaseline: false,
-                        tickRenderer: $.jqplot.AxisTickRenderer,
-                        tickOptions: {
-                            mark: null,
-                        },
-                    },
-                    min: minY,//> 0 ? minY * minBufferMutliplier : minY / minBufferMutliplier,
-                    max: maxY,//* maxBufferMutliplier,
-                    tickInterval: tickInterval,
-                    tickOptions: (currency) ? { formatString: "$%'d" } :
-                                 (time) ? { formatString: '%.' + 2 + 'f' } :
-                                             { formatString: '%.' + precision + 'f' }
-                }
-            }
-        });
-
     });
 </script>
