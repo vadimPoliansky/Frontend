@@ -198,6 +198,7 @@
     <Compile Include="ViewModels\AnalystVM.cs" />
     <Compile Include="ViewModels\editVM.cs" />
     <Compile Include="ViewModels\FootnotesVM.cs" />
+    <Compile Include="ViewModels\GraphVM.cs" />
     <Compile Include="ViewModels\searchVM.cs" />
     <Compile Include="ViewModels\indexVM.cs" />
     <Compile Include="ViewModels\IndicatorListVM.cs" />

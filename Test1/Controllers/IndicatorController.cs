@@ -1431,18 +1431,64 @@ namespace IndInv.Controllers
             var viewModelItems = new List<Indicators>();
             viewModelItems = db.Indicators.Where(x=>x.Indicator_ID == indicatorID).ToList();
 
-            var viewModel = viewModelItems.OrderBy(x => x.Indicator_ID).Select(x => new InventoryViewModel
+            var viewModel = viewModelItems.OrderBy(x => x.Indicator_ID).Select(x => new GraphViewModel
             {
                 Indicator_ID = x.Indicator_ID,
                 Area_ID = x.Area_ID,
                 CoE = x.Indicator_CoE_Map.Count != 0 ? x.Indicator_CoE_Map.Where(y => y.Fiscal_Year == fiscalYear).FirstOrDefault().CoE.CoE : "",
                 Indicator = x.Indicator,
-                FY_3 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_YTD").GetValue(x, null),
-                FY_3_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_YTD_Sup").GetValue(x, null),
-                FY_2 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_YTD").GetValue(x, null),
-                FY_2_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_YTD_Sup").GetValue(x, null),
-                FY_1 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_YTD").GetValue(x, null),
-                FY_1_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_YTD_Sup").GetValue(x, null),
+
+                FY_3_Q1 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q1").GetValue(x, null),
+                FY_3_Q1_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q1_Sup").GetValue(x, null),
+                FY_3_Q2 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q2").GetValue(x, null),
+                FY_3_Q2_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q2_Sup").GetValue(x, null),
+                FY_3_Q3 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q3").GetValue(x, null),
+                FY_3_Q3_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q3_Sup").GetValue(x, null),
+                FY_3_Q4 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q4").GetValue(x, null),
+                FY_3_Q4_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Q4_Sup").GetValue(x, null),
+                FY_3_YTD = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_YTD").GetValue(x, null),
+                FY_3_YTD_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_YTD_Sup").GetValue(x, null),
+                FY_3_Target = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Target").GetValue(x, null),
+                FY_3_Target_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Target_Sup").GetValue(x, null),
+                FY_3_Comparator = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Comparator").GetValue(x, null),
+                FY_3_Comparator_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Comparator_Sup").GetValue(x, null),
+                FY_3_Performance_Threshold = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Performance_Threshold").GetValue(x, null),
+                FY_3_Performance_Threshold_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 3) + "_Performance_Threshold_Sup").GetValue(x, null),
+
+                FY_2_Q1 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q1").GetValue(x, null),
+                FY_2_Q1_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q1_Sup").GetValue(x, null),
+                FY_2_Q2 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q2").GetValue(x, null),
+                FY_2_Q2_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q2_Sup").GetValue(x, null),
+                FY_2_Q3 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q3").GetValue(x, null),
+                FY_2_Q3_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q3_Sup").GetValue(x, null),
+                FY_2_Q4 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q4").GetValue(x, null),
+                FY_2_Q4_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Q4_Sup").GetValue(x, null),
+                FY_2_YTD = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_YTD").GetValue(x, null),
+                FY_2_YTD_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_YTD_Sup").GetValue(x, null),
+                FY_2_Target = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Target").GetValue(x, null),
+                FY_2_Target_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Target_Sup").GetValue(x, null),
+                FY_2_Comparator = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Comparator").GetValue(x, null),
+                FY_2_Comparator_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Comparator_Sup").GetValue(x, null),
+                FY_2_Performance_Threshold = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Performance_Threshold").GetValue(x, null),
+                FY_2_Performance_Threshold_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 2) + "_Performance_Threshold_Sup").GetValue(x, null),
+
+                FY_1_Q1 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q1").GetValue(x, null),
+                FY_1_Q1_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q1_Sup").GetValue(x, null),
+                FY_1_Q2 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q2").GetValue(x, null),
+                FY_1_Q2_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q2_Sup").GetValue(x, null),
+                FY_1_Q3 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q3").GetValue(x, null),
+                FY_1_Q3_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q3_Sup").GetValue(x, null),
+                FY_1_Q4 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q4").GetValue(x, null),
+                FY_1_Q4_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Q4_Sup").GetValue(x, null),
+                FY_1_YTD = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_YTD").GetValue(x, null),
+                FY_1_YTD_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_YTD_Sup").GetValue(x, null),
+                FY_1_Target = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Target").GetValue(x, null),
+                FY_1_Target_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Target_Sup").GetValue(x, null),
+                FY_1_Comparator = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Comparator").GetValue(x, null),
+                FY_1_Comparator_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Comparator_Sup").GetValue(x, null),
+                FY_1_Performance_Threshold = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Performance_Threshold").GetValue(x, null),
+                FY_1_Performance_Threshold_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 1) + "_Performance_Threshold_Sup").GetValue(x, null),
+
                 FY_Q1 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 0) + "_Q1").GetValue(x, null),
                 FY_Q1_Sup = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 0) + "_Q1_Sup").GetValue(x, null),
                 FY_Q2 = (string)x.GetType().GetProperty(FiscalYear.FYStr(fiscalYear, 0) + "_Q2").GetValue(x, null),
@@ -1484,7 +1530,6 @@ namespace IndInv.Controllers
                 Fiscal_Year = fiscalYear,
 
             }).FirstOrDefault();
-            viewModel.allAnalysts = db.Analysts.ToList();
             return View(viewModel);
         }
 
