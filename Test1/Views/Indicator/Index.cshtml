@@ -169,7 +169,6 @@
 
     if (!$("html").hasClass("lt-ie9")) {
         new mlPushMenu(document.getElementById('menuFilter3D'), document.getElementById('trigger'));
-        console.log("AGG");
     }
 
     $(document).ready(function ($) {
@@ -182,7 +181,6 @@
         });
 
         if ($("html").hasClass("lt-ie9")) {
-            console.log("AGG1");
             $('#menuFilter').multilevelpushmenu({
                 fullCollapse: true,
                 menuHeight: $(window).height(),

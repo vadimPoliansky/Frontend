@@ -67,18 +67,19 @@
 </div>
 
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
-<script src="../../Scripts/jquery.jqplot.min.js"></script>
+<!--script src="../../Scripts/jquery.jqplot.min.js"></script-->
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
 
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../../Scripts/excanvas.js"></script><![endif]-->
-<script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
+<!--script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.categoryAxisRenderer.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.pointLabels.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.canvasOverlay.min.js"></script>
 <script src="../../Scripts/jq_plugins/jqplot.canvasOverlay.min.js"></script>
-<script src="../../Scripts/jq_plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script src="../../Scripts/jq_plugins/jqplot.dateAxisRenderer.min.js"></script-->
 
 <link rel="stylesheet" media="screen" href="../../Scripts/jquery.jqplot.min.css" />
 
@@ -124,7 +125,16 @@
         display: table;
         margin-top:20px;
         font-family: Geneva, Tahoma, Verdana, sans-serif;
+        color: #222;
+        font-size: 0.5em;
+        font-size: 0.875rem;
+        padding: 0.5625rem 0.625rem;
     }
+
+    .lt-ie9 .targetTable td {
+        padding:0.5625em 0.625em;
+    }
+
 
         .targetTable > tbody > tr > td:first-child, .targetTable > tbody > tr:first-child {
             font-weight:bold;
@@ -283,17 +293,18 @@
         maxY = maxY / maxYarray > 2 ? maxY / 2 : maxY;
 
         var s1 = [
-                valuesArray[0],
-                valuesArray[1],
-                valuesArray[2],
-                valuesArray[3],
+            valuesArray[0],
+            valuesArray[1],
+            valuesArray[2],
+            valuesArray[3],
         ];
         var s2 = [
-                valuesArray[4],
-                valuesArray[5],
-                valuesArray[6],
-                valuesArray[7],
+            valuesArray[4],
+            valuesArray[5],
+            valuesArray[6],
+            valuesArray[7],
         ];
+
         var sComparator = [
             0,
             0,
