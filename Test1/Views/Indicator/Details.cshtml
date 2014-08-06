@@ -29,6 +29,7 @@
         </div>
     </div>
     <br />
+    <br />
     <div class="chartBackground">
         <div class="row">
 
@@ -44,28 +45,28 @@
             <table class="targetTable">
                 <tr>
                     <td></td>
-                    <td style="text-align: center">Target</td>
-                    <td style="text-align: center">Comparator</td>
+                    <td >Target</td>
+                    <td >Comparator</td>
                 </tr>
                 <tr>
-                    <td>2010</td>
-                    <td style="text-align: center"></td>
-                    <td style="text-align: center"></td>
+                    <td>@FiscalYear.FYStrFullFormated("FY_3",Model.Fiscal_Year)</td>
+                    <td ></td>
+                    <td ></td>
                 </tr>
                 <tr>
-                    <td>2011</td>
-                    <td style="text-align: center"></td>
-                    <td style="text-align: center"></td>
+                    <td>@FiscalYear.FYStrFullFormated("FY_2",Model.Fiscal_Year)</td>
+                    <td ></td>
+                    <td ></td>
                 </tr>
                 <tr>
-                    <td>2012</td>
-                    <td style="text-align: center"></td>
-                    <td style="color: #111; text-align: center"></td>
+                    <td>@FiscalYear.FYStrFullFormated("FY_1",Model.Fiscal_Year)</td>
+                    <td ></td>
+                    <td ></td>
                 </tr>
                 <tr>
-                    <td>2013</td>
-                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Target)</td>
-                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Comparator)</td>
+                    <td>@FiscalYear.FYStrFullFormated("FY_0",Model.Fiscal_Year)</td>
+                    <td >@Html.DisplayTextFor(model => model.Target)</td>
+                    <td >@Html.DisplayTextFor(model => model.Comparator)</td>
                 </tr>
             </table>
         </div>
@@ -151,6 +152,12 @@
         font-size: 0.875rem;
         padding: 0.5625rem 0.625rem;
     }
+    .targetTable > tbody > tr:nth-of-type(even) {
+        background: none !important;
+    }
+    .targetTable > tbody > tr > td {
+        width:33%;
+    }
 
     .lt-ie9 .targetTable td {
         padding:0.5625em 0.625em;
@@ -159,17 +166,19 @@
 
         .targetTable > tbody > tr > td:first-child, .targetTable > tbody > tr:first-child {
             font-weight:bold;
+            text-align:center;
         }
 
         .targetTable > tbody > tr > td:first-child + td, .targetTable > tbody > tr:first-child + tr {
             color:#ff0000;
+            text-align:center;
         }
         .targetTable > tbody > tr > td:first-child + td + td, .targetTable > tbody > tr:first-child + tr + tr {
             color:#ff6a00;
+            text-align:center;
         }
 
-    .jqplot-point-label 
-    {
+    .jqplot-point-label {
         font-family: Geneva, Tahoma, Verdana, sans-serif;
         font-size:xx-small !important;
         font-weight:700;
@@ -367,7 +376,13 @@
         var target_4 = valuesArray[8]
 
         var ticks1 = ['Q1', 'Q2', 'Q3', 'Q4'];
-        var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
+        //var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
+        var ticks2 = [
+            '@FiscalYear.FYStrFullFormated("FY_3",Model.Fiscal_Year)', 
+            '@FiscalYear.FYStrFullFormated("FY_2",Model.Fiscal_Year)',
+            '@FiscalYear.FYStrFullFormated("FY_1",Model.Fiscal_Year)',
+            '@FiscalYear.FYStrFullFormated("FY_0",Model.Fiscal_Year)',
+        ];
 
         $(function () {
 
@@ -400,6 +415,9 @@
             var chart1 = new Highcharts.Chart({
                 title: {
                     text: '@Html.DisplayTextFor(model => model.Indicator)'
+                },
+                subtitle: {
+                    text: 'for ' + '@FiscalYear.FYStrFullFormated("FY_0", Model.Fiscal_Year)',
                 },
                 xAxis: {
                     categories: ticks1,
@@ -486,6 +504,9 @@
                 },
                 title: {
                     text: '@Html.DisplayTextFor(model => model.Indicator)'
+                },
+                subtitle: {
+                    text: 'from ' + '@FiscalYear.FYStrFullFormated("FY_3", Model.Fiscal_Year) to @FiscalYear.FYStrFullFormated("FY_0", Model.Fiscal_Year)',
                 },
                 xAxis: {
                     categories: ticks2,

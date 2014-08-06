@@ -57,16 +57,16 @@ namespace IndInv.Helpers
             switch (fyStr)
             {
                 case "FY_3":
-                    return "FY20" + (FYInt(fiscalYear) + 1 - 3).ToString();
+                    return "FY " + (FYInt(fiscalYear) - 3).ToString() + "/" + (FYInt(fiscalYear) + 1 - 3).ToString();
                     break;
                 case "FY_2":
-                    return "FY_" + (FYInt(fiscalYear) - 2).ToString() + "_" + (FYInt(fiscalYear) + 1 - 2).ToString() + "_YTD";
+                    return "FY " + (FYInt(fiscalYear) - 2).ToString() + "/" + (FYInt(fiscalYear) + 1 - 2).ToString();
                     break;
                 case "FY_1":
-                    return "FY_" + (FYInt(fiscalYear) - 1).ToString() + "_" + (FYInt(fiscalYear) + 1 - 1).ToString() + "_YTD";
+                    return "FY " + (FYInt(fiscalYear) - 1).ToString() + "/" + (FYInt(fiscalYear) + 1 - 1).ToString();
                     break;
-                case "FY_Header":
-                    return "FY " + (FYInt(fiscalYear)).ToString() + "/" + (FYInt(fiscalYear) + 1).ToString() + " Performance";
+                case "FY_0":
+                    return "FY " + (FYInt(fiscalYear)).ToString() + "/" + (FYInt(fiscalYear) + 1).ToString();
                 default:
                     return fyStr.Replace(
                         "FY_",
