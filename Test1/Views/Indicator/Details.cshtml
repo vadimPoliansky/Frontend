@@ -24,42 +24,48 @@
             <span class="targetLabel">Target</span>
         </div>
         <div class="small-6 columns">
-            <span class="target">@Html.DisplayTextFor(model => model.Comparator)</span>
-            <span class="targetLabel">Comparator</span>
+            <span class="comparator">@Html.DisplayTextFor(model => model.Comparator)</span>
+            <span class="comparatorLabel">Comparator</span>
         </div>
     </div>
     <br />
-    <div class="row">
-        <!--div id="chart2" style="margin-top: 20px; margin-left: 20px; width: 100%; height: 400px;"></div-->
-        <pre class="code brush:js"></pre>
+    <div class="chartBackground">
+        <div class="row">
 
+            <!--div id="chart1" style="margin-top: 20px; margin-left: 20px; width: 100%; height: 100%;"></div-->
+            <div id="chartTest2" style="width:100%; height:400px;"></div>
+
+            <pre class="code brush:js"></pre>
+        </div>
+    </div>
+    <div class="row">
 
         <div class="small-12 columns">
             <table class="targetTable">
                 <tr>
                     <td></td>
-                    <td style="color: #111; text-align: center">Target</td>
-                    <td style="color: #111; text-align: center">Comparator</td>
+                    <td style="text-align: center">Target</td>
+                    <td style="text-align: center">Comparator</td>
                 </tr>
                 <tr>
                     <td>2010</td>
-                    <td style="color: #111; text-align: center"></td>
-                    <td style="color: #111; text-align: center"></td>
+                    <td style="text-align: center"></td>
+                    <td style="text-align: center"></td>
                 </tr>
                 <tr>
                     <td>2011</td>
-                    <td style="color: #111; text-align: center"></td>
-                    <td style="color: #111; text-align: center"></td>
+                    <td style="text-align: center"></td>
+                    <td style="text-align: center"></td>
                 </tr>
                 <tr>
                     <td>2012</td>
-                    <td style="color: #111; text-align: center"></td>
+                    <td style="text-align: center"></td>
                     <td style="color: #111; text-align: center"></td>
                 </tr>
                 <tr>
                     <td>2013</td>
-                    <td style="color: #111; text-align: center">@Html.DisplayTextFor(model => model.Target)</td>
-                    <td style="color: #111; text-align: center">@Html.DisplayTextFor(model => model.Comparator)</td>
+                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Target)</td>
+                    <td style="text-align: center">@Html.DisplayTextFor(model => model.Comparator)</td>
                 </tr>
             </table>
         </div>
@@ -69,9 +75,8 @@
 <script src="../../Scripts/jquery-1.11.0.min.js"></script>
 <!--script src="../../Scripts/jquery.jqplot.min.js"></script-->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+<!--script src="http://code.highcharts.com/modules/exporting.js"></script-->
 
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../../Scripts/excanvas.js"></script><![endif]-->
 <!--script src="../../Scripts/jq_plugins/jqplot.barRenderer.min.js"></script>
@@ -108,10 +113,26 @@
         margin: 0 auto;
         font-size:large;
         font-family: Geneva, Tahoma, Verdana, sans-serif;
-        color: #0068b3;
+        color: #ff0000;
     }
 
     .targetLabel {
+        display: table;
+        margin: 0 auto;
+        font-size:small;
+        font-family: Geneva, Tahoma, Verdana, sans-serif;
+        color: #808080;
+    }
+
+    .comparator {
+        display: table;
+        margin: 0 auto;
+        font-size:large;
+        font-family: Geneva, Tahoma, Verdana, sans-serif;
+        color: #ff6a00;
+    }
+
+    .comparatorLabel {
         display: table;
         margin: 0 auto;
         font-size:small;
@@ -140,6 +161,12 @@
             font-weight:bold;
         }
 
+        .targetTable > tbody > tr > td:first-child + td, .targetTable > tbody > tr:first-child + tr {
+            color:#ff0000;
+        }
+        .targetTable > tbody > tr > td:first-child + td + td, .targetTable > tbody > tr:first-child + tr + tr {
+            color:#ff6a00;
+        }
 
     .jqplot-point-label 
     {
@@ -189,10 +216,10 @@
             "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q2)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q3)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q4)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_2)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_1)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_2_YTD)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_1_YTD)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.FY_YTD)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.Target)).ToString())",
             "@Colour.getNum((Html.DisplayTextFor(model => model.Comparator)).ToString())",
@@ -232,12 +259,12 @@
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString())", 10),
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString())", 10)) ?
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1_YTD)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1_YTD)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2_YTD)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2_YTD)).ToString())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())", 10),
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString())", 10)) ?
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString())", 10),
                 isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10)) ?
@@ -246,6 +273,7 @@
                     0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)
         ];
 
+        /*polyfill*/
         if (!Array.prototype.filter) {
             Array.prototype.filter = function (fun /*, thisp */) {
                 "use strict";
@@ -312,6 +340,27 @@
             valuesArray[9],
         ];
 
+        var sTarget = [
+            0,
+            0,
+            0,
+            valuesArray[8],
+        ];
+
+        var sComparatorYTD = [
+            valuesArray[9],
+            valuesArray[9],
+            valuesArray[9],
+            valuesArray[9],
+        ];
+
+        var sTargetYTD = [
+            valuesArray[8],
+            valuesArray[8],
+            valuesArray[8],
+            valuesArray[8],
+        ];
+
         var comparator_FY = valuesArray[9]
         var target_FY = valuesArray[8]
 
@@ -321,27 +370,105 @@
         var ticks2 = ['FY2010', 'FY2011', 'FY2012', 'FY2013 YTD'];
 
         $(function () {
-            $('#chartTest').highcharts({
-                colors: [ '#fff'],
+
+            Highcharts.setOptions({
+                colors: ['#fff', "#0094fe"],
                 chart: {
+                    renderTo: 'chartTest',
                     type: 'column',
                     backgroundColor: "#0094ff"
                 },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal'
+                    },
+                    series: {
+                        states: {
+                            hover: {
+                                enabled: false
+                            }
+                        },
+                        borderWidth: 0,
+                        shadow: false
+                    }
+                },
+                tooltip: {
+                    enabled:false
+                }
+            });
+
+            var chart1 = new Highcharts.Chart({
                 title: {
                     text: '@Html.DisplayTextFor(model => model.Indicator)'
                 },
                 xAxis: {
                     categories: ticks1,
-                    tickLength: 0
+                    tickLength: 0,
                 },
-                yAxis: {
+                yAxis: [{
                     title: {
                         text: ''
-                    }
-                },
+                    },
+                    max: maxY,
+                    plotLines: [{
+                        color: 'red',
+                        value: sTargetYTD[0],
+                        width: '2',
+                        percentFrom: 0,
+                        percentTo: 0.25,
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[1],
+                        width: '2',
+                        percentFrom: 0.25,
+                        percentTo: 0.5,
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[2],
+                        width: '2',
+                        percentFrom: 0.5,
+                        percentTo: 0.75,
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[3],
+                        width: '2',
+                        percentFrom: 0.75,
+                        percentTo: 1,
+                    }, {
+                        color: '#FFA500',
+                        value: sComparatorYTD[0],
+                        width: '2',
+                        percentFrom: 0,
+                        percentTo: 0.25,
+                    }, {
+                        color: '#FFA500',
+                        value: sComparatorYTD[1],
+                        width: '2',
+                        percentFrom: 0.25,
+                        percentTo: 0.5,
+                    }, {
+                        color: '#FFA500',
+                        value: sComparatorYTD[2],
+                        width: '2',
+                        percentFrom: 0.5,
+                        percentTo: 0.75,
+                    }, {
+                        color: '#FFA500',
+                        value: sComparatorYTD[3],
+                        width: '2',
+                        percentFrom: 0.75,
+                        percentTo: 1,
+                    }]
+                }],
                 series: [{
                     name: '@Html.DisplayTextFor(model => model.Indicator)',
                     data: s1,
+                    dataLabels: {
+                        enabled: true,
+                        inside: true,
+                    },
+                    yAxis: 0,
+                    index: 50,
                 }],
                 legend: [{
                     enabled:'false'
@@ -350,6 +477,78 @@
                     enabled: 'false'
                 }]
             });
+
+            var chart2 = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'chartTest2',
+                    type: 'column',
+                    backgroundColor: "#0094ff"
+                },
+                title: {
+                    text: '@Html.DisplayTextFor(model => model.Indicator)'
+                },
+                xAxis: {
+                    categories: ticks2,
+                    tickLength: 0
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    },
+                    max: maxY,
+                    plotLines: [{
+                        color: 'red',
+                        value: sTarget[3],
+                        width: '2',
+                        percentFrom: 0.75,
+                        percentTo: 1,
+                    }, {
+                        color: '#FFA500',
+                        value: sComparator[3],
+                        width: '2',
+                        percentFrom: 0.75,
+                        percentTo: 1,
+                    }]
+                },
+                series: [{
+                    name: '@Html.DisplayTextFor(model => model.Indicator)',
+                    data: s2,
+                    dataLabels: {
+                        enabled: true,
+                        inside: true,
+                    },
+                }],
+                legend: [{
+                    enabled: 'false'
+                }],
+                credits: [{
+                    enabled: 'false'
+                }]
+            });
+            @*
+            if (!$("html").hasClass("lt-ie9")) {
+                var plotLineX = 0;
+                console.log(chart1.chartWidth);
+                $('#chartTest rect[fill="#0094fe"]').each(function (index) {
+                    $(this).attr('x', plotLineX);
+                    $(this).attr('width', chart1.chartWidth / 4);
+                    plotLineX += chart1.chartWidth / 4;
+                });
+
+                $('#chartTest rect[fill="#0094fe"]').css({
+                    'stroke': 'red',
+                    'stroke-width': '1px',
+                    'stroke-dasharray': $('rect[fill="#0094fe"]').first().attr('width') + ', 50000',
+                });
+            } else {
+                $('#chartTest shape').each(function(index){
+                    var oldD = $(this).attr('d');
+                    var dValues = d.split(' ');
+
+                });
+            }*@
+
+
         });
     });
 </script>
