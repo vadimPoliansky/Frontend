@@ -429,30 +429,6 @@
                     },
                     max: maxY,
                     plotLines: [{
-                        color: 'red',
-                        value: sTargetYTD[0],
-                        width: '2',
-                        percentFrom: 0,
-                        percentTo: 0.25,
-                    }, {
-                        color: 'red',
-                        value: sTargetYTD[1],
-                        width: '2',
-                        percentFrom: 0.25,
-                        percentTo: 0.5,
-                    }, {
-                        color: 'red',
-                        value: sTargetYTD[2],
-                        width: '2',
-                        percentFrom: 0.5,
-                        percentTo: 0.75,
-                    }, {
-                        color: 'red',
-                        value: sTargetYTD[3],
-                        width: '2',
-                        percentFrom: 0.75,
-                        percentTo: 1,
-                    }, {
                         color: '#FFA500',
                         value: sComparatorYTD[0],
                         width: '2',
@@ -476,7 +452,31 @@
                         width: '2',
                         percentFrom: 0.75,
                         percentTo: 1,
-                    }]
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[0],
+                        width: '2',
+                        percentFrom: 0,
+                        percentTo: 0.25,
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[1],
+                        width: '2',
+                        percentFrom: 0.25,
+                        percentTo: 0.5,
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[2],
+                        width: '2',
+                        percentFrom: 0.5,
+                        percentTo: 0.75,
+                    }, {
+                        color: 'red',
+                        value: sTargetYTD[3],
+                        width: '2',
+                        percentFrom: 0.75,
+                        percentTo: 1,
+                    }, ]
                 }],
                 series: [{
                     name: '@Html.DisplayTextFor(model => model.Indicator)',
@@ -518,14 +518,14 @@
                     },
                     max: maxY,
                     plotLines: [{
-                        color: 'red',
-                        value: sTarget[3],
+                        color: '#FFA500',
+                        value: sComparator[3],
                         width: '2',
                         percentFrom: 0.75,
                         percentTo: 1,
                     }, {
-                        color: '#FFA500',
-                        value: sComparator[3],
+                        color: 'red',
+                        value: sTarget[3],
                         width: '2',
                         percentFrom: 0.75,
                         percentTo: 1,
@@ -546,30 +546,6 @@
                     enabled: 'false'
                 }]
             });
-            @*
-            if (!$("html").hasClass("lt-ie9")) {
-                var plotLineX = 0;
-                console.log(chart1.chartWidth);
-                $('#chartTest rect[fill="#0094fe"]').each(function (index) {
-                    $(this).attr('x', plotLineX);
-                    $(this).attr('width', chart1.chartWidth / 4);
-                    plotLineX += chart1.chartWidth / 4;
-                });
-
-                $('#chartTest rect[fill="#0094fe"]').css({
-                    'stroke': 'red',
-                    'stroke-width': '1px',
-                    'stroke-dasharray': $('rect[fill="#0094fe"]').first().attr('width') + ', 50000',
-                });
-            } else {
-                $('#chartTest shape').each(function(index){
-                    var oldD = $(this).attr('d');
-                    var dValues = d.split(' ');
-
-                });
-            }*@
-
-
         });
     });
 </script>
