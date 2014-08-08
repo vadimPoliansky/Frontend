@@ -36,7 +36,7 @@ namespace IndInv.Controllers
                 allIndicators = db.Indicators.Where(x => x.Indicator_CoE_Map.FirstOrDefault().CoE_ID > 10 && x.Indicator_CoE_Map.FirstOrDefault().CoE_ID < 20).ToList(),
                 allAnalysts = db.Analysts.ToList(),
                 allAreas = db.Areas.Where(x => x.Area_ID == 1 || x.Area_ID == 3 || x.Area_ID == 4 || x.Area_ID == 5).ToList(),
-                allCoEs = db.CoEs.Where(x => x.CoE_ID > 10 && x.CoE_ID < 20).ToList(),
+                allCoEs = db.CoEs.Where(x => x.CoE_ID > 10 && x.CoE_ID < 20 && x.CoE_ID != 14).ToList(),
                 allFootnotes =db.Footnotes.ToList(),
 
                 Fiscal_Year = fiscalYear.Value,
@@ -991,7 +991,7 @@ namespace IndInv.Controllers
             }
         }
 
-        public ActionResult editFootnoteMaps(Int16 fiscalYear,  Int16 indicatorID)
+        public ActionResult editFootnoteMaps(Int16 fiscalYear,  Int16? indicatorID)
         {
             List<Indicator_Footnote_Maps> footnoteMaps = new List<Indicator_Footnote_Maps>();
             foreach (var footnote in db.Indicator_Footnote_Maps.Where(x=>x.Fiscal_Year == fiscalYear).OrderBy(e => e.Map_ID).ToList())
@@ -1000,7 +1000,7 @@ namespace IndInv.Controllers
             }
 
             var allIndicator = new List<Indicators>();
-            if (indicatorID != null )
+            if (indicatorID.HasValue)
             {
                 allIndicator = db.Indicators.Where(x => x.Indicator_ID == indicatorID).OrderBy(x=>x.Indicator_ID).ToList();
             }
