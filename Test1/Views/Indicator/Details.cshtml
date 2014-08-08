@@ -516,7 +516,7 @@
                 }
             });
 
-            var chart1 = new Highcharts.Chart({
+            chart1 = new Highcharts.Chart({
                 title: {
                     text: '@Html.DisplayTextFor(model => model.Indicator)'
                 },
@@ -595,7 +595,7 @@
                 }]
             });
 
-            var chart2 = new Highcharts.Chart({
+            chart2 = new Highcharts.Chart({
                 chart: {
                     renderTo: 'chartTest2',
                     type: 'column',
@@ -655,11 +655,11 @@
 
         });
         $(window).resize(function () {
-            height = chart1.height
-            width = $(".chart-1-row").width() / 2
+            height = chart1.height()
+            width = $(window).width()
             chart1.setSize(width, height, doAnimation = true);
-            height = chart2.height
-            width = $(".chart-2-row").width() / 2
+            height = chart2.height()
+            width = $(window).width()
             chart2.setSize(width, height, doAnimation = true);
         });
     });

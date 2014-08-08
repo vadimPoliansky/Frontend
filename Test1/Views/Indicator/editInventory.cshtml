@@ -44,11 +44,11 @@
 
     function qcolor(instance, td, row, col, prop, value, cellProperties) {
         switch(prop){
-            case "FY_Q1": quarter = "Q1_Color"; break;
-            case "FY_Q2": quarter = "Q2_Color"; break;
-            case "FY_Q3": quarter = "Q3_Color"; break;
-            case "FY_Q4": quarter = "Q4_Color"; break;
-            case "FY_YTD": quarter = "YTD_Color"; break;
+            case "FY_Q1": quarter = "FY_Q1_Color"; break;
+            case "FY_Q2": quarter = "FY_Q2_Color"; break;
+            case "FY_Q3": quarter = "FY_Q3_Color"; break;
+            case "FY_Q4": quarter = "FY_Q4_Color"; break;
+            case "FY_YTD": quarter = "FY_YTD_Color"; break;
         }
         changedProp = $IndInv.handsontable("getDataAtRowProp",row, quarter)
         Handsontable.renderers.TextRenderer.apply(this, arguments);
@@ -172,24 +172,24 @@
             {data:"FY_Q4_Sup"},
             {data:"FY_YTD", renderer:"qcolor"},
             {data:"FY_YTD_Sup"},
-            {data:"Target"},
-            {data:"Target_Sup"},
-            {data:"Comparator"},
-            {data:"Comparator_Sup"},
-            {data:"Performance_Threshold"},
-            {data:"Performance_Threshold_Sup"},
-            {data:"color_ID"},
-            {data:"Custom_YTD"},
-            {data:"Custom_Q1"},
-            {data:"Custom_Q2"},
-            {data:"Custom_Q3"},
-            {data:"Custom_Q4"},
-            {data:"Definition_Calculation"},
-            {data:"Target_Rationale"},
-            {data:"Comparator_Source"},
-            {data:"Data_Source_MSH"},
-            {data:"Data_Source_Benchmark"},
-            {data:"OPEO_Lead"}
+            {data:"FY_Target"},
+            {data:"FY_Target_Sup"},
+            {data:"FY_Comparator"},
+            {data:"FY_Comparator_Sup"},
+            {data:"FY_Performance_Threshold"},
+            {data:"FY_Performance_Threshold_Sup"},
+            {data:"FY_Color_ID"},
+            {data:"FY_Custom_YTD"},
+            {data:"FY_Custom_Q1"},
+            {data:"FY_Custom_Q2"},
+            {data:"FY_Custom_Q3"},
+            {data:"FY_Custom_Q4"},
+            {data:"FY_Definition_Calculation"},
+            {data:"FY_Target_Rationale"},
+            {data:"FY_Comparator_Source"},
+            {data:"FY_Data_Source_MSH"},
+            {data:"FY_Data_Source_Benchmark"},
+            {data:"FY_OPEO_Lead"}
         ],
         afterChange: function (change, source) {
             if (source === 'loadData') {
@@ -209,7 +209,7 @@
         var changedRow = change[i][0]
         var changedParameter = change[i][1];
         var changedValue = change[i][3];
-        if (changedParameter != "Q1_Color" && changedParameter != "Q2_Color" && changedParameter != "Q3_Color" && changedParameter != "Q4_Color" && changedParameter != "YTD_Color"){
+        if (changedParameter != "FY_Q1_Color" && changedParameter != "FY_Q2_Color" && changedParameter != "FY_Q3_Color" && changedParameter != "FY_Q4_Color" && changedParameter != "FY_YTD_Color"){
             var parameters = {
                 indicatorID: $IndInv.handsontable('getDataAtCell',change[i][0],0),
                 updateProperty: changedParameter,
@@ -223,11 +223,11 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (result) {
                     $.get('@Url.Action("/editInventory")', {indicatorID : $IndInv.handsontable('getDataAtCell',change[i][0],0), fiscalYear: @Model.FirstOrDefault().Fiscal_Year}, function (data) {
-                        $IndInv.handsontable("setDataAtRowProp", changedRow, "Q1_Color", data[0].Q1_Color);
-                        $IndInv.handsontable("setDataAtRowProp", changedRow, "Q2_Color", data[0].Q2_Color);
-                        $IndInv.handsontable("setDataAtRowProp", changedRow, "Q3_Color", data[0].Q3_Color);
-                        $IndInv.handsontable("setDataAtRowProp", changedRow, "Q4_Color", data[0].Q4_Color);
-                        $IndInv.handsontable("setDataAtRowProp", changedRow, "YTD_Color", data[0].YTD_Color);
+                        $IndInv.handsontable("setDataAtRowProp", changedRow, "FY_Q1_Color", data[0].Q1_Color);
+                        $IndInv.handsontable("setDataAtRowProp", changedRow, "FY_Q2_Color", data[0].Q2_Color);
+                        $IndInv.handsontable("setDataAtRowProp", changedRow, "FY_Q3_Color", data[0].Q3_Color);
+                        $IndInv.handsontable("setDataAtRowProp", changedRow, "FY_Q4_Color", data[0].Q4_Color);
+                        $IndInv.handsontable("setDataAtRowProp", changedRow, "FY_YTD_Color", data[0].YTD_Color);
                     });
                 },
                 error: function (request){
@@ -318,12 +318,12 @@
                     {data:"Indicator_ID"},
                     {data:"Indicator"},
                     {data:"CoE"},
-                    {data:"Target"},
-                    {data:"Target_Sup"},
-                    {data:"Comparator"},
-                    {data:"Comparator_Sup"},
-                    {data:"Performance_Threshold"},
-                    {data:"Performance_Threshold_Sup"},
+                    {data:"FY_Target"},
+                    {data:"FY_Target_Sup"},
+                    {data:"FY_Comparator"},
+                    {data:"FY_Comparator_Sup"},
+                    {data:"FY_Performance_Threshold"},
+                    {data:"FY_Performance_Threshold_Sup"},
                 ],
             });
         });
@@ -346,12 +346,12 @@
                     {data:"Indicator_ID"},
                     {data:"Indicator"},
                     {data:"CoE"},
-                    {data:"Definition_Calculation"},
-                    {data:"Target_Rationale"},
-                    {data:"Comparator_Source"},
-                    {data:"Data_Source_MSH"},
-                    {data:"Data_Source_Benchmark"},
-                    {data:"OPEO_Lead"}
+                    {data:"FY_Definition_Calculation"},
+                    {data:"FY_Target_Rationale"},
+                    {data:"FY_Comparator_Source"},
+                    {data:"FY_Data_Source_MSH"},
+                    {data:"FY_Data_Source_Benchmark"},
+                    {data:"FY_OPEO_Lead"}
                 ],
             });
         });
@@ -375,12 +375,12 @@
                     {data:"Indicator_ID"},
                     {data:"Indicator"},
                     {data:"CoE"},
-                    {data:"Color_ID"},
-                    {data:"Custom_YTD"},
-                    {data:"Custom_Q1"},
-                    {data:"Custom_Q2"},
-                    {data:"Custom_Q3"},
-                    {data:"Custom_Q4"},
+                    {data:"FY_Color_ID"},
+                    {data:"FY_Custom_YTD"},
+                    {data:"FY_Custom_Q1"},
+                    {data:"FY_Custom_Q2"},
+                    {data:"FY_Custom_Q3"},
+                    {data:"FY_Custom_Q4"},
                 ],
             });
         });
@@ -447,24 +447,24 @@
                     {data:"FY_Q4_Sup"},
                     {data:"FY_YTD", renderer:"qcolor"},
                     {data:"FY_YTD_Sup"},
-                    {data:"Target"},
-                    {data:"Target_Sup"},
-                    {data:"Comparator"},
-                    {data:"Comparator_Sup"},
-                    {data:"Performance_Threshold"},
-                    {data:"Performance_Threshold_Sup"},
-                    {data:"color_ID"},
-                    {data:"Custom_YTD"},
-                    {data:"Custom_Q1"},
-                    {data:"Custom_Q2"},
-                    {data:"Custom_Q3"},
-                    {data:"Custom_Q4"},
-                    {data:"Definition_Calculation"},
-                    {data:"Target_Rationale"},
-                    {data:"Comparator_Source"},
-                    {data:"Data_Source_MSH"},
-                    {data:"Data_Source_Benchmark"},
-                    {data:"OPEO_Lead"}
+                    {data:"FY_Target"},
+                    {data:"FY_Target_Sup"},
+                    {data:"FY_Comparator"},
+                    {data:"FY_Comparator_Sup"},
+                    {data:"FY_Performance_Threshold"},
+                    {data:"FY_Performance_Threshold_Sup"},
+                    {data:"FY_color_ID"},
+                    {data:"FY_Custom_YTD"},
+                    {data:"FY_Custom_Q1"},
+                    {data:"FY_Custom_Q2"},
+                    {data:"FY_Custom_Q3"},
+                    {data:"FY_Custom_Q4"},
+                    {data:"FY_Definition_Calculation"},
+                    {data:"FY_Target_Rationale"},
+                    {data:"FY_Comparator_Source"},
+                    {data:"FY_Data_Source_MSH"},
+                    {data:"FY_Data_Source_Benchmark"},
+                    {data:"FY_OPEO_Lead"}
                 ],
             });
         });
