@@ -49,7 +49,7 @@
 				onExpandMenuEnd: function() {},
 				onGroupItemClick: function() {},
 				onItemClick: function() {},
-				onTitleItemClick: function() {},
+				onTitleItemClick: null,
 				onBackItemClick: function() {},
 				onMenuReady: function() {},
 				onMenuSwipe: function() {}

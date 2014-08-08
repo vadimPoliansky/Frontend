@@ -22,7 +22,7 @@
                             @foreach (var coe in Model.allCoEs)
                             {
                                 <li>
-                                    <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i> @coe.CoE_Abbr </a></small>
+                                    <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-angle-right"></i> @coe.CoE_Abbr </a></small>
                                 </li>
                     }
                         </ul>
@@ -36,7 +36,7 @@
                             @foreach (var area in Model.allAreas)
                             {
                                 <li>
-                                    <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i> @area.Area</a></small>
+                                    <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-angle-right"></i> @area.Area</a></small>
                                 </li>
                     }
                         </ul>
@@ -50,7 +50,7 @@
                             @foreach (var footnote in Model.allFootnotes)
                             {
                                 <li>
-                                    <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i> @footnote.Footnote</a></small>
+                                    <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-angle-right"></i> @footnote.Footnote</a></small>
                                 </li>
                     }
                         </ul>
@@ -72,7 +72,6 @@
                         <ul id="myTags" class="tagList">
                         </ul>
 
-                        <div class="row">
                         <ul class="list">
                             @foreach (var item in Model.allIndicators.OrderBy(x => x.Indicator))
                             {
@@ -84,7 +83,7 @@
                                     <li>
                                         <div class="row blockContent">
                                             <div class="small-4 columns" style="font-size: small">
-                                                <i class="fa fa-sort-desc fa-rotate-90"></i>
+                                                <i class="fa fa-angle-right"></i>
                                                 <span class="coe">@Html.DisplayTextFor(modelItem => item.Indicator_CoE_Map.FirstOrDefault().CoE.CoE_Abbr).ToString().Trim()</span>
                                                 <br />
                                                 <span class="area">@Html.DisplayTextFor(modelIem => item.Area.Area).ToString().Trim()</span>
@@ -99,7 +98,6 @@
                         </ul>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
 
@@ -118,7 +116,7 @@
                     @foreach (var coe in Model.allCoEs)
                     {
                         <li>
-                            <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-sort-desc fa-rotate-90"></i> @coe.CoE_Abbr </a></small>
+                            <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-angle-right"></i> @coe.CoE_Abbr </a></small>
                         </li>
                     }
                 </ul>
@@ -130,7 +128,7 @@
                     @foreach (var area in Model.allAreas)
                     {
                         <li>
-                            <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-sort-desc fa-rotate-90"></i> @area.Area</a></small>
+                            <small><a href="#" class="filterMenuItem" field="areaID" id="@area.Area_ID" name="@area.Area"><i class="fa fa-angle-right"></i> @area.Area</a></small>
                         </li>
                     }
                 </ul>
@@ -142,7 +140,7 @@
                     @foreach (var footnote in Model.allFootnotes)
                     {
                         <li>
-                            <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-sort-desc fa-rotate-90"></i> @footnote.Footnote</a></small>
+                            <small><a href="#" class="filterMenuItem" field="footnoteID" id="@footnote.Footnote_ID" name="@footnote.Footnote"><i class="fa fa-angle-right"></i> @footnote.Footnote</a></small>
                         </li>
                     }
                 </ul>
@@ -175,7 +173,7 @@
 
         $(".overlay").hide()
 
-        $(".block").on("click", function () {
+        $(".blockContent").on("click", function () {
             var indicatorID = $(this).attr("indicatorID");
             window.location.href = "indicator/details?indicatorID=" + indicatorID + "&fiscalYear=" + 1;
         });
@@ -185,7 +183,7 @@
                 fullCollapse: true,
                 menuHeight: $(window).height(),
                 collapsed: true,
-                menuWidth: '80%',
+                menuWidth: '30%',
                 onExpandMenuStart: function () {
                     $(".overlay").fadeIn("fast");
                 },
@@ -194,7 +192,6 @@
                         $(".overlay").fadeOut("fast");
                     }
                 },
-                backItemIcon: 'fa fa-times',
             });
 
 
@@ -206,7 +203,6 @@
 
             $('.backBtnMain').on('click', function () {
                 $('#menuFilter').multilevelpushmenu('collapse')
-                $(".overlay").fadeOut("fast");
             });
 
             $('.filterExpand').click(function () {
@@ -353,6 +349,12 @@
         width:100%;
         /*margin-left:-300px;*/
     }
+    .lt-ie9 .fa-rotate-90 {
+        padding-right:10px;
+        margin-top:10px;
+        background:none;
+        vertical-align:central;
+    }
 
     .mp-menu ul li > a {
         padding:9px;
@@ -382,6 +384,12 @@
         float:right;
     }
 
+    .block {
+        margin:5px;
+        fill-opacity:0.99;
+        position:relative;
+        display:block;
+    }
 
     .area {
         font-weight:300;
@@ -391,9 +399,22 @@
     }
     .coe {
         font-weight:800;
-        color:black;
     }
     .title {
+        
+    }
+    
+    .blockContent {
+        padding:5px;
+        max-width:900px !important;
+        display:block;
+    }
+        .blockContent:hover {
+            background-color:#0081de;
+            color:rgb(255, 255, 255) !important;
+        }
+    .titleColumn {
+        text-align:right;
     }
 
     .backToTop {
@@ -419,23 +440,9 @@
     .list {
         margin:0px;
         font-size:0;
+        
     }
 
-    .block {
-        border-bottom: 2px solid #0094ff;
-        margin:5px;
-        background-color:#c8d2d5;
-        fill-opacity:0.99;
-        z-index:5;
-        position:relative;
-    }
-
-    .blockContent {
-        padding:5px;
-    }
-        .block:hover {
-            background-color:#0094ff !important;
-        }
 
     #myTags {
         width:100%;
@@ -445,6 +452,9 @@
         background-color:#FFF0B3;
         padding:15px;
         width:100%;
+    }
+    .tagit-choice:first-child {
+        margin-top:3px;
     }
     .tagit-label {
         color:black;
@@ -552,9 +562,6 @@
         border:0 !important;
     }*/
 
-    .multilevelpushmenu_wrapper li:hover {
-	    background-color: white !important;
-    }
 
     #menuFilter li {
         border:0 !important;
@@ -565,6 +572,9 @@
         color:#0094ff !important;
         border:0 !important;
         padding:9px;
+    }
+
+    .doubleList li:hover {
     }
 
     .backItemClass {
