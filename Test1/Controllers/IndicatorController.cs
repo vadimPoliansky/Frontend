@@ -1394,6 +1394,14 @@ namespace IndInv.Controllers
         // GET: /Indicator/Details/5
 
         [HttpPost]
+        public void deleteInventory(Int16 indicatorID)
+        {
+            Indicators indicators = db.Indicators.Find(indicatorID);
+            db.Indicators.Remove(indicators);
+            db.SaveChanges();
+        }
+
+        [HttpPost]
         public JsonResult newIndicatorAtPR(Int16 fiscalYear, Int16 areaID, Int16 coeID, Int16 indicatorID)
         {
             var newIndicator = new Indicators();

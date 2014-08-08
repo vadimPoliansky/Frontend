@@ -199,6 +199,9 @@
                     updateIndicator(change, i);
                 }
             }
+        },
+        beforeRemoveRow : function (index, amount){
+            deleteIndicator(index);
         }
     });
 
@@ -235,6 +238,22 @@
             });
         }
     }
+
+    function deleteIndicator(index){
+        var parameters = {
+            indicatorID: $IndInv.handsontable('getDataAtCell',index,0),
+        };
+        $.ajax({
+            url: 'deleteInventory',
+            type: 'POST',
+            data: JSON.stringify(parameters),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+            },
+            error: function (request){
+            }
+        });
+    }  
 
 </script>
 
