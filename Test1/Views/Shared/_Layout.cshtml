@@ -35,7 +35,7 @@
     </div>
 
     <ul class="right">
-        @Html.Partial("_LoginPartial")
+        @Html.Partial("_LoginPartial")<img src="~/Images/logout.png" />
     </ul>*@
 
 
@@ -45,11 +45,27 @@
         <!--[if !IE 8]><!-->
         <nav class="tab-bar">
             <section class="left-small" id="baseexpand"><a class="fa fa-home home-button"><span></span></a></section>
-            <section class="right-small"><img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" /></section>
+            <section class="right-small">
+                @if (Request.IsAuthenticated) {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+                        @Html.AntiForgeryToken()
+                        <a class="log-out" href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a>
+                    }
+                }
+                    <a><img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" /></a></section>
         </nav>
         <!--<![endif]-->
         <!--[if lt IE 9]>
-            <a><img class="home-button" src="~/Images/homeButton.png" /><img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" /></a>
+            <a><img class="home-button" src="~/Images/homeButton.png" /></a>
+            <div class="right-small">
+                @if (Request.IsAuthenticated) {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+                        @Html.AntiForgeryToken()
+                        <a class="log-out" href="javascript:document.getElementById('logoutForm').submit()"><img src="~/Images/logout.png" /></a>
+                    }
+                }
+                <a><img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" /></a>
+            </div>
         <!--<![endif]-->
         @RenderBody()
     </div>
@@ -235,6 +251,10 @@
 
         });
 
+        $('.log-out').on('click',function(){
+
+        });
+
         $( '#menu' ).multilevelpushmenu({
             containersToPush: [$( '#pushobj' )],
             fullCollapse: true,
@@ -313,7 +333,7 @@
 
     .right-small {
         border:none !important;
-        width:50%;
+        width:75%;
     }
 
     .header {
@@ -328,7 +348,6 @@
 
     .header-logo {
         height:50px;
-        padding-right:15px;
         margin-top:-5px;
         float:right;
     }
@@ -339,6 +358,16 @@
     }
     .lt-ie9 .home-button {
         border-right:1px solid #000000;
+    }
+    .log-out {
+        float:right;
+        color:white;
+        padding-left:5px;
+        padding-right:5px;
+    }
+    #logoutForm {
+        height:0;
+        margin:0;
     }
 
     #pushobjLazy {
