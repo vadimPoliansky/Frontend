@@ -44,11 +44,12 @@
         <div class="header">
         <!--[if !IE 8]><!-->
         <nav class="tab-bar">
-            <section class="left-small" id="baseexpand"><a class="left-off-canvas-toggle menu-icon"><span></span></a></section>
+            <section class="left-small" id="baseexpand"><a class="fa fa-home home-button"><span></span></a></section>
+            <section class="right-small"><img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" /></section>
         </nav>
         <!--<![endif]-->
         <!--[if lt IE 9]>
-            <img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" />
+            <a><img class="home-button" src="~/Images/homeButton.png" /><img class="header-logo" src="~/Images/InSupportOf_Reverse2c.png" /></a>
         <!--<![endif]-->
         @RenderBody()
     </div>
@@ -228,6 +229,11 @@
 
 <script>
     $(document).ready(function () {
+        
+        $(".home-button, .header-logo").on("click", function () {
+            window.location.href =  "http://" + window.location.host + "/" + window.location.pathname.split( '/' )[1];
+
+        });
 
         $( '#menu' ).multilevelpushmenu({
             containersToPush: [$( '#pushobj' )],
@@ -305,17 +311,30 @@
 
 <style>
 
+    .right-small {
+        border:none !important;
+        width:50%;
+    }
+
     .lt-ie9 .header {
         width:100%;
         height:50px;
         background-color:#333333;
-        text-align:right;
     }
 
     .header-logo {
         height:50px;
         padding-right:15px;
         margin-top:-5px;
+        float:right;
+    }
+
+    .home-button {
+        padding-left:7px;
+        color:#ffffff;
+    }
+    .lt-ie9 .home-button {
+        border-right:1px solid #000000;
     }
 
     #pushobjLazy {

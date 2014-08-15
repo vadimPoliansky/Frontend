@@ -151,15 +151,18 @@
         background-color:#2D3947;
         width:100%;
     }
-    .chart-pane {
-        background-color:#fff;
+
+    .lt-ie9 .button-pane-1 {
+        margin-left: 150px !important;
     }
-
-
+    .chart-pane {
+        background-color:#ffffff;
+    }
 
     .container {
         overflow:visible;
         text-align:center;
+        width:100%;
     }
 
     .indicatorTitle {
@@ -654,13 +657,15 @@
             }, 200);
 
         });
-        $(window).resize(function () {
-            height = chart1.height()
-            width = $(window).width()
-            chart1.setSize(width, height, doAnimation = true);
-            height = chart2.height()
-            width = $(window).width()
-            chart2.setSize(width, height, doAnimation = true);
-        });
+        if (!$("html").hasClass("lt-ie9")) {
+            $(window).resize(function () {
+                height = chart1.height()
+                width = $(window).width()
+                chart1.setSize(width, height, doAnimation = true);
+                height = chart2.height()
+                width = $(window).width()
+                chart2.setSize(width, height, doAnimation = true);
+            });
+        };
     });
 </script>

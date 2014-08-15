@@ -226,6 +226,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\backgroupStipe.png" />
+    <Content Include="Images\homeButton.png" />
     <Content Include="Images\InSupportOf_Reverse2c.png" />
     <Content Include="Images\MountSinaiLogo.png" />
     <Content Include="Images\MountSinaiLogoB.png" />
