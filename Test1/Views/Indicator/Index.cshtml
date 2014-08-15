@@ -24,7 +24,7 @@
                                 <li>
                                     <small><a href="#" class="filterMenuItem" field="coeID" id="@coe.CoE_ID" name="@coe.CoE"><i class="fa fa-angle-right"></i> @coe.CoE_Abbr </a></small>
                                 </li>
-                    }
+                            }
                         </ul>
                     </div>
                 </li>
@@ -174,8 +174,10 @@
         $(".overlay").hide()
 
         $(".blockContent").on("click", function () {
-            var indicatorID = $(this).attr("indicatorID");
-            window.location.href = "indicator/details?indicatorID=" + indicatorID + "&fiscalYear=" + 1;
+            var indicatorID = $(this).closest(".block").attr("indicatorID");
+            var currPath = window.location.pathname
+            window.location.href = currPath.charAt(currPath.length-1) == "/" ? window.location.pathname + "details?indicatorID=" + indicatorID + "&fiscalYear=" + 1 :
+                                                                                    window.location.pathname + "/details?indicatorID=" + indicatorID + "&fiscalYear=" + 1;
         });
 
         if ($("html").hasClass("lt-ie9")) {
@@ -193,7 +195,6 @@
                     }
                 },
             });
-
 
             $('.backItemClass').remove();
 
@@ -256,7 +257,6 @@
         });
 
         $(".filterMenuItem").on("click", function () {
-            console.log("DFG");
             var field = $(this).attr('field')
             var name = $.trim($(this).attr('name'));
             var id = $(this).attr('id');
@@ -501,6 +501,9 @@
         -moz-transition: all 2s;
         transition: all 0.2s;
         border:none;
+    }
+    .lt-ie9 .search {
+        
     }
         .search:focus {
             background-position: -20px center;
