@@ -297,17 +297,17 @@
         var precision;
 
         var valuesArrayString = [
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q1)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q2)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q3)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q4)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_2_YTD)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_1_YTD)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_YTD)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.Target)).ToString())",
-            "@Colour.getNum((Html.DisplayTextFor(model => model.Comparator)).ToString())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q1)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q2)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q3)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_Q4)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3_YTD)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_3_YTD)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_2_YTD)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_1_YTD)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.FY_YTD)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.Target)).ToString().Trim())",
+            "@Colour.getNum((Html.DisplayTextFor(model => model.Comparator)).ToString().Trim())",
         ];
         for (i = 0; i < valuesArrayString.length; i++) {
             if (valuesArrayString[i] != null) {
@@ -336,26 +336,26 @@
         var chartWidth = 300 - 20 - 20;
 
         var valuesArray = [
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q1)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q1)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q2)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q2)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1_YTD)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1_YTD)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2_YTD)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2_YTD)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3_YTD)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString())", 10),
-                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)) ?
-                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString())", 10)
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q1)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q1)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q2)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q2)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q3)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_Q4)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1_YTD)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_1_YTD)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2_YTD)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_2_YTD)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3_YTD)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_3_YTD)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.FY_YTD)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Target)).ToString().Trim())", 10),
+                isNaN(parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString().Trim())", 10)) ?
+                    0 : parseFloat("@Colour.getNum((@Html.DisplayTextFor(model => model.Comparator)).ToString().Trim())", 10)
         ];
 
         /*polyfill*/
@@ -521,7 +521,7 @@
 
             chart1 = new Highcharts.Chart({
                 title: {
-                    text: '@Html.DisplayTextFor(model => model.Indicator)'
+                    text: '@Html.DisplayTextFor(model => model.Indicator).ToString().Trim()'
                 },
                 subtitle: {
                     text: 'for ' + '@FiscalYear.FYStrFullFormated("FY_0", Model.Fiscal_Year)',
@@ -586,7 +586,7 @@
                     }]
                 }],
                 series: [{
-                    name: '@Html.DisplayTextFor(model => model.Indicator)',
+                    name: '@Html.DisplayTextFor(model => model.Indicator).ToString().Trim()',
                     data: s1,
                     index: 50
                 }],
@@ -605,7 +605,7 @@
                     backgroundColor: "#2D3947"
                 },
                 title: {
-                    text: '@Html.DisplayTextFor(model => model.Indicator)'
+                    text: '@Html.DisplayTextFor(model => model.Indicator).ToString().Trim()'
                 },
                 subtitle: {
                     text: 'from ' + '@FiscalYear.FYStrFullFormated("FY_3", Model.Fiscal_Year) to @FiscalYear.FYStrFullFormated("FY_0", Model.Fiscal_Year)'
@@ -634,7 +634,7 @@
                     }]
                 },
                 series: [{
-                    name: '@Html.DisplayTextFor(model => model.Indicator)',
+                    name: '@Html.DisplayTextFor(model => model.Indicator).ToString().Trim()',
                     data: s2
                 }],
                 legend: [{

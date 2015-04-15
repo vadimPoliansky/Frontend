@@ -176,8 +176,8 @@
         $(".blockContent").on("click", function () {
             var indicatorID = $(this).closest(".block").attr("indicatorID");
             var currPath = window.location.pathname
-            window.location.href = currPath.charAt(currPath.length-1) == "/" ? window.location.pathname + "details?indicatorID=" + indicatorID + "&fiscalYear=" + 1 :
-                                                                                    window.location.pathname + "/details?indicatorID=" + indicatorID + "&fiscalYear=" + 1;
+            window.location.href = currPath.charAt(currPath.length-1) == "/" ? window.location.pathname + "details?indicatorID=" + indicatorID + "&fiscalYear=" + 2 :
+                                                                                    window.location.pathname + "/details?indicatorID=" + indicatorID + "&fiscalYear=" + 2;
         });
 
         if ($("html").hasClass("lt-ie9")) {
